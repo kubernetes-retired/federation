@@ -14,39 +14,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sed -i -e "\|^deb.*http://http.debian.net/debian| s/^/#/" /etc/apt/sources.list
-sed -i -e "\|^deb.*http://ftp.debian.org/debian| s/^/#/" /etc/apt/sources.list.d/backports.list
+# Use other Debian mirror
+sed -i -e "s/http.us.debian.org/mirrors.kernel.org/" /etc/apt/sources.list
+
+# Resolve hostname of master
+if ! grep -q $KUBE_MASTER /etc/hosts; then
+  echo "Adding host entry for $KUBE_MASTER"
+  echo "$KUBE_MASTER_IP $KUBE_MASTER" >> /etc/hosts
+fi
 
 # Prepopulate the name of the Master
 mkdir -p /etc/salt/minion.d
-echo "master: $MASTER_NAME" > /etc/salt/minion.d/master.conf
+echo "master: $KUBE_MASTER" > /etc/salt/minion.d/master.conf
 
+# Turn on debugging for salt-minion
+# echo "DAEMON_ARGS=\"\$DAEMON_ARGS --log-file-level=debug\"" > /etc/default/salt-minion
+
+# Our minions will have a pool role to distinguish them from the master.
+#
+# Setting the "minion_ip" here causes the kubelet to use its IP for
+# identification instead of its hostname.
+#
 cat <<EOF >/etc/salt/minion.d/grains.conf
 grains:
+  minion_ip: $(ip route get 1.1.1.1 | awk '{print $7}')
   roles:
-    - kubernetes-master
-  cloud: gce
-EOF
-
-# Auto accept all keys from minions that try to join
-mkdir -p /etc/salt/master.d
-cat <<EOF >/etc/salt/master.d/auto-accept.conf
-auto_accept: True
-EOF
-
-cat <<EOF >/etc/salt/master.d/reactor.conf
-# React to new minions starting by running highstate on them.
-reactor:
-  - 'salt/minion/*/start':
-    - /srv/reactor/highstate-new.sls
+    - kubernetes-pool
+    - kubernetes-pool-vsphere
+  cbr-cidr: $MINION_IP_RANGE
 EOF
 
 # Install Salt
 #
 # We specify -X to avoid a race condition that can cause minion failure to
 # install.  See https://github.com/saltstack/salt-bootstrap/issues/270
-#
-# -M installs the master
-set +x
-curl -L --connect-timeout 20 --retry 6 --retry-delay 10 http://bootstrap.saltstack.com | sh -s -- -M -X
-set -x
+wget -q -O - https://bootstrap.saltstack.com | sh -s -- -X

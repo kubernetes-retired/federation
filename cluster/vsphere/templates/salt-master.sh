@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sed -i -e "\|^deb.*http://http.debian.net/debian| s/^/#/" /etc/apt/sources.list
-sed -i -e "\|^deb.*http://ftp.debian.org/debian| s/^/#/" /etc/apt/sources.list.d/backports.list
+# Use other Debian mirror
+sed -i -e "s/http.us.debian.org/mirrors.kernel.org/" /etc/apt/sources.list
 
 # Prepopulate the name of the Master
 mkdir -p /etc/salt/minion.d
@@ -25,7 +25,7 @@ cat <<EOF >/etc/salt/minion.d/grains.conf
 grains:
   roles:
     - kubernetes-master
-  cloud: gce
+  cloud: vsphere
 EOF
 
 # Auto accept all keys from minions that try to join
@@ -39,6 +39,8 @@ cat <<EOF >/etc/salt/master.d/reactor.conf
 reactor:
   - 'salt/minion/*/start':
     - /srv/reactor/highstate-new.sls
+    - /srv/reactor/highstate-masters.sls
+    - /srv/reactor/highstate-minions.sls
 EOF
 
 # Install Salt
@@ -48,5 +50,7 @@ EOF
 #
 # -M installs the master
 set +x
-curl -L --connect-timeout 20 --retry 6 --retry-delay 10 http://bootstrap.saltstack.com | sh -s -- -M -X
+wget -q -O - https://bootstrap.saltstack.com | sh -s -- -M -X
 set -x
+
+echo $MASTER_HTPASSWD > /srv/salt/nginx/htpasswd
