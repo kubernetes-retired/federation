@@ -1,4 +1,4 @@
-# Copyright 2016 The Kubernetes Authors All rights reserved.
+# Copyright YEAR The Kubernetes Authors All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM google/debian:wheezy
-
-COPY backports.list /etc/apt/sources.list.d/backports.list
-
-RUN apt-get update
-RUN apt-get -t wheezy-backports -yy -q install nginx
