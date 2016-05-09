@@ -18,7 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
+KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
 source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
@@ -42,5 +42,5 @@ gotoprotobuf=$(kube::util::find-binary "go-to-protobuf")
 # satisfies import of github.com/gogo/protobuf/gogoproto/gogo.proto and the core Google protobuf types
 PATH="${KUBE_ROOT}/_output/local/go/bin:${PATH}" \
   "${gotoprotobuf}" \
-  --proto-import="${KUBE_ROOT}/Godeps/_workspace/src" \
+  --proto-import="${KUBE_ROOT}/vendor" \
   --proto-import="${KUBE_ROOT}/third_party/protobuf"
