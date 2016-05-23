@@ -19,6 +19,7 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 
 focus=${FOCUS:-""}
 skip=${SKIP:-""}
+report=${REPORT:-"/tmp/"}
 
 ginkgo=$(kube::util::find-binary "ginkgo")
 if [[ -z "${ginkgo}" ]]; then
@@ -27,6 +28,6 @@ if [[ -z "${ginkgo}" ]]; then
 fi
 
 # Provided for backwards compatibility
-"${ginkgo}" --focus=$focus --skip=$skip "${KUBE_ROOT}/test/e2e_node/" -- --alsologtostderr --v 2 --node-name $(hostname) --build-services=true --start-services=true --stop-services=true
+"${ginkgo}" --focus=$focus --skip=$skip "${KUBE_ROOT}/test/e2e_node/" --report-dir=${report} -- --alsologtostderr --v 2 --node-name $(hostname) --build-services=true --start-services=true --stop-services=true
 
 exit $?
