@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 The Kubernetes Authors.
+# Copyright 2014 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Run a command in the docker build container.  Typically this will be one of
+# the commands in `hack/`.  When running in the build container the user is sure
+# to have a consistent reproducible build environment.
+
 set -o errexit
 set -o nounset
 set -o pipefail
 
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
+source "$KUBE_ROOT/build/common.sh"
 
-# NOTE: All output from this script needs to be copied back to the calling
-# source tree.  This is managed in kube::build::copy_output in build/common.sh.
-# If the output set is changed update that function.
+kube::build::verify_prereqs
+kube::build::build_image
+kube::build::run_build_command "$@"
 
-${KUBE_ROOT}/build/run.sh hack/update-generated-runtime-dockerized.sh "$@"
-
-# ex: ts=2 sw=2 et filetype=sh
+if [[ ${KUBE_RUN_COPY_OUTPUT:-y} =~ ^[yY]$ ]]; then
+  kube::build::copy_output
+fi

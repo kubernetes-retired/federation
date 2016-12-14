@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Copyright 2016 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o errexit
-set -o nounset
-set -o pipefail
+.PHONY:	build push
 
-KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
+IMAGE=kube-cross
+TAG=$(shell cat VERSION)
 
-# NOTE: All output from this script needs to be copied back to the calling
-# source tree.  This is managed in kube::build::copy_output in build/common.sh.
-# If the output set is changed update that function.
 
-${KUBE_ROOT}/build/run.sh hack/update-generated-runtime-dockerized.sh "$@"
+all: push
 
-# ex: ts=2 sw=2 et filetype=sh
+build:
+	docker build -t gcr.io/google_containers/$(IMAGE):$(TAG) .
+
+push: build
+	gcloud docker --server=gcr.io -- push gcr.io/google_containers/$(IMAGE):$(TAG)
