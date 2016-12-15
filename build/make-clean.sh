@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 The Kubernetes Authors.
+# Copyright 2014 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Clean out the output directory on the docker host.
 set -o errexit
 set -o nounset
 set -o pipefail
 
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
+source "${KUBE_ROOT}/build/common.sh"
 
-# NOTE: All output from this script needs to be copied back to the calling
-# source tree.  This is managed in kube::build::copy_output in build/common.sh.
-# If the output set is changed update that function.
-
-${KUBE_ROOT}/build/run.sh hack/update-generated-runtime-dockerized.sh "$@"
-
-# ex: ts=2 sw=2 et filetype=sh
+kube::build::verify_prereqs false
+kube::build::clean
