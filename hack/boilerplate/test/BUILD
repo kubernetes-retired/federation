@@ -1,17 +1,19 @@
 package(default_visibility = ["//visibility:public"])
 
-exports_files(glob(["*.txt"]))
+licenses(["notice"])
 
-py_test(
-    name = "boilerplate_test",
+load(
+    "@io_bazel_rules_go//go:def.bzl",
+    "go_library",
+)
+
+go_library(
+    name = "go_default_library",
     srcs = [
-        "boilerplate.py",
-        "boilerplate_test.py",
+        "fail.go",
+        "pass.go",
     ],
-    data = glob([
-        "*.txt",
-        "test/*",
-    ]),
+    tags = ["automanaged"],
 )
 
 filegroup(
@@ -23,9 +25,6 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//hack/boilerplate/test:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
 )
