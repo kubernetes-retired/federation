@@ -23,7 +23,6 @@ go_library(
         "//pkg/federatedtypes:go_default_library",
         "//pkg/federation-controller/cluster:go_default_library",
         "//pkg/federation-controller/ingress:go_default_library",
-        "//pkg/federation-controller/job:go_default_library",
         "//pkg/federation-controller/service:go_default_library",
         "//pkg/federation-controller/service/dns:go_default_library",
         "//pkg/federation-controller/sync:go_default_library",

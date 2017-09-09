@@ -23,6 +23,7 @@ import (
 	"sort"
 	"time"
 
+	batchv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -40,7 +41,7 @@ import (
 
 // ScheduleAction is used by the interface ScheduleObject of SchedulingAdapter
 // to sync controller reconcile to convey the action type needed for the
-// particular cluster local object in ScheduleObject
+// particular cluster local object in ScheduleObject.
 type ScheduleAction string
 
 const (
@@ -72,6 +73,28 @@ type ReplicaSchedulingInfo struct {
 	Status        ReplicaStatus
 }
 
+type JobStatus struct {
+	CompleteCondition *batchv1.JobCondition
+	FailedCondition   *batchv1.JobCondition
+	StartTime         *metav1.Time
+	CompletionTime    *metav1.Time
+	Active            int32
+	Succeeded         int32
+	Failed            int32
+}
+
+type JobScheduleState struct {
+	parallelism *int32
+	completions *int32
+}
+
+// JobSchedulingInfo wraps the information that a job type SchedulingAdapter needs to
+// update objects per a schedule.
+type JobSchedulingInfo struct {
+	ScheduleState map[string]*JobScheduleState
+	Status        JobStatus
+}
+
 // SchedulingAdapter defines operations for interacting with a
 // federated type that requires more complex synchronization logic.
 type SchedulingAdapter interface {
@@ -91,7 +114,16 @@ type replicaSchedulingAdapter struct {
 	updateStatusFunc          func(pkgruntime.Object, interface{}) error
 }
 
+type jobSchedulingAdapter struct {
+	preferencesAnnotationName string
+	updateStatusFunc          func(pkgruntime.Object, interface{}) error
+}
+
 func (a *replicaSchedulingAdapter) IsSchedulingAdapter() bool {
+	return true
+}
+
+func (a *jobSchedulingAdapter) IsSchedulingAdapter() bool {
 	return true
 }
 
@@ -215,6 +247,67 @@ func (a *replicaSchedulingAdapter) GetSchedule(obj pkgruntime.Object, key string
 	}, nil
 }
 
+func (a *jobSchedulingAdapter) GetSchedule(obj pkgruntime.Object, key string, clusters []*federationapi.Cluster, informer fedutil.FederatedInformer) (interface{}, error) {
+	job := obj.(*batchv1.Job)
+	var clusterNames []string
+	for _, cluster := range clusters {
+		clusterNames = append(clusterNames, cluster.Name)
+	}
+
+	fedPref, err := replicapreferences.GetAllocationPreferences(obj, a.preferencesAnnotationName)
+	if err != nil {
+		glog.Infof("Invalid workload-type specific preference, using default. object: %v, err: %v", obj, err)
+	}
+	if fedPref == nil {
+		fedPref = &fedapi.ReplicaAllocationPreferences{
+			Clusters: map[string]fedapi.ClusterPreferences{
+				"*": {Weight: 1},
+			},
+		}
+	}
+
+	plnr := planner.NewPlanner(fedPref)
+	parallelismResult, _ := plnr.Plan(int64(*job.Spec.Parallelism), clusterNames, nil, nil, key)
+
+	// Reset min/max replica values to avoid restricting the number
+	// of completions allowed per cluster as it may be larger than
+	// replicas specified in job preferences.
+	for _, clusterPref := range fedPref.Clusters {
+		clusterPref.MinReplicas = 0
+		clusterPref.MaxReplicas = nil
+	}
+
+	plnr = planner.NewPlanner(fedPref)
+
+	clusterNames = nil
+	for clusterName := range parallelismResult {
+		clusterNames = append(clusterNames, clusterName)
+	}
+
+	completionsResult := make(map[string]int64)
+	if job.Spec.Completions != nil {
+		completionsResult, _ = plnr.Plan(int64(*job.Spec.Completions), clusterNames, nil, nil, key)
+	}
+
+	results := make(map[string]*JobScheduleState)
+	for _, clusterName := range clusterNames {
+		p := int32(parallelismResult[clusterName])
+		c := int32(completionsResult[clusterName])
+		scheduleInfo := JobScheduleState{
+			parallelism: &p,
+		}
+		if job.Spec.Completions != nil {
+			scheduleInfo.completions = &c
+		}
+		results[clusterName] = &scheduleInfo
+	}
+
+	return &JobSchedulingInfo{
+		ScheduleState: results,
+		Status:        JobStatus{},
+	}, nil
+}
+
 func (a *replicaSchedulingAdapter) ScheduleObject(cluster *federationapi.Cluster, clusterObj pkgruntime.Object, federationObjCopy pkgruntime.Object, schedulingInfo interface{}) (pkgruntime.Object, ScheduleAction, error) {
 	typedSchedulingInfo := schedulingInfo.(*ReplicaSchedulingInfo)
 	clusterScheduleState := typedSchedulingInfo.ScheduleState[cluster.Name]
@@ -249,7 +342,71 @@ func (a *replicaSchedulingAdapter) ScheduleObject(cluster *federationapi.Cluster
 	return federationObjCopy, action, nil
 }
 
+func (a *jobSchedulingAdapter) ScheduleObject(cluster *federationapi.Cluster, clusterObj pkgruntime.Object, federationObjCopy pkgruntime.Object, schedulingInfo interface{}) (pkgruntime.Object, ScheduleAction, error) {
+	typedSchedulingInfo := schedulingInfo.(*JobSchedulingInfo)
+	clusterScheduleState := typedSchedulingInfo.ScheduleState[cluster.Name]
+	scheduleStatus := typedSchedulingInfo.Status
+
+	if clusterObj != nil {
+		jobStatus := clusterObj.(*batchv1.Job).Status
+
+		// Save off the complete and failed conditions with later transition times.
+		for _, condition := range jobStatus.Conditions {
+			if condition.Type == batchv1.JobComplete {
+				if scheduleStatus.CompleteCondition == nil ||
+					scheduleStatus.CompleteCondition.LastTransitionTime.Before(&condition.LastTransitionTime) {
+					scheduleStatus.CompleteCondition = &condition
+				}
+			} else if condition.Type == batchv1.JobFailed {
+				if scheduleStatus.FailedCondition == nil ||
+					scheduleStatus.FailedCondition.LastTransitionTime.Before(&condition.LastTransitionTime) {
+					scheduleStatus.FailedCondition = &condition
+				}
+			}
+		}
+
+		// Save off the start time if it comes after the
+		// latest start time we've found so far.
+		if jobStatus.StartTime != nil {
+			if scheduleStatus.StartTime == nil || scheduleStatus.StartTime.After(jobStatus.StartTime.Time) {
+				scheduleStatus.StartTime = jobStatus.StartTime
+			}
+		}
+
+		// Save off the completion time if it comes after the
+		// latest completion time we've found so far.
+		if jobStatus.CompletionTime != nil {
+			if scheduleStatus.CompletionTime == nil || scheduleStatus.CompletionTime.Before(jobStatus.CompletionTime) {
+				scheduleStatus.CompletionTime = jobStatus.CompletionTime
+			}
+		}
+
+		// Increment running counts.
+		scheduleStatus.Active += jobStatus.Active
+		scheduleStatus.Succeeded += jobStatus.Succeeded
+		scheduleStatus.Failed += jobStatus.Failed
+	}
+
+	// Update the federated job parallelism and completions based on what has
+	// previously been calculated and saved in the scheduling info. Also set
+	// manual selector to true in order to create job objects in underlying
+	// clusters with an already populated UID when federated job was initially
+	// created.
+	var action ScheduleAction = ActionAdd
+	manualSelector := true
+	specParallelism := int32(*clusterScheduleState.parallelism)
+	specCompletions := int32(*clusterScheduleState.completions)
+	reflect.ValueOf(federationObjCopy).Elem().FieldByName("Spec").FieldByName("Parallelism").Set(reflect.ValueOf(&specParallelism))
+	reflect.ValueOf(federationObjCopy).Elem().FieldByName("Spec").FieldByName("Completions").Set(reflect.ValueOf(&specCompletions))
+	reflect.ValueOf(federationObjCopy).Elem().FieldByName("Spec").FieldByName("ManualSelector").Set(reflect.ValueOf(&manualSelector))
+	return federationObjCopy, action, nil
+}
+
 func (a *replicaSchedulingAdapter) UpdateFederatedStatus(obj pkgruntime.Object, schedulingInfo interface{}) error {
+	return a.updateStatusFunc(obj, schedulingInfo)
+}
+
+func (a *jobSchedulingAdapter) UpdateFederatedStatus(obj pkgruntime.Object, schedulingInfo interface{}) error {
 	return a.updateStatusFunc(obj, schedulingInfo)
 }
 
