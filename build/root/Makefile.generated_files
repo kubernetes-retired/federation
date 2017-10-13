@@ -32,6 +32,9 @@ endif
 # It's necessary to set this because some environments don't link sh -> bash.
 SHELL := /bin/bash
 
+# TODO(marun) target repo-infra's version of this file
+BOILERPLATE_FILE := "vendor/k8s.io/kubernetes/hack/boilerplate/boilerplate.go.txt"
+
 # This rule collects all the generated file sets into a single rule.  Other
 # rules should depend on this to ensure generated files are rebuilt.
 .PHONY: generated_files
@@ -190,6 +193,11 @@ ALL_K8S_TAG_FILES := $(shell                             \
         | xargs grep --color=never -l '^// *+k8s:'       \
 )
 
+# Filter out vendored files
+PROJECT_K8S_TAG_FILES := $(shell                         \
+    echo $(ALL_K8S_TAG_FILES) | sed 's|vendor/[^ ]*||g'  \
+)
+
 #
 # Deep-copy generation
 #
@@ -214,7 +222,7 @@ ifeq ($(DBG_MAKEFILE),1)
     $(warning ***** finding all +k8s:deepcopy-gen tags)
 endif
 DEEPCOPY_DIRS := $(shell                                             \
-    grep --color=never -l '+k8s:deepcopy-gen=' $(ALL_K8S_TAG_FILES)  \
+    grep --color=never -l '+k8s:deepcopy-gen=' $(PROJECT_K8S_TAG_FILES)  \
         | xargs -n1 dirname                                          \
         | LC_ALL=C sort -u                                           \
 )
@@ -230,9 +238,10 @@ RUN_GEN_DEEPCOPY =                                                         \
             fi;                                                            \
             ./hack/run-in-gopath.sh $(DEEPCOPY_GEN)                        \
                 --v $(KUBE_VERBOSE)                                        \
+                --go-header-file $(BOILERPLATE_FILE)                       \
                 --logtostderr                                              \
                 -i "$$pkgs"                                                \
-                --bounding-dirs $(PRJ_SRC_PATH),"k8s.io/api"               \
+                --bounding-dirs $(PRJ_SRC_PATH)                            \
                 -O $(DEEPCOPY_BASENAME)                                    \
                 "$$@";                                                     \
         fi                                                                 \
@@ -351,10 +360,10 @@ DEFAULTER_GEN := $(BIN_DIR)/defaulter-gen
 ifeq ($(DBG_MAKEFILE),1)
     $(warning ***** finding all +k8s:defaulter-gen tags)
 endif
-DEFAULTER_DIRS := $(shell                                            \
-    grep --color=never -l '+k8s:defaulter-gen=' $(ALL_K8S_TAG_FILES) \
-        | xargs -n1 dirname                                          \
-        | LC_ALL=C sort -u                                           \
+DEFAULTER_DIRS := $(shell                                                \
+    grep --color=never -l '+k8s:defaulter-gen=' $(PROJECT_K8S_TAG_FILES) \
+        | xargs -n1 dirname                                              \
+        | LC_ALL=C sort -u                                               \
 )
 
 DEFAULTER_FILES := $(addsuffix /$(DEFAULTER_FILENAME), $(DEFAULTER_DIRS))
@@ -368,6 +377,7 @@ RUN_GEN_DEFAULTER :=                                                        \
             fi;                                                             \
             ./hack/run-in-gopath.sh $(DEFAULTER_GEN)                        \
                 --v $(KUBE_VERBOSE)                                         \
+                --go-header-file $(BOILERPLATE_FILE)                        \
                 --logtostderr                                               \
                 -i "$$pkgs"                                                 \
                 --extra-peer-dirs $$(echo $(addprefix $(PRJ_SRC_PATH)/, $(DEFAULTER_DIRS)) | sed 's/ /,/g') \
@@ -513,9 +523,11 @@ OPENAPI_DIRS := $(shell                                             \
 
 OPENAPI_OUTFILE := $(OPENAPI_OUTPUT_PKG)/$(OPENAPI_FILENAME)
 
+KUBE_OPENAPI_OUTFILE := vendor/k8s.io/kubernetes/$(OPENAPI_OUTFILE)
+
 # This rule is the user-friendly entrypoint for openapi generation.
 .PHONY: gen_openapi
-gen_openapi: $(OPENAPI_OUTFILE) $(OPENAPI_GEN)
+gen_openapi: $(OPENAPI_OUTFILE) $(OPENAPI_GEN) $(KUBE_OPENAPI_OUTFILE)
 
 # For each dir in OPENAPI_DIRS, this establishes a dependency between the
 # output file and the input files that should trigger a rebuild.
@@ -539,6 +551,7 @@ $(OPENAPI_OUTFILE): $(OPENAPI_GEN) $(OPENAPI_GEN)
 	function run_gen_openapi() {                                                        \
 	    ./hack/run-in-gopath.sh $(OPENAPI_GEN)                                          \
 	        --v $(KUBE_VERBOSE)                                                         \
+            --go-header-file $(BOILERPLATE_FILE)                                        \
 	        --logtostderr                                                               \
 	        -i $$(echo $(addprefix $(PRJ_SRC_PATH)/, $(OPENAPI_DIRS)) | sed 's/ /,/g')  \
 	        -p $(PRJ_SRC_PATH)/$(OPENAPI_OUTPUT_PKG)                                    \
@@ -546,6 +559,11 @@ $(OPENAPI_OUTFILE): $(OPENAPI_GEN) $(OPENAPI_GEN)
 	        "$$@";                                                                      \
 	};                                                                                  \
 	run_gen_openapi
+
+# TODO(marun) Generate an openapi spec for k/k that doesn't include
+# the federation types.
+$(KUBE_OPENAPI_OUTFILE): $(OPENAPI_OUTFILE)
+	cp $(OPENAPI_OUTPUT_PKG)/$(OPENAPI_FILENAME) $(KUBE_OPENAPI_OUTFILE)
 
 # This calculates the dependencies for the generator tool, so we only rebuild
 # it when needed.  It is PHONY so that it always runs, but it only updates the
@@ -620,11 +638,11 @@ CONVERSIONS_META := conversions.mk
 ifeq ($(DBG_MAKEFILE),1)
     $(warning ***** finding all +k8s:conversion-gen tags)
 endif
-CONVERSION_DIRS := $(shell                                              \
-    grep --color=never '^// *+k8s:conversion-gen=' $(ALL_K8S_TAG_FILES) \
-        | cut -f1 -d:                                                   \
-        | xargs -n1 dirname                                             \
-        | LC_ALL=C sort -u                                              \
+CONVERSION_DIRS := $(shell                                                  \
+    grep --color=never '^// *+k8s:conversion-gen=' $(PROJECT_K8S_TAG_FILES) \
+        | cut -f1 -d:                                                       \
+        | xargs -n1 dirname                                                 \
+        | LC_ALL=C sort -u                                                  \
 )
 
 CONVERSION_FILES := $(addsuffix /$(CONVERSION_FILENAME), $(CONVERSION_DIRS))
@@ -639,6 +657,7 @@ RUN_GEN_CONVERSION =                                                         \
             fi;                                                              \
             ./hack/run-in-gopath.sh $(CONVERSION_GEN)                        \
                 --v $(KUBE_VERBOSE)                                          \
+                --go-header-file $(BOILERPLATE_FILE)                         \
                 --logtostderr                                                \
                 -i "$$pkgs"                                                  \
                 -O $(CONVERSION_BASENAME)                                    \

@@ -15,23 +15,14 @@
 # limitations under the License.
 
 # The golang package that we are building.
-readonly KUBE_GO_PACKAGE=k8s.io/kubernetes
+readonly KUBE_GO_PACKAGE=k8s.io/federation
 readonly KUBE_GOPATH="${KUBE_OUTPUT}/go"
 
 # The set of server targets that we are only building for Linux
 # If you update this list, please also update build/BUILD.
 kube::golang::server_targets() {
   local targets=(
-    cmd/kube-proxy
-    cmd/kube-apiserver
-    cmd/kube-controller-manager
-    cmd/cloud-controller-manager
-    cmd/kubelet
-    cmd/kubeadm
-    cmd/hyperkube
-    vendor/k8s.io/kube-aggregator
-    vendor/k8s.io/apiextensions-apiserver
-    plugin/cmd/kube-scheduler
+    cmd/fcp
   )
   echo "${targets[@]}"
 }
@@ -39,19 +30,10 @@ kube::golang::server_targets() {
 readonly KUBE_SERVER_TARGETS=($(kube::golang::server_targets))
 readonly KUBE_SERVER_BINARIES=("${KUBE_SERVER_TARGETS[@]##*/}")
 
-# The set of server targets that we are only building for Kubernetes nodes
-# If you update this list, please also update build/BUILD.
-kube::golang::node_targets() {
-  local targets=(
-    cmd/kube-proxy
-    cmd/kubelet
-  )
-  echo "${targets[@]}"
-}
-
-readonly KUBE_NODE_TARGETS=($(kube::golang::node_targets))
-readonly KUBE_NODE_BINARIES=("${KUBE_NODE_TARGETS[@]##*/}")
-readonly KUBE_NODE_BINARIES_WIN=("${KUBE_NODE_BINARIES[@]/%/.exe}")
+# TODO(marun) remove references to node targets and binaries
+readonly KUBE_NODE_TARGETS=()
+readonly KUBE_NODE_BINARIES=()
+readonly KUBE_NODE_BINARIES_WIN=()
 
 if [[ -n "${KUBE_BUILD_PLATFORMS:-}" ]]; then
   readonly KUBE_SERVER_PLATFORMS=(${KUBE_BUILD_PLATFORMS})
@@ -124,8 +106,7 @@ fi
 # The set of client targets that we are building for all platforms
 # If you update this list, please also update build/BUILD.
 readonly KUBE_CLIENT_TARGETS=(
-  cmd/kubectl
-  federation/cmd/kubefed
+  cmd/kubefed
 )
 readonly KUBE_CLIENT_BINARIES=("${KUBE_CLIENT_TARGETS[@]##*/}")
 readonly KUBE_CLIENT_BINARIES_WIN=("${KUBE_CLIENT_BINARIES[@]/%/.exe}")
@@ -134,15 +115,14 @@ readonly KUBE_CLIENT_BINARIES_WIN=("${KUBE_CLIENT_BINARIES[@]/%/.exe}")
 # If you update this list, please also update build/BUILD.
 kube::golang::test_targets() {
   local targets=(
-    cmd/gendocs
-    cmd/genkubedocs
-    cmd/genman
-    cmd/genyaml
-    cmd/genswaggertypedocs
-    cmd/linkcheck
-    federation/cmd/genfeddocs
-    vendor/github.com/onsi/ginkgo/ginkgo
-    test/e2e/e2e.test
+    cmd/genfeddocs
+    # vendor/k8s.io/kubernetes/cmd/genman
+    # vendor/k8s.io/kubernetes/cmd/genyaml
+    # vendor/k8s.io/kubernetes/cmd/genswaggertypedocs
+    # vendor/k8s.io/kubernetes/cmd/linkcheck
+    # vendor/github.com/onsi/ginkgo/ginkgo
+    # TODO federation e2e binary
+    #test/e2e/e2e.test
   )
   echo "${targets[@]}"
 }
@@ -151,13 +131,10 @@ readonly KUBE_TEST_BINARIES=("${KUBE_TEST_TARGETS[@]##*/}")
 readonly KUBE_TEST_BINARIES_WIN=("${KUBE_TEST_BINARIES[@]/%/.exe}")
 # If you update this list, please also update build/BUILD.
 readonly KUBE_TEST_PORTABLE=(
-  test/e2e/testing-manifests
-  test/kubemark
-  federation/develop
+  develop
   hack/e2e.go
   hack/e2e-internal
   hack/get-build.sh
-  hack/ginkgo-e2e.sh
   hack/federated-ginkgo-e2e.sh
   hack/lib
 )
@@ -168,13 +145,8 @@ readonly KUBE_TEST_PORTABLE=(
 # If you update this list, please also update build/BUILD.
 kube::golang::server_test_targets() {
   local targets=(
-    cmd/kubemark
     vendor/github.com/onsi/ginkgo/ginkgo
   )
-
-  if [[ "${OSTYPE:-}" == "linux"* ]]; then
-    targets+=( test/e2e_node/e2e_node.test )
-  fi
 
   echo "${targets[@]}"
 }
@@ -188,32 +160,22 @@ readonly KUBE_TEST_SERVER_PLATFORMS=("${KUBE_SERVER_PLATFORMS[@]}")
 # laptops-versus-not.
 readonly KUBE_PARALLEL_BUILD_MEMORY=11
 
-# TODO(pipejakob) gke-certificates-controller is included here to exercise its
-# compilation, but it doesn't need to be distributed in any of our tars. Its
-# code is only living in this repo temporarily until it finds a new home.
 readonly KUBE_ALL_TARGETS=(
   "${KUBE_SERVER_TARGETS[@]}"
   "${KUBE_CLIENT_TARGETS[@]}"
   "${KUBE_TEST_TARGETS[@]}"
   "${KUBE_TEST_SERVER_TARGETS[@]}"
-  cmd/gke-certificates-controller
 )
 readonly KUBE_ALL_BINARIES=("${KUBE_ALL_TARGETS[@]##*/}")
 
 readonly KUBE_STATIC_LIBRARIES=(
-  cloud-controller-manager
-  kube-apiserver
-  kube-controller-manager
-  kube-scheduler
-  kube-proxy
-  kube-aggregator
-  kubeadm
-  kubectl
+  fcp
+  kubefed
 )
 
 # Add any files with those //generate annotations in the array below.
 readonly KUBE_BINDATAS=(
-  test/e2e/generated/gobindata_util.go
+  vendor/k8s.io/kubernetes/test/e2e/generated/gobindata_util.go
 )
 
 kube::golang::is_statically_linked_library() {
@@ -457,7 +419,7 @@ kube::golang::fallback_if_stdlib_not_installable() {
 # Ideally, not a shell script because testing shell scripts is painful.
 kube::golang::build_kube_toolchain() {
   local targets=(
-    hack/cmd/teststale
+    vendor/k8s.io/kubernetes/hack/cmd/teststale
     vendor/github.com/jteeuwen/go-bindata/go-bindata
   )
 
