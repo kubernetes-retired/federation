@@ -38,6 +38,7 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	kubefedtesting "k8s.io/federation/pkg/kubefed/testing"
 	"k8s.io/federation/pkg/kubefed/util"
+	federationtestapi "k8s.io/federation/test/testapi"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/testapi"
 	k8srbacv1 "k8s.io/kubernetes/pkg/apis/rbac/v1"
@@ -228,7 +229,7 @@ func testJoinFederationFactory(clusterName, secretName, server string, isRBACAPI
 
 	want := fakeCluster(clusterName, secretName, server, isRBACAPIAvailable)
 	f, tf, _, _ := cmdtesting.NewAPIFactory()
-	codec := testapi.Federation.Codec()
+	codec := federationtestapi.Federation.Codec()
 	ns := dynamic.ContentConfig().NegotiatedSerializer
 	tf.Client = &fake.RESTClient{
 		APIRegistry:          api.Registry,
