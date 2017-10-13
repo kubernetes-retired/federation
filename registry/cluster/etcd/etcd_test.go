@@ -28,6 +28,9 @@ import (
 	"k8s.io/federation/apis/federation"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/registry/registrytest"
+
+	// install all api groups for testing
+	_ "k8s.io/federation/test/testapi"
 )
 
 func newStorage(t *testing.T) (*REST, *etcdtesting.EtcdTestServer) {
