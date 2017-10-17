@@ -718,6 +718,7 @@ function kube::build::sync_to_container() {
   # are hidden from rsync so they will be deleted in the target container if
   # they exist. This will allow them to be re-created in the container if
   # necessary.
+  #TODO (maru/irfan) We need to exclude/hide auto-generated files (but exclude vendor folder, from that rule).
   kube::build::rsync \
     --delete \
     --filter='H /.git/' \
@@ -725,8 +726,6 @@ function kube::build::sync_to_container() {
     --filter='- /_tmp/' \
     --filter='- /_output/' \
     --filter='- /' \
-    --filter='H zz_generated.*' \
-    --filter='H generated.proto' \
     "${KUBE_ROOT}/" "rsync://k8s@${KUBE_RSYNC_ADDR}/k8s/"
 
   kube::build::stop_rsyncd_container
