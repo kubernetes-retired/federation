@@ -116,14 +116,13 @@ readonly KUBE_CLIENT_BINARIES_WIN=("${KUBE_CLIENT_BINARIES[@]/%/.exe}")
 kube::golang::test_targets() {
   local targets=(
     cmd/genfeddocs
+    test/e2e/e2e.test
     # vendor/k8s.io/kubernetes/cmd/genman
     # vendor/k8s.io/kubernetes/cmd/genyaml
     # vendor/k8s.io/kubernetes/cmd/genswaggertypedocs
     # vendor/k8s.io/kubernetes/cmd/linkcheck
     # vendor/github.com/onsi/ginkgo/ginkgo
-    # TODO federation e2e binary
-    #test/e2e/e2e.test
-  )
+)
   echo "${targets[@]}"
 }
 readonly KUBE_TEST_TARGETS=($(kube::golang::test_targets))

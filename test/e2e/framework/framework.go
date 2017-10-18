@@ -211,7 +211,7 @@ func (f *Framework) GetUnderlyingFederatedContexts() []E2EContext {
 
 	e2eContexts := []E2EContext{}
 	for _, context := range kubeconfig.Contexts {
-		if strings.HasPrefix(context.Name, "federation") && context.Name != framework.TestContext.FederatedKubeContext {
+		if strings.HasPrefix(context.Name, "federation") && context.Name != TestContext.FederatedKubeContext {
 			user := kubeconfig.FindUser(context.Context.User)
 			if user == nil {
 				framework.Failf("Could not find user for context %+v", context)
@@ -239,7 +239,7 @@ func (f *Framework) GetUnderlyingFederatedContexts() []E2EContext {
 }
 
 func (f *Framework) GetRegisteredClusters() ClusterSlice {
-	if framework.TestContext.FederationConfigFromCluster {
+	if TestContext.FederationConfigFromCluster {
 		return registeredClustersFromSecrets(f)
 	} else {
 		return registeredClustersFromConfig(f)

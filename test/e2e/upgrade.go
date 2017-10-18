@@ -120,7 +120,7 @@ func (cma *chaosMonkeyAdapter) Teardown() {
 }
 
 func federationControlPlaneUpgrade(f *fedframework.Framework) {
-	federationVersion, err := framework.RealVersion(framework.TestContext.FederationUpgradeTarget)
+	federationVersion, err := framework.RealVersion(fedframework.TestContext.FederationUpgradeTarget)
 	framework.ExpectNoError(err)
 	framework.ExpectNoError(fedframework.FederationControlPlaneUpgrade(federationVersion))
 	framework.ExpectNoError(fedframework.CheckFederationVersion(f.FederationClientset, federationVersion))

@@ -162,11 +162,11 @@ func federationClientSetWithBasicAuth(valid bool) (*federation_clientset.Clients
 		// the token and the username/password cannot live in the same AuthInfo object,
 		// and because we do not want to store basic auth credentials with token and
 		// certificate credentials for security reasons, we must dig it out by hand.
-		c, err := framework.RestclientConfig(framework.TestContext.FederatedKubeContext)
+		c, err := framework.RestclientConfig(fedframework.TestContext.FederatedKubeContext)
 		if err != nil {
 			return nil, err
 		}
-		if authInfo, ok := c.AuthInfos[fmt.Sprintf("%s-basic-auth", framework.TestContext.FederatedKubeContext)]; ok {
+		if authInfo, ok := c.AuthInfos[fmt.Sprintf("%s-basic-auth", fedframework.TestContext.FederatedKubeContext)]; ok {
 			config.Username = authInfo.Username
 			config.Password = authInfo.Password
 		}
