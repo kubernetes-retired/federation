@@ -31,6 +31,7 @@ import (
 	clientset "k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/validation"
@@ -41,7 +42,7 @@ const FederatedDefaultTestTimeout = 5 * time.Minute
 
 // Detects whether the federation namespace exists in the underlying cluster
 func SkipUnlessFederated(c clientset.Interface) {
-	federationNS := framework.FederationSystemNamespace()
+	federationNS := FederationSystemNamespace()
 
 	_, err := c.Core().Namespaces().Get(federationNS, metav1.GetOptions{})
 	if err != nil {
@@ -74,7 +75,7 @@ func LoadFederationClientset(config *restclient.Config) (*federation_clientset.C
 }
 
 func LoadFederatedConfig(overrides *clientcmd.ConfigOverrides) (*restclient.Config, error) {
-	c, err := framework.RestclientConfig(framework.TestContext.FederatedKubeContext)
+	c, err := framework.RestclientConfig(TestContext.FederatedKubeContext)
 	if err != nil {
 		return nil, fmt.Errorf("error creating federation client config: %v", err.Error())
 	}
@@ -147,4 +148,14 @@ func masterUpgradeGCE(context, rawVersion string) error {
 	env := append(os.Environ(), "KUBE_CONTEXT="+context, "ZONE="+zone)
 	_, _, err := framework.RunCmdEnv(env, path.Join(framework.TestContext.RepoRoot, "cluster/gce/upgrade.sh"), "-M", version)
 	return err
+}
+
+// FederationSystemNamespace returns the namespace in which
+// the federation system components are hosted.
+func FederationSystemNamespace() string {
+	federationNS := os.Getenv("FEDERATION_NAMESPACE")
+	if federationNS != "" {
+		return federationNS
+	}
+	return federationapi.FederationNamespaceSystem
 }

@@ -211,7 +211,7 @@ func clusterConfigFromSecrets(f *Framework) []*clusterConfig {
 // cluster from a secret in the host cluster
 func clusterConfigFromSecret(f *Framework, clusterName string, secretName string) []byte {
 	By(fmt.Sprintf("Loading configuration for cluster %q", clusterName))
-	namespace := framework.FederationSystemNamespace()
+	namespace := FederationSystemNamespace()
 	secret, err := f.Framework.ClientSet.Core().Secrets(namespace).Get(secretName, metav1.GetOptions{})
 	framework.ExpectNoError(err, fmt.Sprintf("Error loading config secret \"%s/%s\" for cluster %q: %+v", namespace, secretName, clusterName, err))
 
