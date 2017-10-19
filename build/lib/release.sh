@@ -509,10 +509,6 @@ function kube::release::package_final_tarball() {
   cp -R "${KUBE_ROOT}/cluster" "${release_stage}/"
   rm -rf "${release_stage}/cluster/saltbase"
 
-  # Include only k/federation/cluster and k/federation/deploy
-  # The federation/cluster in k/k has been moved to k/f/test
-  mkdir "${release_stage}/test"
-  cp -R "${KUBE_ROOT}/test/cluster" "${release_stage}/test"
   cp -R "${KUBE_ROOT}/deploy" "${release_stage}/"
 
   # Include hack/lib as a dependency for the cluster/ scripts
