@@ -16,6 +16,7 @@
 # KUBE_ROOT: path of the root of the Kubernetes repository
 
 : "${KUBE_ROOT?Must set KUBE_ROOT env var}"
+: "${REAL_KUBE_ROOT?Must set REAL_KUBE_ROOT env var}"
 
 # Provides the kubeconfig-federation-context() function
 source "${KUBE_ROOT}/cluster/kube-util.sh"
@@ -50,7 +51,7 @@ if [[ -z "${HOST_CLUSTER_CONTEXT}" ]]; then
 fi
 
 function federation_cluster_contexts() {
-  local -r contexts=$("${KUBE_ROOT}/cluster/kubectl.sh" config get-contexts -o name)
+  local -r contexts=$("${REAL_KUBE_ROOT}/cluster/kubectl.sh" config get-contexts -o name)
   federation_contexts=()
   for context in ${contexts}; do
     # Skip federation context
@@ -67,7 +68,7 @@ function federation_cluster_contexts() {
 }
 
 
-host_kubectl="${KUBE_ROOT}/cluster/kubectl.sh --namespace=${FEDERATION_NAMESPACE}"
+host_kubectl="${REAL_KUBE_ROOT}/cluster/kubectl.sh --namespace=${FEDERATION_NAMESPACE}"
 
 function cleanup-federation-api-objects {
   # This is a cleanup function. We cannot stop on errors here. So disable
