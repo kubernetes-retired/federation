@@ -18,17 +18,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+REAL_KUBE_ROOT=$(readlink -m $(dirname "${BASH_SOURCE}")/../../../)
 KUBE_ROOT=$(readlink -m $(dirname "${BASH_SOURCE}")/../../)
 
 # For $FEDERATION_NAME, $FEDERATION_NAMESPACE, $FEDERATION_KUBE_CONTEXT,
 # and $HOST_CLUSTER_CONTEXT.
-source "${KUBE_ROOT}/federation/cluster/common.sh"
+source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
 # federation_clusters returns a list of all the clusters in
 # federation, if at all the federation control plane exists
 # and there are any clusters registered.
 function federation_clusters() {
-  if clusters=$("${KUBE_ROOT}/cluster/kubectl.sh" \
+  if clusters=$("${REAL_KUBE_ROOT}/cluster/kubectl.sh" \
       --context="${FEDERATION_KUBE_CONTEXT}" \
       -o jsonpath --template '{.items[*].metadata.name}' \
       get clusters) ; then
@@ -47,7 +48,7 @@ function unjoin_clusters() {
   for context in $(federation_clusters); do
     kube::log::status "Unjoining cluster \"${context}\" from federation \"${FEDERATION_NAME}\""
 
-    "${KUBE_ROOT}/federation/develop/kubefed.sh" unjoin \
+    "${KUBE_ROOT}/deploy/kubefed.sh" unjoin \
         "${context}" \
         --federation-system-namespace=${FEDERATION_NAMESPACE} \
         --context="${FEDERATION_KUBE_CONTEXT}" \

@@ -23,7 +23,7 @@ set -o pipefail
 
 # For FEDERATION_NAMESPACE
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
-source "${KUBE_ROOT}/federation/cluster/common.sh"
+source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
 readonly REPORT_DIR="${1:-_artifacts}"
 OUTPUT_DIR="${REPORT_DIR}/federation"
