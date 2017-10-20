@@ -136,5 +136,21 @@ function join_clusters() {
   done
 }
 
+function push_to_registry() {
+  local -r project="${KUBE_PROJECT:-${PROJECT:-}}"
+  local -r kube_registry="${KUBE_REGISTRY:-gcr.io/${project}}"
+  local -r kube_version="$(get_version)"
+
+  kube::log::status "Pushing hyperkube image to the registry"
+  tar -xzf ${KUBE_ROOT}/server/federation-server-linux-amd64.tar.gz -C /tmp/
+  gcloud docker -- load -i /tmp/federation/fcp-amd64.tar
+  gcloud docker -- tag "gcr.io/google_containers/fcp-amd64:${kube_version}" "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- push "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "gcr.io/google_containers/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "${kube_registry}/fcp-amd64:${kube_version}"
+  rm -f /tmp/federation/fcp-amd64.tar
+}
+
+push_to_registry
 init
 join_clusters
