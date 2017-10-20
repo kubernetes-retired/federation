@@ -1,7 +1,7 @@
 # Scripts runnable from make, e.g.
 #
-#    cd $GOPATH/src/k8s.io/kubernetes
-#    make test-e2e-node
+#    cd $GOPATH/src/k8s.io/federation
+#    make test
 #
 # The sh_binary rules below exist only to validate
 # dependencies; if a shell dependency is accidentally
@@ -13,46 +13,12 @@
 # runnable, hermetically sealed shell "binaries".
 # E.g. the following command would work:
 #
-#   ./bazel-bin/hack/make-rules/test-e2e-node
+#   ./bazel-bin/hack/make-rules/test
 #
-# TODO(#47064): Should be a sh_test instead of sh_binary
-sh_binary(
-    name = "test-cmd",
-    srcs = ["test-cmd.sh"],
-    deps = [
-        ":test-cmd-util",
-        "//hack/lib",
-    ],
-)
-
-sh_binary(
-    name = "test-e2e-node",
-    srcs = ["test-e2e-node.sh"],
-    deps = [
-        "//hack/lib",
-    ],
-)
-
-sh_binary(
-    name = "test-federation-cmd",
-    srcs = ["test-federation-cmd.sh"],
-    deps = [
-        ":test-cmd-util",
-        "//hack/lib",
-    ],
-)
 
 sh_binary(
     name = "test-integration",
-    srcs = ["test-cmd.sh"],
-    deps = [
-        "//hack/lib",
-    ],
-)
-
-sh_binary(
-    name = "test-kubeadm-cmd",
-    srcs = ["test-kubeadm-cmd.sh"],
+    srcs = ["test-integration.sh"],
     deps = [
         "//hack/lib",
     ],
@@ -96,14 +62,6 @@ sh_binary(
     deps = [
         "//hack/lib",
     ],
-)
-
-sh_library(
-    name = "test-cmd-util",
-    srcs = [
-        "test-cmd-util.sh",
-    ],
-    data = ["//pkg/kubectl/validation:testdata/v1/validPod.yaml"],
 )
 
 filegroup(

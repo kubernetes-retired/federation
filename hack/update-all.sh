@@ -25,7 +25,6 @@ source "${KUBE_ROOT}/hack/lib/util.sh"
 
 SILENT=true
 ALL=false
-V=""
 
 while getopts ":va" opt; do
 	case $opt in
@@ -34,7 +33,6 @@ while getopts ":va" opt; do
 			;;
 		v)
 			SILENT=false
-			V="-v"
 			;;
 		\?)
 			echo "Invalid flag: -$OPTARG" >&2
@@ -53,21 +51,15 @@ if ! $ALL ; then
 	echo "Running in short-circuit mode; run with -a to force all scripts to run."
 fi
 
-"${KUBE_ROOT}/hack/godep-restore.sh" ${V}
+# TODO run 'glide up -v'
 
 BASH_TARGETS="
-	update-generated-protobuf
 	update-codegen
 	update-generated-docs
-	update-generated-swagger-docs
-	update-swagger-spec
-	update-openapi-spec
-	update-api-reference-docs
 	update-federation-openapi-spec
 	update-federation-swagger-spec
 	update-federation-generated-swagger-docs
 	update-federation-api-reference-docs
-	update-staging-godeps
 	update-bazel"
 
 for t in $BASH_TARGETS; do

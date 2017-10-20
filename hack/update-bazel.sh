@@ -22,12 +22,15 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 
 # Remove generated files prior to running kazel.
 # TODO(spxtr): Remove this line once Bazel is the only way to build.
-rm -f "${KUBE_ROOT}/pkg/generated/openapi/zz_generated.openapi.go"
+GENERATED_FILENAME="/pkg/generated/openapi/zz_generated.openapi.go"
+rm -f "${KUBE_ROOT}/${GENERATED_FILENAME}"
+rm -f "${KUBE_ROOT}/vendor/k8s.io/kubernetes/${GENERATED_FILENAME}"
 
 # The git commit sha1s here should match the values in $KUBE_ROOT/WORKSPACE.
+# TODO(marun) Update to point to official repo when required changes merge
 kube::util::go_install_from_commit \
-    github.com/kubernetes/repo-infra/kazel \
-    e26fc85d14a1d3dc25569831acc06919673c545a
+    github.com/marun/repo-infra/kazel \
+    497119acbee58cc05d136a4a97dbb06501a54b9c
 kube::util::go_install_from_commit \
     github.com/bazelbuild/rules_go/go/tools/gazelle/gazelle \
     a280fbac1a0a4c67b0eee660b4fd1b3db7c9f058
@@ -39,11 +42,13 @@ gazelle fix \
     -external=vendored \
     -proto=legacy \
     -mode=fix
-# gazelle gets confused by our staging/ directory, prepending an extra
-# "k8s.io/kubernetes/staging/src" to the import path.
-# gazelle won't follow the symlinks in vendor/, so we can't just exclude
-# staging/. Instead we just fix the bad paths with sed.
-find staging -name BUILD -o -name BUILD.bazel | \
-  xargs sed -i 's|\(importpath = "\)k8s.io/kubernetes/staging/src/\(.*\)|\1\2|'
 
-kazel
+# Ignore unneeded rebuild for vendored openapi
+kazel | grep -vq 'vendor/k8s.io/kubernetes/pkg/generated/openapi/BUILD' && true
+
+# Rewrite the openapi BUILD file for federation to work for building
+# openapi for vendored kube.  This seems simpler than fixing kazel to
+# support generating for vendored kube.
+sed 's|\(pkg/generated/openapi\)|vendor/k8s.io/kubernetes/\1|' pkg/generated/openapi/BUILD \
+  | sed '/federation/d'  \
+  > vendor/k8s.io/kubernetes/pkg/generated/openapi/BUILD

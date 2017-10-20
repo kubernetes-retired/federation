@@ -1,5 +1,5 @@
 {
-	"GoPrefix": "k8s.io/kubernetes",
+	"GoPrefix": "k8s.io/federation",
 	"SkippedPaths": [
 		"^_.*"
 	],

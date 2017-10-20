@@ -28,9 +28,9 @@
 package_group(
     name = "COMMON_generators",
     packages = [
-        "//cmd/gendocs",
-        "//cmd/genman",
-        "//cmd/genyaml",
+        "//vendor/k8s.io/kubernetes/cmd/gendocs",
+        "//vendor/k8s.io/kubernetes/cmd/genman",
+        "//vendor/k8s.io/kubernetes/cmd/genyaml",
     ],
 )
 
@@ -40,25 +40,25 @@ package_group(
         "//hack",
         "//hack/lib",
         "//hack/make-rules",
-        "//test/e2e",
-        "//test/e2e/framework",
-        "//test/e2e/kubectl",
-        "//test/e2e/workload",
-        "//test/integration/etcd",
-        "//test/integration/framework",
-        "//test/integration/kubectl",
+        "//vendor/k8s.io/kubernetes/test/e2e",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework",
+        "//vendor/k8s.io/kubernetes/test/e2e/kubectl",
+        "//vendor/k8s.io/kubernetes/test/e2e/workload",
+        "//vendor/k8s.io/kubernetes/test/integration/etcd",
+        "//vendor/k8s.io/kubernetes/test/integration/framework",
+        "//vendor/k8s.io/kubernetes/test/integration/kubectl",
     ],
 )
 
 package_group(
     name = "FEDERATION_BAD",
     packages = [
-        "//federation/cmd/genfeddocs",
-        "//federation/cmd/kubefed/app",
-        "//federation/pkg/kubefed",
-        "//federation/pkg/kubefed/init",
-        "//federation/pkg/kubefed/testing",
-        "//federation/pkg/kubefed/util",
+        "//cmd/genfeddocs",
+        "//cmd/kubefed/app",
+        "//pkg/kubefed",
+        "//pkg/kubefed/init",
+        "//pkg/kubefed/testing",
+        "//pkg/kubefed/util",
     ],
 )
 
@@ -66,27 +66,28 @@ package_group(
     name = "cluster",
     packages = [
         "//cluster/...",
-    ],
+        "//vendor/k8s.io/kubernetes/cluster",
+        ],
 )
 
 package_group(
     name = "KUBEADM_BAD",
     packages = [
-        "//cmd/kubeadm/app/cmd",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/cmd",
     ],
 )
 
 package_group(
     name = "cmd_kubectl_CONSUMERS",
     packages = [
-        "//cmd",
+        "//vendor/k8s.io/kubernetes/cmd",
     ],
 )
 
 package_group(
     name = "cmd_kubectl_app_CONSUMERS",
     packages = [
-        "//cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
     ],
 )
 
@@ -97,9 +98,9 @@ package_group(
         ":KUBEADM_BAD",
     ],
     packages = [
-        "//cmd/clicheck",
-        "//cmd/hyperkube",
-        "//pkg",
+        "//vendor/k8s.io/kubernetes/cmd/clicheck",
+        "//vendor/k8s.io/kubernetes/cmd/hyperkube",
+        "//vendor/k8s.io/kubernetes/pkg",
     ],
 )
 
@@ -110,16 +111,16 @@ package_group(
         ":pkg_kubectl_CONSUMERS_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/auth",
-        "//pkg/kubectl/cmd/config",
-        "//pkg/kubectl/cmd/rollout",
-        "//pkg/kubectl/cmd/set",
-        "//pkg/kubectl/cmd/testing",
-        "//pkg/kubectl/cmd/util",
-        "//pkg/kubectl/cmd/util/editor",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/auth",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/config",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/set",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/testing",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/editor",
     ],
 )
 
@@ -129,8 +130,8 @@ package_group(
         ":FEDERATION_BAD",
     ],
     packages = [
-        "//cmd/clicheck",
-        "//cmd/hyperkube",
+        "//vendor/k8s.io/kubernetes/cmd/clicheck",
+        "//vendor/k8s.io/kubernetes/cmd/hyperkube",
     ],
 )
 
@@ -141,47 +142,47 @@ package_group(
         ":pkg_kubectl_cmd_CONSUMERS_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl",
-        "//pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_auth_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_config_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_rollout_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_set_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_templates_CONSUMERS_BAD",
     packages = [
-        "//federation/pkg/kubefed/init",
+        "//pkg/kubefed/init",
     ],
 )
 
@@ -193,31 +194,31 @@ package_group(
         ":FEDERATION_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/auth",
-        "//pkg/kubectl/cmd/config",
-        "//pkg/kubectl/cmd/rollout",
-        "//pkg/kubectl/cmd/set",
-        "//pkg/kubectl/cmd/templates",
-        "//pkg/kubectl/cmd/util",
-        "//pkg/kubectl/cmd/util/sanity",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/auth",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/config",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/set",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/templates",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/sanity",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_testdata_edit_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_testing_CONSUMERS_BAD",
     packages = [
-        "//federation/pkg/kubefed",
-        "//federation/pkg/kubefed/init",
+        "//pkg/kubefed",
+        "//pkg/kubefed/init",
     ],
 )
 
@@ -227,9 +228,9 @@ package_group(
         ":pkg_kubectl_cmd_testing_CONSUMERS_BAD",
     ],
     packages = [
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/auth",
-        "//pkg/kubectl/cmd/set",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/auth",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/set",
     ],
 )
 
@@ -240,9 +241,9 @@ package_group(
         ":KUBEADM_BAD",
     ],
     packages = [
-        "//cmd/clicheck",
-        "//cmd/hyperkube",
-        "//cmd/kube-proxy/app",
+        "//vendor/k8s.io/kubernetes/cmd/clicheck",
+        "//vendor/k8s.io/kubernetes/cmd/hyperkube",
+        "//vendor/k8s.io/kubernetes/cmd/kube-proxy/app",
     ],
 )
 
@@ -254,40 +255,40 @@ package_group(
         ":pkg_kubectl_cmd_util_CONSUMERS_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/auth",
-        "//pkg/kubectl/cmd/config",
-        "//pkg/kubectl/cmd/rollout",
-        "//pkg/kubectl/cmd/set",
-        "//pkg/kubectl/cmd/testing",
-        "//pkg/kubectl/cmd/util",
-        "//pkg/kubectl/cmd/util/editor",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/auth",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/config",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/set",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/testing",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/editor",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_util_editor_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_util_jsonmerge_CONSUMERS",
     packages = [
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_cmd_util_sanity_CONSUMERS",
     packages = [
-        "//cmd/clicheck",
-        "//pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/cmd/clicheck",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
     ],
 )
 
@@ -297,8 +298,8 @@ package_group(
         ":FEDERATION_BAD",
     ],
     packages = [
-        "//cmd/clicheck",
-        "//cmd/hyperkube",
+        "//vendor/k8s.io/kubernetes/cmd/clicheck",
+        "//vendor/k8s.io/kubernetes/cmd/hyperkube",
     ],
 )
 
@@ -309,17 +310,17 @@ package_group(
         ":pkg_kubectl_metricsutil_CONSUMERS_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl",
-        "//pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_resource_CONSUMERS_BAD",
     packages = [
-        "//federation/pkg/kubefed",
+        "//pkg/kubefed",
     ],
 )
 
@@ -331,44 +332,44 @@ package_group(
         ":pkg_kubectl_resource_CONSUMERS_BAD",
     ],
     packages = [
-        "//cmd/kubectl",
-        "//cmd/kubectl/app",
-        "//pkg/kubectl",
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/cmd/auth",
-        "//pkg/kubectl/cmd/config",
-        "//pkg/kubectl/cmd/rollout",
-        "//pkg/kubectl/cmd/set",
-        "//pkg/kubectl/cmd/testing",
-        "//pkg/kubectl/cmd/util",
-        "//pkg/kubectl/cmd/util/editor",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/auth",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/config",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/rollout",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/set",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/testing",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/editor",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_testing_CONSUMERS",
     packages = [
-        "//pkg/kubectl",
-        "//pkg/printers/internalversion",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/printers/internalversion",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_util_CONSUMERS",
     packages = [
-        "//pkg/kubectl",
-        "//pkg/kubectl/cmd",
-        "//pkg/kubectl/proxy",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/proxy",
     ],
 )
 
 package_group(
     name = "pkg_kubectl_validation_CONSUMERS",
     packages = [
-        "//pkg/kubectl",
-        "//pkg/kubectl/cmd/testing",
-        "//pkg/kubectl/cmd/util",
-        "//pkg/kubectl/resource",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/testing",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/resource",
     ],
 )
 
