@@ -45,16 +45,16 @@ DNS_PROVIDER="${FEDERATION_DNS_PROVIDER:-google-clouddns}"
 # These functions should be consolidated to read the version from
 # kubernetes version defs file.
 function get_version() {
-  local -r versions_file="${KUBE_ROOT}/_output/federation/versions"
+  local -r versions_file="${KUBE_ROOT}/version"
 
-  if [[ -n "${KUBERNETES_RELEASE:-}" ]]; then
-    echo "${KUBERNETES_RELEASE//+/_}"
+  if [[ -n "${FEDERATION_RELEASE:-}" ]]; then
+    echo "${FEDERATION_RELEASE//+/_}"
     return
   fi
 
   if [[ ! -f "${versions_file}" ]]; then
     echo "Couldn't determine the release version: neither the " \
-     "KUBERNETES_RELEASE environment variable is set, nor does " \
+     "FEDERATION_RELEASE environment variable is set, nor does " \
      "the versions file exist at ${versions_file}"
     exit 1
   fi
