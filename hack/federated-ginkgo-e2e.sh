@@ -18,10 +18,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# TODO(irfan): This needs to be updated with rest of the script cleanup
+# This assumes that kubernetes is checked out alongside federation
+REAL_KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../../kubernetes
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
 
 source "${KUBE_ROOT}/cluster/kube-util.sh"
-source "${KUBE_ROOT}/federation/cluster/common.sh"
+source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
 : "${FEDERATION_HOST_CLUSTER_ZONE?Must set FEDERATION_HOST_CLUSTER_ZONE env var}"
 

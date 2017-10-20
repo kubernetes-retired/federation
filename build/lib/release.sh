@@ -482,6 +482,8 @@ function kube::release::package_test_tarball() {
       "${release_stage}/platforms/${platform}"
   done
 
+  tar c ${KUBE_TEST_PORTABLE[@]} | tar x -C ${release_stage}
+
   kube::release::clean_cruft
 
   local package_name="${RELEASE_TARS}/federation-test.tar.gz"
