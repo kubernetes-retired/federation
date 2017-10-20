@@ -8,16 +8,13 @@ package(default_visibility = ["//visibility:public"])
 load("@io_bazel_rules_go//go:def.bzl", "go_prefix")
 load("@io_kubernetes_build//defs:build.bzl", "gcs_upload")
 
-go_prefix("k8s.io/kubernetes")
+go_prefix("k8s.io/federation")
 
 filegroup(
     name = "_binary-artifacts-and-hashes",
     srcs = [
         "//build:client-targets-and-hashes",
-        "//build:docker-artifacts-and-hashes",
-        "//build:node-targets-and-hashes",
         "//build:server-targets-and-hashes",
-        "//build/debs:debs-and-hashes",
     ],
     visibility = ["//visibility:private"],
 )
@@ -57,19 +54,31 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//api:all-srcs",
+        "//apis/core:all-srcs",
+        "//apis/federation:all-srcs",
         "//build:all-srcs",
+        "//client/cache:all-srcs",
+        "//client/clientset_generated/federation_clientset:all-srcs",
         "//cluster:all-srcs",
-        "//cmd:all-srcs",
-        "//docs:all-srcs",
-        "//examples:all-srcs",
-        "//federation:all-srcs",
+        "//cmd/fcp:all-srcs",
+        "//cmd/federation-apiserver:all-srcs",
+        "//cmd/federation-controller-manager:all-srcs",
+        "//cmd/genfeddocs:all-srcs",
+        "//cmd/kubefed:all-srcs",
+        "//develop:all-srcs",
         "//hack:all-srcs",
-        "//pkg:all-srcs",
-        "//plugin:all-srcs",
-        "//staging:all-srcs",
-        "//test:all-srcs",
-        "//third_party:all-srcs",
+        "//pkg/dnsprovider:all-srcs",
+        "//pkg/federatedtypes:all-srcs",
+        "//pkg/federation-controller:all-srcs",
+        "//pkg/generated/openapi:all-srcs",
+        "//pkg/kubefed:all-srcs",
+        "//pkg/version:all-srcs",
+        "//plugin/pkg/admission/schedulingpolicy:all-srcs",
+        "//registry/cluster:all-srcs",
+        "//test/cluster:all-srcs",
+        "//test/e2e:all-srcs",
+        "//test/integration:all-srcs",
+        "//test/testapi:all-srcs",
         "//vendor:all-srcs",
     ],
     tags = ["automanaged"],

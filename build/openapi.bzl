@@ -5,5 +5,5 @@
 # openapi_go_prefix = "k8s.io/myproject/"
 # openapi_vendor_prefix = "vendor/k8s.io/kubernetes/"
 
-openapi_go_prefix = "k8s.io/kubernetes/"
-openapi_vendor_prefix = ""
+openapi_go_prefix = "k8s.io/federation/"
+openapi_vendor_prefix = "vendor/k8s.io/kubernetes/"
