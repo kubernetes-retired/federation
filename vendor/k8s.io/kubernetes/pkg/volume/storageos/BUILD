@@ -15,11 +15,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/volume/storageos",
     deps = [
-        "//pkg/util/mount:go_default_library",
-        "//pkg/util/strings:go_default_library",
-        "//pkg/volume:go_default_library",
-        "//pkg/volume/util:go_default_library",
-        "//pkg/volume/util/volumehelper:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/storageos/go-api:go_default_library",
         "//vendor/github.com/storageos/go-api/types:go_default_library",
@@ -28,6 +23,11 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/mount:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/strings:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume/util/volumehelper:go_default_library",
     ],
 )
 
@@ -40,15 +40,15 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/volume/storageos",
     library = ":go_default_library",
     deps = [
-        "//pkg/util/mount:go_default_library",
-        "//pkg/volume:go_default_library",
-        "//pkg/volume/testing:go_default_library",
         "//vendor/github.com/storageos/go-api/types:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/fake:go_default_library",
         "//vendor/k8s.io/client-go/util/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/mount:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume/testing:go_default_library",
     ],
 )
 

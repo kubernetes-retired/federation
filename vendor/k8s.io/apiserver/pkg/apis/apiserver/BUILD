@@ -33,8 +33,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/apis/apiserver/install:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/apis/apiserver/v1alpha1:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/apis/apiserver/install:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/apis/apiserver/v1alpha1:all-srcs",
     ],
     tags = ["automanaged"],
 )

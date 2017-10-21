@@ -11,10 +11,10 @@ go_library(
     srcs = ["nettest.go"],
     importpath = "k8s.io/kubernetes/test/images/nettest",
     deps = [
-        "//pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
     ],
 )
 

@@ -33,10 +33,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/apis/admissionregistration/fuzzer:all-srcs",
-        "//pkg/apis/admissionregistration/install:all-srcs",
-        "//pkg/apis/admissionregistration/v1alpha1:all-srcs",
-        "//pkg/apis/admissionregistration/validation:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration/fuzzer:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -15,8 +15,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/namespace",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/validation:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/internalversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
@@ -29,6 +27,8 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/names:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/validation:go_default_library",
     ],
 )
 
@@ -38,11 +38,11 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/registry/core/namespace",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/testapi:go_default_library",
-        "//pkg/api/testing:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testing:go_default_library",
     ],
 )
 
@@ -57,7 +57,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/core/namespace/storage:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/core/namespace/storage:all-srcs",
     ],
     tags = ["automanaged"],
 )

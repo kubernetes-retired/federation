@@ -14,8 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/certificate",
     deps = [
-        "//pkg/kubelet/apis/kubeletconfig:go_default_library",
-        "//pkg/kubelet/metrics:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
         "//vendor/k8s.io/api/certificates/v1beta1:go_default_library",
@@ -26,6 +24,8 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes/typed/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/util/certificate:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/metrics:go_default_library",
     ],
 )
 
@@ -53,7 +53,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/certificate/bootstrap:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/certificate/bootstrap:all-srcs",
     ],
     tags = ["automanaged"],
 )

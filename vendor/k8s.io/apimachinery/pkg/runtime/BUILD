@@ -54,11 +54,11 @@ go_test(
     ],
     importpath = "k8s.io/apimachinery/pkg/runtime_test",
     deps = [
+        ":go_default_library",
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/testing:go_default_library",
@@ -77,9 +77,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/schema:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/testing:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:all-srcs",
     ],
     tags = ["automanaged"],
 )

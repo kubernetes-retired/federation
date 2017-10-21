@@ -24,13 +24,6 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/kubelet/container",
     visibility = ["//visibility:public"],
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/kubelet/apis/cri/v1alpha1/runtime:go_default_library",
-        "//pkg/kubelet/util/format:go_default_library",
-        "//pkg/kubelet/util/ioutils:go_default_library",
-        "//pkg/util/hash:go_default_library",
-        "//pkg/volume:go_default_library",
-        "//third_party/forked/golang/expansion:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -42,6 +35,13 @@ go_library(
         "//vendor/k8s.io/client-go/tools/reference:go_default_library",
         "//vendor/k8s.io/client-go/tools/remotecommand:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/ioutils:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/hash:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
+        "//vendor/k8s.io/kubernetes/third_party/forked/golang/expansion:go_default_library",
     ] + select({
         "@io_bazel_rules_go//go/platform:linux_amd64": [
             "//vendor/github.com/kr/pty:go_default_library",
@@ -61,12 +61,12 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/container",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/install:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/install:go_default_library",
     ],
 )
 
@@ -76,7 +76,7 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/container_test",
     deps = [
         ":go_default_library",
-        "//pkg/kubelet/container/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container/testing:go_default_library",
     ],
 )
 
@@ -91,7 +91,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/container/testing:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container/testing:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

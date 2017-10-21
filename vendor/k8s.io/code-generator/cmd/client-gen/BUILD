@@ -36,10 +36,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/args:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/generators:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/path:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/types:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/args:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/generators:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/path:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/types:all-srcs",
     ],
     tags = ["automanaged"],
 )

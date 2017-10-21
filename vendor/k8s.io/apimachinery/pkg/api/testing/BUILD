@@ -28,8 +28,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/api/testing/fuzzer:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/api/testing/roundtrip:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/api/testing/fuzzer:all-srcs",
     ],
     tags = ["automanaged"],
 )

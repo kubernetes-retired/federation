@@ -11,9 +11,9 @@ go_library(
     srcs = ["util.go"],
     importpath = "k8s.io/kubernetes/pkg/api/endpoints",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/util/hash:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/hash:go_default_library",
     ],
 )
 
@@ -23,9 +23,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/api/endpoints",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )
 

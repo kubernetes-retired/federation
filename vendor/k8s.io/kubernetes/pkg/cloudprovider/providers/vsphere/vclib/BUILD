@@ -51,7 +51,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/cloudprovider/providers/vsphere/vclib/diskmanagers:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/vsphere/vclib/diskmanagers:all-srcs",
     ],
     tags = ["automanaged"],
 )

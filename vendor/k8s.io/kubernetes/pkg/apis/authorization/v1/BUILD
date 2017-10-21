@@ -17,11 +17,11 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/apis/authorization/v1",
     deps = [
-        "//pkg/apis/authorization:go_default_library",
         "//vendor/k8s.io/api/authorization/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authorization:go_default_library",
     ],
 )
 

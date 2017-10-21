@@ -11,10 +11,10 @@ go_library(
     srcs = ["validation.go"],
     importpath = "k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/validation",
     deps = [
-        "//pkg/kubelet/apis/kubeletconfig:go_default_library",
-        "//pkg/kubelet/cm:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
     ],
 )
 
@@ -37,7 +37,7 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/validation",
     library = ":go_default_library",
     deps = [
-        "//pkg/kubelet/apis/kubeletconfig:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
     ],
 )

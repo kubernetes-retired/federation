@@ -10,7 +10,7 @@ go_library(
     name = "go_default_library",
     srcs = ["util.go"],
     importpath = "k8s.io/kubernetes/pkg/api/persistentvolume",
-    deps = ["//pkg/api:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/pkg/api:go_default_library"],
 )
 
 filegroup(
@@ -32,8 +32,8 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/api/persistentvolume",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )

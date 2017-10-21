@@ -22,8 +22,8 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/util/oom",
     deps = select({
         "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "//pkg/kubelet/cm/util:go_default_library",
             "//vendor/github.com/golang/glog:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/cm/util:go_default_library",
         ],
         "//conditions:default": [],
     }),

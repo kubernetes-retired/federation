@@ -10,7 +10,7 @@ go_library(
     name = "go_default_library",
     srcs = ["planner.go"],
     importpath = "k8s.io/federation/pkg/federation-controller/util/planner",
-    deps = ["//federation/apis/federation:go_default_library"],
+    deps = ["//apis/federation:go_default_library"],
 )
 
 go_test(
@@ -19,7 +19,7 @@ go_test(
     importpath = "k8s.io/federation/pkg/federation-controller/util/planner",
     library = ":go_default_library",
     deps = [
-        "//federation/apis/federation:go_default_library",
+        "//apis/federation:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
     ],
 )

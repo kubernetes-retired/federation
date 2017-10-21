@@ -32,9 +32,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/pkg/client/clientset/internalclientset/fake:all-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/pkg/client/clientset/internalclientset/scheme:all-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/pkg/client/clientset/internalclientset/typed/apiextensions/internalversion:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/pkg/client/clientset/internalclientset/scheme:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/pkg/client/clientset/internalclientset/typed/apiextensions/internalversion:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -11,9 +11,9 @@ go_library(
     srcs = ["goroutinemap.go"],
     importpath = "k8s.io/kubernetes/pkg/util/goroutinemap",
     deps = [
-        "//pkg/util/goroutinemap/exponentialbackoff:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/goroutinemap/exponentialbackoff:go_default_library",
     ],
 )
 
@@ -36,7 +36,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/util/goroutinemap/exponentialbackoff:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/util/goroutinemap/exponentialbackoff:all-srcs",
     ],
     tags = ["automanaged"],
 )

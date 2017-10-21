@@ -35,7 +35,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cluster/addons/fluentd-elasticsearch/es-image:all-srcs",
+        "//vendor/k8s.io/kubernetes/cluster/addons/fluentd-elasticsearch/es-image:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -45,8 +45,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/tools/clientcmd/api/latest:all-srcs",
-        "//staging/src/k8s.io/client-go/tools/clientcmd/api/v1:all-srcs",
+        "//vendor/k8s.io/client-go/tools/clientcmd/api/latest:all-srcs",
+        "//vendor/k8s.io/client-go/tools/clientcmd/api/v1:all-srcs",
     ],
     tags = ["automanaged"],
 )

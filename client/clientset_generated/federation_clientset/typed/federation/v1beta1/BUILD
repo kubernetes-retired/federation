@@ -15,8 +15,8 @@ go_library(
     ],
     importpath = "k8s.io/federation/client/clientset_generated/federation_clientset/typed/federation/v1beta1",
     deps = [
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//federation/client/clientset_generated/federation_clientset/scheme:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
+        "//client/clientset_generated/federation_clientset/scheme:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
@@ -36,7 +36,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/client/clientset_generated/federation_clientset/typed/federation/v1beta1/fake:all-srcs",
+        "//client/clientset_generated/federation_clientset/typed/federation/v1beta1/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

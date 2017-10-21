@@ -34,11 +34,6 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//plugin/pkg/scheduler/api/latest:all-srcs",
-        "//plugin/pkg/scheduler/api/v1:all-srcs",
-        "//plugin/pkg/scheduler/api/validation:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
 )

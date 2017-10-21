@@ -27,8 +27,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/version/prometheus:all-srcs",
-        "//pkg/version/verflag:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/version/prometheus:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/version/verflag:all-srcs",
     ],
     tags = ["automanaged"],
 )

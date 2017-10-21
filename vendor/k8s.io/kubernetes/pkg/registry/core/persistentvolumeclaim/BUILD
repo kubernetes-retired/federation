@@ -14,8 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/persistentvolumeclaim",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/validation:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -24,6 +22,8 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/registry/generic:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/names:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/validation:go_default_library",
     ],
 )
 
@@ -33,9 +33,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/registry/core/persistentvolumeclaim",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/testapi:go_default_library",
-        "//pkg/api/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testing:go_default_library",
     ],
 )
 
@@ -50,7 +50,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/core/persistentvolumeclaim/storage:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/core/persistentvolumeclaim/storage:all-srcs",
     ],
     tags = ["automanaged"],
 )

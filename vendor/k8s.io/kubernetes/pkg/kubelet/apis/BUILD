@@ -25,10 +25,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/apis/cri:all-srcs",
-        "//pkg/kubelet/apis/deviceplugin/v1alpha1:all-srcs",
-        "//pkg/kubelet/apis/kubeletconfig:all-srcs",
-        "//pkg/kubelet/apis/stats/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/cri:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/deviceplugin/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:all-srcs",
     ],
     tags = ["automanaged"],
 )

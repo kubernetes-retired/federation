@@ -17,8 +17,8 @@ go_library(
     srcs = ["main.go"],
     importpath = "k8s.io/kubernetes/test/images/net",
     deps = [
-        "//test/images/net/common:go_default_library",
-        "//test/images/net/nat:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/images/net/common:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/images/net/nat:go_default_library",
     ],
 )
 
@@ -33,8 +33,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//test/images/net/common:all-srcs",
-        "//test/images/net/nat:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/net/common:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/net/nat:all-srcs",
     ],
     tags = ["automanaged"],
 )

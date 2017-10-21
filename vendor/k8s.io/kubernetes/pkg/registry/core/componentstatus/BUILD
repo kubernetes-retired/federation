@@ -15,15 +15,15 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/componentstatus",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/probe:go_default_library",
-        "//pkg/probe/http:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/internalversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/probe:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/probe/http:go_default_library",
     ],
 )
 
@@ -36,11 +36,11 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/registry/core/componentstatus",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/probe:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/probe:go_default_library",
     ],
 )
 

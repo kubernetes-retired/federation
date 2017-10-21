@@ -34,7 +34,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/kubernetes/typed/authentication/v1/fake:all-srcs",
+        "//vendor/k8s.io/client-go/kubernetes/typed/authentication/v1/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

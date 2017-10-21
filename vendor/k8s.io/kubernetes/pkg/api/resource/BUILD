@@ -11,8 +11,8 @@ go_library(
     srcs = ["helpers.go"],
     importpath = "k8s.io/kubernetes/pkg/api/resource",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )
 
@@ -35,8 +35,8 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/api/resource",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )

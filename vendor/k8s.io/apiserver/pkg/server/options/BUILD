@@ -93,7 +93,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/server/options/encryptionconfig:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/server/options/encryptionconfig:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

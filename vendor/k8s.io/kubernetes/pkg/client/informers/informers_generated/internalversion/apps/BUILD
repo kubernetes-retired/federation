@@ -10,8 +10,8 @@ go_library(
     srcs = ["interface.go"],
     importpath = "k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion/apps",
     deps = [
-        "//pkg/client/informers/informers_generated/internalversion/apps/internalversion:go_default_library",
-        "//pkg/client/informers/informers_generated/internalversion/internalinterfaces:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion/apps/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion/internalinterfaces:go_default_library",
     ],
 )
 
@@ -26,7 +26,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/client/informers/informers_generated/internalversion/apps/internalversion:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion/apps/internalversion:all-srcs",
     ],
     tags = ["automanaged"],
 )

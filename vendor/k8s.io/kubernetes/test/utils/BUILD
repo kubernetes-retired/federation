@@ -18,13 +18,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/test/utils",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/v1/pod:go_default_library",
-        "//pkg/apis/batch:go_default_library",
-        "//pkg/apis/extensions:go_default_library",
-        "//pkg/client/clientset_generated/internalclientset:go_default_library",
-        "//pkg/controller/deployment/util:go_default_library",
-        "//pkg/util/labels:go_default_library",
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/batch/v1:go_default_library",
@@ -46,6 +39,13 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/pod:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/batch:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/deployment/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/labels:go_default_library",
     ],
 )
 
@@ -60,8 +60,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//test/utils/image:all-srcs",
-        "//test/utils/junit:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/utils/image:all-srcs",
     ],
     tags = ["automanaged"],
 )

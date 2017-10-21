@@ -24,9 +24,6 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/recognizer/testing:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
 )

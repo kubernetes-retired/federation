@@ -45,9 +45,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/apis/componentconfig/fuzzer:all-srcs",
-        "//pkg/apis/componentconfig/install:all-srcs",
-        "//pkg/apis/componentconfig/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig/v1alpha1:all-srcs",
     ],
     tags = ["automanaged"],
 )

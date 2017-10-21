@@ -47,10 +47,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/credentialprovider/aws:all-srcs",
-        "//pkg/credentialprovider/azure:all-srcs",
-        "//pkg/credentialprovider/gcp:all-srcs",
-        "//pkg/credentialprovider/rancher:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/aws:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/azure:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/gcp:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/rancher:all-srcs",
     ],
     tags = ["automanaged"],
 )

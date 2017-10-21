@@ -10,9 +10,9 @@ go_library(
     srcs = ["fuzzer.go"],
     importpath = "k8s.io/kubernetes/pkg/apis/networking/fuzzer",
     deps = [
-        "//pkg/apis/networking:go_default_library",
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/networking:go_default_library",
     ],
 )
 

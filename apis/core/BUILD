@@ -10,13 +10,13 @@ go_library(
     srcs = ["register.go"],
     importpath = "k8s.io/federation/apis/core",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/registered:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )
 
@@ -31,8 +31,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/apis/core/install:all-srcs",
-        "//federation/apis/core/v1:all-srcs",
+        "//apis/core/install:all-srcs",
+        "//apis/core/v1:all-srcs",
     ],
     tags = ["automanaged"],
 )

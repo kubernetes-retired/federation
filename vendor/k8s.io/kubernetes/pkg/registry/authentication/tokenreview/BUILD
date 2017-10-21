@@ -10,11 +10,11 @@ go_library(
     srcs = ["storage.go"],
     importpath = "k8s.io/kubernetes/pkg/registry/authentication/tokenreview",
     deps = [
-        "//pkg/apis/authentication:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authentication/authenticator:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication:go_default_library",
     ],
 )
 

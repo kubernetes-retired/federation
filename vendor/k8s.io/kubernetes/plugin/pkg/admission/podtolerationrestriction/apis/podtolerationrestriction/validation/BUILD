@@ -11,9 +11,9 @@ go_library(
     srcs = ["validation.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction/validation",
     deps = [
-        "//pkg/api/validation:go_default_library",
-        "//plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/validation:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction:go_default_library",
     ],
 )
 
@@ -36,7 +36,7 @@ go_test(
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction/validation",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/podtolerationrestriction/apis/podtolerationrestriction:go_default_library",
     ],
 )

@@ -26,7 +26,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/gpu/nvidia:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/gpu/nvidia:all-srcs",
     ],
     tags = ["automanaged"],
 )

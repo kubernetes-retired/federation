@@ -13,12 +13,6 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/kubelet/server/stats",
     visibility = ["//visibility:public"],
     deps = [
-        "//pkg/kubelet/apis/stats/v1alpha1:go_default_library",
-        "//pkg/kubelet/cm:go_default_library",
-        "//pkg/kubelet/container:go_default_library",
-        "//pkg/kubelet/metrics:go_default_library",
-        "//pkg/kubelet/util/format:go_default_library",
-        "//pkg/volume:go_default_library",
         "//vendor/github.com/emicklei/go-restful:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
@@ -26,6 +20,12 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/metrics:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
     ],
 )
 
@@ -38,15 +38,15 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/server/stats",
     library = ":go_default_library",
     deps = [
-        "//pkg/kubelet/apis/stats/v1alpha1:go_default_library",
-        "//pkg/kubelet/cm:go_default_library",
-        "//pkg/kubelet/server/stats/testing:go_default_library",
-        "//pkg/volume:go_default_library",
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/server/stats/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
     ],
 )
 
@@ -59,10 +59,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//pkg/kubelet/server/stats/testing:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

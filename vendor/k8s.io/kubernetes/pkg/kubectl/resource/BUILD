@@ -22,8 +22,6 @@ go_library(
         "//build/visible_to:pkg_kubectl_resource_CONSUMERS",
     ],
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/kubectl/validation:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/golang.org/x/text/encoding/unicode:go_default_library",
         "//vendor/golang.org/x/text/transform:go_default_library",
@@ -42,6 +40,8 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/client-go/discovery:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/validation:go_default_library",
     ],
 )
 
@@ -60,9 +60,6 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubectl/resource",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/testapi:go_default_library",
-        "//pkg/api/testing:go_default_library",
         "//vendor/github.com/ghodss/yaml:go_default_library",
         "//vendor/github.com/googleapis/gnostic/OpenAPIv2:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
@@ -83,6 +80,9 @@ go_test(
         "//vendor/k8s.io/client-go/rest/fake:go_default_library",
         "//vendor/k8s.io/client-go/rest/watch:go_default_library",
         "//vendor/k8s.io/client-go/util/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testing:go_default_library",
     ],
 )
 

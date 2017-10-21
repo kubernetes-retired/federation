@@ -14,7 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/rbac",
     deps = [
-        "//pkg/apis/rbac:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -22,6 +21,7 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/rbac:go_default_library",
     ],
 )
 
@@ -36,13 +36,13 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/rbac/clusterrole:all-srcs",
-        "//pkg/registry/rbac/clusterrolebinding:all-srcs",
-        "//pkg/registry/rbac/reconciliation:all-srcs",
-        "//pkg/registry/rbac/rest:all-srcs",
-        "//pkg/registry/rbac/role:all-srcs",
-        "//pkg/registry/rbac/rolebinding:all-srcs",
-        "//pkg/registry/rbac/validation:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/clusterrole:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/clusterrolebinding:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/reconciliation:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/rest:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/role:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/rolebinding:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )
@@ -53,9 +53,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/registry/rbac",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/helper:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/helper:go_default_library",
     ],
 )

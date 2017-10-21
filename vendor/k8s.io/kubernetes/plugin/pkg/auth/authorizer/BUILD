@@ -22,8 +22,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//plugin/pkg/auth/authorizer/node:all-srcs",
-        "//plugin/pkg/auth/authorizer/rbac:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/auth/authorizer/node:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac:all-srcs",
     ],
     tags = ["automanaged"],
 )

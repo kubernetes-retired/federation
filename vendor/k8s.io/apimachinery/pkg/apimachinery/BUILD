@@ -39,8 +39,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apimachinery/announced:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apimachinery/registered:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apimachinery/registered:all-srcs",
     ],
     tags = ["automanaged"],
 )

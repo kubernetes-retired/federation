@@ -22,8 +22,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/security/apparmor:all-srcs",
-        "//pkg/security/podsecuritypolicy:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/security/apparmor:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/security/podsecuritypolicy:all-srcs",
     ],
     tags = ["automanaged"],
 )

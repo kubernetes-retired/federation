@@ -1,0 +1,47 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "backend.go",
+        "backend_lookup.go",
+        "middleware.go",
+        "normalize.go",
+    ],
+    importpath = "github.com/miekg/coredns/middleware",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/miekg/coredns/middleware/etcd/msg:go_default_library",
+        "//vendor/github.com/miekg/coredns/middleware/pkg/dnsutil:go_default_library",
+        "//vendor/github.com/miekg/coredns/request:go_default_library",
+        "//vendor/github.com/miekg/dns:go_default_library",
+        "//vendor/golang.org/x/net/context:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "middleware_test.go",
+        "normalize_test.go",
+    ],
+    importpath = "github.com/miekg/coredns/middleware",
+    library = ":go_default_library",
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/github.com/miekg/coredns/middleware/etcd:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

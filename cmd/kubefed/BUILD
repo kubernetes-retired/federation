@@ -16,7 +16,7 @@ go_library(
     name = "go_default_library",
     srcs = ["kubefed.go"],
     importpath = "k8s.io/federation/cmd/kubefed",
-    deps = ["//federation/cmd/kubefed/app:go_default_library"],
+    deps = ["//cmd/kubefed/app:go_default_library"],
 )
 
 filegroup(
@@ -30,7 +30,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/cmd/kubefed/app:all-srcs",
+        "//cmd/kubefed/app:all-srcs",
     ],
     tags = ["automanaged"],
 )

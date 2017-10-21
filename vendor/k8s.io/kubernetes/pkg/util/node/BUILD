@@ -11,8 +11,6 @@ go_library(
     srcs = ["node.go"],
     importpath = "k8s.io/kubernetes/pkg/util/node",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/kubelet/apis:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -20,6 +18,8 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/strategicpatch:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis:go_default_library",
     ],
 )
 
@@ -29,9 +29,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/util/node",
     library = ":go_default_library",
     deps = [
-        "//pkg/kubelet/apis:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis:go_default_library",
     ],
 )
 

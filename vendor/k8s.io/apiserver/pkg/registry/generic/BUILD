@@ -37,8 +37,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/registry/generic/registry:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/registry/generic/rest:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/registry/generic/registry:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/registry/generic/rest:all-srcs",
     ],
     tags = ["automanaged"],
 )

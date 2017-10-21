@@ -14,10 +14,10 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/cloudprovider",
     deps = [
-        "//pkg/controller:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
 
@@ -32,7 +32,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/cloudprovider/providers:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers:all-srcs",
     ],
     tags = ["automanaged"],
 )

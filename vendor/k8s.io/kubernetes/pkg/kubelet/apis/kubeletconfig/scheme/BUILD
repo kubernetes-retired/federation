@@ -6,10 +6,10 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/scheme",
     visibility = ["//visibility:public"],
     deps = [
-        "//pkg/kubelet/apis/kubeletconfig:go_default_library",
-        "//pkg/kubelet/apis/kubeletconfig/v1alpha1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/v1alpha1:go_default_library",
     ],
 )
 

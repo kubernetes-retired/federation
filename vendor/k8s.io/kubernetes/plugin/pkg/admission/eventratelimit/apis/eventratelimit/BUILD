@@ -33,9 +33,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//plugin/pkg/admission/eventratelimit/apis/eventratelimit/install:all-srcs",
-        "//plugin/pkg/admission/eventratelimit/apis/eventratelimit/v1alpha1:all-srcs",
-        "//plugin/pkg/admission/eventratelimit/apis/eventratelimit/validation:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/eventratelimit/apis/eventratelimit/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/eventratelimit/apis/eventratelimit/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/eventratelimit/apis/eventratelimit/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

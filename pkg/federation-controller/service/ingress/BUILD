@@ -10,7 +10,7 @@ go_library(
     srcs = ["ingress.go"],
     importpath = "k8s.io/federation/pkg/federation-controller/service/ingress",
     deps = [
-        "//federation/apis/federation:go_default_library",
+        "//apis/federation:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
     ],
 )

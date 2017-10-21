@@ -33,9 +33,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//plugin/pkg/admission/resourcequota/apis/resourcequota/install:all-srcs",
-        "//plugin/pkg/admission/resourcequota/apis/resourcequota/v1alpha1:all-srcs",
-        "//plugin/pkg/admission/resourcequota/apis/resourcequota/validation:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -80,7 +80,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd3/preflight:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd3/preflight:all-srcs",
     ],
     tags = ["automanaged"],
 )

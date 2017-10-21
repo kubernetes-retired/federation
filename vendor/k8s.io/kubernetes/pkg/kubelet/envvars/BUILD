@@ -14,8 +14,8 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/envvars",
     deps = [
-        "//pkg/api/v1/helper:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper:go_default_library",
     ],
 )
 

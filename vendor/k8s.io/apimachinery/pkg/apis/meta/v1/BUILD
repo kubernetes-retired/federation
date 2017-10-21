@@ -82,8 +82,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/unstructured:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/validation:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1/unstructured:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

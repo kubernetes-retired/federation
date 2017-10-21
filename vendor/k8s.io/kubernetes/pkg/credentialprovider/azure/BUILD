@@ -14,8 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/credentialprovider/azure",
     deps = [
-        "//pkg/cloudprovider/providers/azure:go_default_library",
-        "//pkg/credentialprovider:go_default_library",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/containerregistry:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/adal:go_default_library",
@@ -23,6 +21,8 @@ go_library(
         "//vendor/github.com/dgrijalva/jwt-go:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/azure:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
     ],
 )
 

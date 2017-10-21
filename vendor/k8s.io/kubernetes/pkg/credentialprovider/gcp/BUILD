@@ -15,13 +15,13 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/credentialprovider/gcp",
     deps = [
-        "//pkg/credentialprovider:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/golang.org/x/oauth2:go_default_library",
         "//vendor/golang.org/x/oauth2/google:go_default_library",
         "//vendor/golang.org/x/oauth2/jwt:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
     ],
 )
 
@@ -34,8 +34,8 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/credentialprovider/gcp",
     library = ":go_default_library",
     deps = [
-        "//pkg/credentialprovider:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
     ],
 )
 

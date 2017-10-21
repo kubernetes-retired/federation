@@ -11,16 +11,16 @@ go_library(
     srcs = ["daemonset_util.go"],
     importpath = "k8s.io/kubernetes/pkg/controller/daemon/util",
     deps = [
-        "//pkg/api/v1/helper:go_default_library",
-        "//pkg/api/v1/pod:go_default_library",
-        "//pkg/features:go_default_library",
-        "//pkg/kubelet/types:go_default_library",
-        "//pkg/util/labels:go_default_library",
-        "//plugin/pkg/scheduler/algorithm:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/pod:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/labels:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm:go_default_library",
     ],
 )
 
@@ -43,9 +43,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/controller/daemon/util",
     library = ":go_default_library",
     deps = [
-        "//pkg/api/testapi:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
     ],
 )

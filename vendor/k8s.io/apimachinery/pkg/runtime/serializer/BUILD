@@ -53,13 +53,11 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/json:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/protobuf:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/recognizer:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/streaming:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/testing:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/versioning:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/runtime/serializer/yaml:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/json:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/protobuf:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/recognizer:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/streaming:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/versioning:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -33,10 +33,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/metrics/pkg/client/clientset_generated/clientset/fake:all-srcs",
-        "//staging/src/k8s.io/metrics/pkg/client/clientset_generated/clientset/scheme:all-srcs",
-        "//staging/src/k8s.io/metrics/pkg/client/clientset_generated/clientset/typed/metrics/v1alpha1:all-srcs",
-        "//staging/src/k8s.io/metrics/pkg/client/clientset_generated/clientset/typed/metrics/v1beta1:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/client/clientset_generated/clientset/scheme:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/client/clientset_generated/clientset/typed/metrics/v1alpha1:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/client/clientset_generated/clientset/typed/metrics/v1beta1:all-srcs",
     ],
     tags = ["automanaged"],
 )

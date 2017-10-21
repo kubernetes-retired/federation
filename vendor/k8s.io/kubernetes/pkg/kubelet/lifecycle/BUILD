@@ -18,17 +18,17 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/lifecycle",
     deps = [
-        "//pkg/kubelet/container:go_default_library",
-        "//pkg/kubelet/types:go_default_library",
-        "//pkg/kubelet/util/format:go_default_library",
-        "//pkg/security/apparmor:go_default_library",
-        "//plugin/pkg/scheduler/algorithm:go_default_library",
-        "//plugin/pkg/scheduler/algorithm/predicates:go_default_library",
-        "//plugin/pkg/scheduler/schedulercache:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/security/apparmor:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache:go_default_library",
     ],
 )
 
@@ -38,9 +38,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/lifecycle",
     library = ":go_default_library",
     deps = [
-        "//pkg/kubelet/container:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
     ],
 )
 

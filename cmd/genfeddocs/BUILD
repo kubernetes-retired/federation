@@ -17,13 +17,13 @@ go_library(
     srcs = ["gen_fed_docs.go"],
     importpath = "k8s.io/federation/cmd/genfeddocs",
     deps = [
-        "//cmd/genutils:go_default_library",
-        "//federation/cmd/federation-apiserver/app:go_default_library",
-        "//federation/cmd/federation-controller-manager/app:go_default_library",
-        "//federation/cmd/kubefed/app:go_default_library",
-        "//federation/pkg/kubefed:go_default_library",
-        "//pkg/kubectl/cmd/util:go_default_library",
+        "//cmd/federation-apiserver/app:go_default_library",
+        "//cmd/federation-controller-manager/app:go_default_library",
+        "//cmd/kubefed/app:go_default_library",
+        "//pkg/kubefed:go_default_library",
         "//vendor/github.com/spf13/cobra/doc:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/genutils:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
     ],
 )
 

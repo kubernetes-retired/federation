@@ -10,8 +10,8 @@ go_library(
     srcs = ["verflag.go"],
     importpath = "k8s.io/kubernetes/pkg/version/verflag",
     deps = [
-        "//pkg/version:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
     ],
 )
 
