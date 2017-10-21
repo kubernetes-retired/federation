@@ -1,0 +1,90 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "appendblob.go",
+        "authorization.go",
+        "blob.go",
+        "blobsasuri.go",
+        "blobserviceclient.go",
+        "blockblob.go",
+        "client.go",
+        "container.go",
+        "copyblob.go",
+        "directory.go",
+        "entity.go",
+        "file.go",
+        "fileserviceclient.go",
+        "leaseblob.go",
+        "message.go",
+        "odata.go",
+        "pageblob.go",
+        "queue.go",
+        "queueserviceclient.go",
+        "share.go",
+        "storagepolicy.go",
+        "storageservice.go",
+        "table.go",
+        "table_batch.go",
+        "tableserviceclient.go",
+        "util.go",
+        "version.go",
+    ],
+    importpath = "github.com/Azure/azure-sdk-for-go/storage",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/Azure/go-autorest/autorest:go_default_library",
+        "//vendor/github.com/Azure/go-autorest/autorest/azure:go_default_library",
+        "//vendor/github.com/satori/uuid:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "appendblob_test.go",
+        "authorization_test.go",
+        "blob_test.go",
+        "blobsasuri_test.go",
+        "blockblob_test.go",
+        "client_test.go",
+        "container_test.go",
+        "copyblob_test.go",
+        "directory_test.go",
+        "entity_test.go",
+        "file_test.go",
+        "leaseblob_test.go",
+        "message_test.go",
+        "pageblob_test.go",
+        "queue_test.go",
+        "share_test.go",
+        "storageservice_test.go",
+        "table_batch_test.go",
+        "table_test.go",
+        "util_test.go",
+    ],
+    importpath = "github.com/Azure/azure-sdk-for-go/storage",
+    library = ":go_default_library",
+    deps = [
+        "//vendor/github.com/Azure/go-autorest/autorest/azure:go_default_library",
+        "//vendor/github.com/dnaeon/go-vcr/cassette:go_default_library",
+        "//vendor/github.com/dnaeon/go-vcr/recorder:go_default_library",
+        "//vendor/github.com/satori/uuid:go_default_library",
+        "//vendor/gopkg.in/check.v1:go_default_library",
+    ],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [":package-srcs"],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)
