@@ -136,8 +136,10 @@ pkg_tar(
     files = [
         "//:LICENSE",
         "//:README.md",
+        "//:version",
         "//cluster:all-srcs",
         "//develop:all-srcs",
+        "//deploy:all-srcs",
         "//docs:all-srcs",
         "//hack/lib:all-srcs",
     ],
