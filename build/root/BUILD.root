@@ -76,7 +76,7 @@ filegroup(
         "//pkg/version:all-srcs",
         "//plugin/pkg/admission/schedulingpolicy:all-srcs",
         "//registry/cluster:all-srcs",
-        "//test/cluster:all-srcs",
+        "//deploy:all-srcs",
         "//test/e2e:all-srcs",
         "//test/integration:all-srcs",
         "//test/testapi:all-srcs",
