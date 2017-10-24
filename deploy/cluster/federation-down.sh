@@ -18,7 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REAL_KUBE_ROOT=$(readlink -m $(dirname "${BASH_SOURCE}")/../../../)
+REAL_KUBE_ROOT=$(readlink -m $(dirname "${BASH_SOURCE}")/../../../kubernetes)
 KUBE_ROOT=$(readlink -m $(dirname "${BASH_SOURCE}")/../../)
 
 # For $FEDERATION_NAME, $FEDERATION_NAMESPACE, $FEDERATION_KUBE_CONTEXT,
