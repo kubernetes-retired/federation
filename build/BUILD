@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_docker//docker:docker.bzl", "docker_build", "docker_bundle")
+load("@io_bazel_rules_docker//docker:docker.bzl", "docker_image", "docker_bundle")
 load("@io_kubernetes_build//defs:build.bzl", "release_filegroup")
 
 filegroup(
@@ -17,6 +17,27 @@ filegroup(
         "//build/visible_to:all-srcs",
     ],
     tags = ["automanaged"],
+)
+
+# Change the base image to hyperkube to reduce size, if need be.
+docker_image(
+    name = "fcp-image",
+    base = "@debian-hyperkube-base-amd64//image",
+    cmd = ["/fcp"],
+    files = ["//cmd/fcp"],
+)
+
+docker_bundle(
+    name = "fcp-amd64",
+    images = {
+        "gcr.io/google_containers/fcp-amd64:{STABLE_DOCKER_TAG}": "fcp-image",
+    },
+    stamp = True,
+)
+
+release_filegroup(
+    name = "docker-artifacts",
+    srcs = [":fcp-amd64.tar"],
 )
 
 genrule(
