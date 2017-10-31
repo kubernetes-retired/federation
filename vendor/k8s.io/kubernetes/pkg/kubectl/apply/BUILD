@@ -27,8 +27,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubectl/apply/parse:all-srcs",
-        "//pkg/kubectl/apply/strategy:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/apply/parse:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/apply/strategy:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

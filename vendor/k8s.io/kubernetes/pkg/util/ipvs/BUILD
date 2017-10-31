@@ -60,7 +60,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/util/ipvs/testing:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/util/ipvs/testing:all-srcs",
     ],
     tags = ["automanaged"],
 )

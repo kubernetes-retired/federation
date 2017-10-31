@@ -66,6 +66,7 @@ filegroup(
         "//cmd/genfeddocs:all-srcs",
         "//cmd/kubefed:all-srcs",
         "//develop:all-srcs",
+        "//docs:all-srcs",
         "//hack:all-srcs",
         "//pkg/dnsprovider:all-srcs",
         "//pkg/federatedtypes:all-srcs",

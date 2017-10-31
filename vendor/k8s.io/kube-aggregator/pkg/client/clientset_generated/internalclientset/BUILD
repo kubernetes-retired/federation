@@ -32,9 +32,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/fake:all-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/scheme:all-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/typed/apiregistration/internalversion:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/fake:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/scheme:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/typed/apiregistration/internalversion:all-srcs",
     ],
     tags = ["automanaged"],
 )

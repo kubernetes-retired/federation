@@ -12,15 +12,15 @@ go_test(
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/persistentvolume/resize",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/apis/storage:go_default_library",
-        "//pkg/client/informers/informers_generated/internalversion:go_default_library",
-        "//pkg/controller:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/storage:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
 
@@ -29,13 +29,13 @@ go_library(
     srcs = ["admission.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/persistentvolume/resize",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/helper:go_default_library",
-        "//pkg/client/informers/informers_generated/internalversion:go_default_library",
-        "//pkg/client/listers/core/internalversion:go_default_library",
-        "//pkg/client/listers/storage/internalversion:go_default_library",
-        "//pkg/kubeapiserver/admission:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/helper:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/listers/core/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/listers/storage/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubeapiserver/admission:go_default_library",
     ],
 )
 

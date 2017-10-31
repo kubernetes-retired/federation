@@ -11,13 +11,13 @@ go_library(
     srcs = ["options.go"],
     importpath = "k8s.io/kubernetes/cmd/cloud-controller-manager/app/options",
     deps = [
-        "//pkg/apis/componentconfig:go_default_library",
-        "//pkg/client/leaderelectionconfig:go_default_library",
-        "//pkg/features:go_default_library",
-        "//pkg/master/ports:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/leaderelectionconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/master/ports:go_default_library",
     ],
 )
 
@@ -40,9 +40,9 @@ go_test(
     importpath = "k8s.io/kubernetes/cmd/cloud-controller-manager/app/options",
     library = ":go_default_library",
     deps = [
-        "//pkg/apis/componentconfig:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig:go_default_library",
     ],
 )

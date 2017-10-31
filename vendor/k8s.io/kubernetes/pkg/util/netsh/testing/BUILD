@@ -9,7 +9,7 @@ go_library(
     name = "go_default_library",
     srcs = ["fake.go"],
     importpath = "k8s.io/kubernetes/pkg/util/netsh/testing",
-    deps = ["//pkg/util/netsh:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/pkg/util/netsh:go_default_library"],
 )
 
 filegroup(

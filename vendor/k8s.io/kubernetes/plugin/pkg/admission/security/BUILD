@@ -22,7 +22,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//plugin/pkg/admission/security/podsecuritypolicy:all-srcs",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/security/podsecuritypolicy:all-srcs",
     ],
     tags = ["automanaged"],
 )

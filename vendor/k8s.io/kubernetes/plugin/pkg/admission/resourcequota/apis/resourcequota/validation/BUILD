@@ -11,8 +11,8 @@ go_library(
     srcs = ["validation.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota/validation",
     deps = [
-        "//plugin/pkg/admission/resourcequota/apis/resourcequota:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota:go_default_library",
     ],
 )
 
@@ -34,5 +34,5 @@ go_test(
     srcs = ["validation_test.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota/validation",
     library = ":go_default_library",
-    deps = ["//plugin/pkg/admission/resourcequota/apis/resourcequota:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/plugin/pkg/admission/resourcequota/apis/resourcequota:go_default_library"],
 )

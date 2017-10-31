@@ -18,13 +18,6 @@ go_test(
         "integration",
     ],
     deps = [
-        "//cmd/kube-apiserver/app:go_default_library",
-        "//cmd/kube-apiserver/app/options:go_default_library",
-        "//pkg/api:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/kubectl/cmd/util:go_default_library",
-        "//pkg/master:go_default_library",
-        "//test/integration/framework:go_default_library",
         "//vendor/github.com/coreos/etcd/clientv3:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/transport:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -43,6 +36,13 @@ go_test(
         "//vendor/k8s.io/client-go/tools/clientcmd:go_default_library",
         "//vendor/k8s.io/client-go/tools/clientcmd/api:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app/options:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/master:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/integration/framework:go_default_library",
     ],
 )
 

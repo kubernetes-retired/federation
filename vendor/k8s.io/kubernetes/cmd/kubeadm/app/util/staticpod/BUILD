@@ -23,13 +23,13 @@ go_library(
     srcs = ["utils.go"],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/util/staticpod",
     deps = [
-        "//cmd/kubeadm/app/constants:go_default_library",
-        "//cmd/kubeadm/app/util:go_default_library",
-        "//pkg/kubelet/types:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/constants:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
     ],
 )
 

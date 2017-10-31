@@ -14,11 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/controller/route",
     deps = [
-        "//pkg/api/v1/node:go_default_library",
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/controller:go_default_library",
-        "//pkg/util/metrics:go_default_library",
-        "//pkg/util/node:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
@@ -34,6 +29,11 @@ go_library(
         "//vendor/k8s.io/client-go/listers/core/v1:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/node:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/metrics:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/node:go_default_library",
     ],
 )
 
@@ -43,16 +43,16 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/controller/route",
     library = ":go_default_library",
     deps = [
-        "//pkg/api/v1/node:go_default_library",
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/cloudprovider/providers/fake:go_default_library",
-        "//pkg/controller:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/client-go/informers:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/fake:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1/node:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/fake:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
 

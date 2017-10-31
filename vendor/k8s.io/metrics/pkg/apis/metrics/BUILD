@@ -34,9 +34,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/metrics/pkg/apis/metrics/install:all-srcs",
-        "//staging/src/k8s.io/metrics/pkg/apis/metrics/v1alpha1:all-srcs",
-        "//staging/src/k8s.io/metrics/pkg/apis/metrics/v1beta1:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/apis/metrics/install:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/apis/metrics/v1alpha1:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/apis/metrics/v1beta1:all-srcs",
     ],
     tags = ["automanaged"],
 )

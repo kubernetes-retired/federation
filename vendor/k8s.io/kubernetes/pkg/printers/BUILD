@@ -42,11 +42,11 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/printers_test",
     deps = [
         ":go_default_library",
-        "//pkg/api:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
     ],
 )
 
@@ -61,8 +61,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/printers/internalversion:all-srcs",
-        "//pkg/printers/storage:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/printers/internalversion:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/printers/storage:all-srcs",
     ],
     tags = ["automanaged"],
 )
@@ -73,9 +73,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/printers",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1alpha1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )

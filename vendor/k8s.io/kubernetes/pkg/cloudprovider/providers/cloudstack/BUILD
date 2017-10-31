@@ -22,8 +22,6 @@ go_library(
     }),
     importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/cloudstack",
     deps = [
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/controller:go_default_library",
         "//vendor/github.com/d2g/dhcp4:go_default_library",
         "//vendor/github.com/d2g/dhcp4client:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
@@ -32,6 +30,8 @@ go_library(
         "//vendor/gopkg.in/gcfg.v1:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
 

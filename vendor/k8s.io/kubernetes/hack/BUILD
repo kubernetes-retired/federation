@@ -18,11 +18,11 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//hack/boilerplate:all-srcs",
-        "//hack/cmd/teststale:all-srcs",
-        "//hack/e2e-internal:all-srcs",
-        "//hack/lib:all-srcs",
-        "//hack/make-rules:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/boilerplate:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/cmd/teststale:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/e2e-internal:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/lib:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/make-rules:all-srcs",
     ],
     tags = ["automanaged"],
 )

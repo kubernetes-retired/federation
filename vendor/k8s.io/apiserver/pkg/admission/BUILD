@@ -64,11 +64,11 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/admission/configuration:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/admission/initializer:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/admission/plugin/initialization:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/admission/plugin/namespace/lifecycle:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/admission/plugin/webhook/webhook:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/configuration:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/initializer:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/initialization:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/namespace/lifecycle:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/webhook:all-srcs",
     ],
     tags = ["automanaged"],
 )

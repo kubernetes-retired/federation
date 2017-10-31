@@ -9,13 +9,13 @@ go_library(
     importpath = "k8s.io/kubernetes/test/e2e/ui",
     visibility = ["//visibility:public"],
     deps = [
-        "//test/e2e/framework:go_default_library",
-        "//test/utils:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/utils:go_default_library",
     ],
 )
 

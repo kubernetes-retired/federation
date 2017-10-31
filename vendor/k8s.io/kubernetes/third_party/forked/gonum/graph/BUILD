@@ -24,9 +24,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//third_party/forked/gonum/graph/internal/linear:all-srcs",
-        "//third_party/forked/gonum/graph/simple:all-srcs",
-        "//third_party/forked/gonum/graph/traverse:all-srcs",
+        "//vendor/k8s.io/kubernetes/third_party/forked/gonum/graph/internal/linear:all-srcs",
+        "//vendor/k8s.io/kubernetes/third_party/forked/gonum/graph/simple:all-srcs",
+        "//vendor/k8s.io/kubernetes/third_party/forked/gonum/graph/traverse:all-srcs",
     ],
     tags = ["automanaged"],
 )

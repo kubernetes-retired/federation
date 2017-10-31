@@ -1,0 +1,42 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "restful-appstats-integration.go",
+        "restful-user-service.go",
+    ],
+    importpath = "github.com/emicklei/go-restful/examples/google_app_engine",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//vendor/github.com/emicklei/go-restful:go_default_library",
+        "//vendor/github.com/emicklei/go-restful-swagger12:go_default_library",
+        "//vendor/github.com/mjibson/appstats:go_default_library",
+        "//vendor/google.golang.org/appengine:go_default_library",
+        "//vendor/google.golang.org/appengine/memcache:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "google_app_engine",
+    importpath = "github.com/emicklei/go-restful/examples/google_app_engine",
+    library = ":go_default_library",
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/github.com/emicklei/go-restful/examples/google_app_engine/datastore:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

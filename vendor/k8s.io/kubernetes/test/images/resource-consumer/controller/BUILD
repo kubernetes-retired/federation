@@ -16,7 +16,7 @@ go_library(
     name = "go_default_library",
     srcs = ["controller.go"],
     importpath = "k8s.io/kubernetes/test/images/resource-consumer/controller",
-    deps = ["//test/images/resource-consumer/common:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/test/images/resource-consumer/common:go_default_library"],
 )
 
 filegroup(

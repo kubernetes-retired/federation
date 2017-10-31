@@ -1,0 +1,40 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["status.go"],
+    importpath = "google.golang.org/grpc/status",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/golang/protobuf/proto:go_default_library",
+        "//vendor/google.golang.org/genproto/googleapis/rpc/status:go_default_library",
+        "//vendor/google.golang.org/grpc/codes:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["status_test.go"],
+    importpath = "google.golang.org/grpc/status",
+    library = ":go_default_library",
+    deps = [
+        "//vendor/github.com/golang/protobuf/proto:go_default_library",
+        "//vendor/github.com/golang/protobuf/ptypes/any:go_default_library",
+        "//vendor/google.golang.org/genproto/googleapis/rpc/status:go_default_library",
+        "//vendor/google.golang.org/grpc/codes:go_default_library",
+    ],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [":package-srcs"],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

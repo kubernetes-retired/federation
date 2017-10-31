@@ -14,9 +14,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/test/e2e/lifecycle/bootstrap",
     deps = [
-        "//pkg/bootstrap/api:go_default_library",
-        "//test/e2e/framework:go_default_library",
-        "//test/e2e/lifecycle:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -24,6 +21,9 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/bootstrap/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/lifecycle:go_default_library",
     ],
 )
 

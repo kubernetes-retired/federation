@@ -38,7 +38,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/core/service/allocator/storage:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/core/service/allocator/storage:all-srcs",
     ],
     tags = ["automanaged"],
 )

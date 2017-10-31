@@ -33,8 +33,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/go-to-protobuf/protobuf:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/go-to-protobuf/protoc-gen-gogo:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/go-to-protobuf/protobuf:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/go-to-protobuf/protoc-gen-gogo:all-srcs",
     ],
     tags = ["automanaged"],
 )

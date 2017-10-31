@@ -19,8 +19,8 @@ go_test(
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/deny",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )
 

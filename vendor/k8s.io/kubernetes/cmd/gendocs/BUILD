@@ -17,10 +17,10 @@ go_library(
     srcs = ["gen_kubectl_docs.go"],
     importpath = "k8s.io/kubernetes/cmd/gendocs",
     deps = [
-        "//cmd/genutils:go_default_library",
-        "//pkg/kubectl/cmd:go_default_library",
-        "//pkg/kubectl/cmd/util:go_default_library",
         "//vendor/github.com/spf13/cobra/doc:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/genutils:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
     ],
 )
 

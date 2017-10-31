@@ -11,8 +11,8 @@ go_library(
     srcs = ["images.go"],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/images",
     deps = [
-        "//cmd/kubeadm/app/constants:go_default_library",
-        "//cmd/kubeadm/app/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/constants:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util:go_default_library",
     ],
 )
 
@@ -21,7 +21,7 @@ go_test(
     srcs = ["images_test.go"],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/images",
     library = ":go_default_library",
-    deps = ["//cmd/kubeadm/app/constants:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/cmd/kubeadm/app/constants:go_default_library"],
 )
 
 filegroup(

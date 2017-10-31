@@ -25,7 +25,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/generated/openapi:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/generated/openapi:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -25,9 +25,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/probe/exec:all-srcs",
-        "//pkg/probe/http:all-srcs",
-        "//pkg/probe/tcp:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/probe/exec:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/probe/http:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/probe/tcp:all-srcs",
     ],
     tags = ["automanaged"],
 )

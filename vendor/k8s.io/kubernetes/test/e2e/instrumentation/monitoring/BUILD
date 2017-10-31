@@ -17,10 +17,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/test/e2e/instrumentation/monitoring",
     deps = [
-        "//test/e2e/common:go_default_library",
-        "//test/e2e/framework:go_default_library",
-        "//test/e2e/framework/metrics:go_default_library",
-        "//test/e2e/instrumentation/common:go_default_library",
         "//vendor/github.com/influxdata/influxdb/client/v2:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
@@ -36,6 +32,10 @@ go_library(
         "//vendor/k8s.io/client-go/discovery:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/common:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework/metrics:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/common:go_default_library",
         "//vendor/k8s.io/metrics/pkg/client/custom_metrics:go_default_library",
     ],
 )

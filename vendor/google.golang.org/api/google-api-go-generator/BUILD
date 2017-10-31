@@ -1,0 +1,55 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "docurls.go",
+        "gen.go",
+    ],
+    importpath = "google.golang.org/api/google-api-go-generator",
+    visibility = ["//visibility:private"],
+    deps = ["//vendor/google.golang.org/api/google-api-go-generator/internal/disco:go_default_library"],
+)
+
+go_binary(
+    name = "google-api-go-generator",
+    importpath = "google.golang.org/api/google-api-go-generator",
+    library = ":go_default_library",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "clients_test.go",
+        "gen_test.go",
+        "paging_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    importpath = "google.golang.org/api/google-api-go-generator",
+    library = ":go_default_library",
+    deps = [
+        "//vendor/golang.org/x/net/context:go_default_library",
+        "//vendor/google.golang.org/api/cloudresourcemanager/v1:go_default_library",
+        "//vendor/google.golang.org/api/dfareporting/v2.7:go_default_library",
+        "//vendor/google.golang.org/api/monitoring/v3:go_default_library",
+        "//vendor/google.golang.org/api/storage/v1:go_default_library",
+    ],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/google.golang.org/api/google-api-go-generator/internal/disco:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

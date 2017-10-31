@@ -26,7 +26,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/storagebackend/factory:all-srcs",
     ],
     tags = ["automanaged"],
 )

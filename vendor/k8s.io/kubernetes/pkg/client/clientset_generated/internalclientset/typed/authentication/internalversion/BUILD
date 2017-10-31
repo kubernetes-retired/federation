@@ -16,9 +16,9 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/authentication/internalversion",
     deps = [
-        "//pkg/apis/authentication:go_default_library",
-        "//pkg/client/clientset_generated/internalclientset/scheme:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/scheme:go_default_library",
     ],
 )
 
@@ -33,7 +33,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/client/clientset_generated/internalclientset/typed/authentication/internalversion/fake:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/authentication/internalversion/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

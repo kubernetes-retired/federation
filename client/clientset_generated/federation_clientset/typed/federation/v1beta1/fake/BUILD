@@ -14,8 +14,8 @@ go_library(
     ],
     importpath = "k8s.io/federation/client/clientset_generated/federation_clientset/typed/federation/v1beta1/fake",
     deps = [
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//federation/client/clientset_generated/federation_clientset/typed/federation/v1beta1:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
+        "//client/clientset_generated/federation_clientset/typed/federation/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",

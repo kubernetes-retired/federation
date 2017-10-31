@@ -22,10 +22,10 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/authorization/internalversion/fake",
     deps = [
-        "//pkg/apis/authorization:go_default_library",
-        "//pkg/client/clientset_generated/internalclientset/typed/authorization/internalversion:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authorization:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/authorization/internalversion:go_default_library",
     ],
 )
 

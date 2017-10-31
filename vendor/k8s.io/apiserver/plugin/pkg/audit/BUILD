@@ -22,8 +22,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/plugin/pkg/audit/log:all-srcs",
-        "//staging/src/k8s.io/apiserver/plugin/pkg/audit/webhook:all-srcs",
+        "//vendor/k8s.io/apiserver/plugin/pkg/audit/log:all-srcs",
+        "//vendor/k8s.io/apiserver/plugin/pkg/audit/webhook:all-srcs",
     ],
     tags = ["automanaged"],
 )

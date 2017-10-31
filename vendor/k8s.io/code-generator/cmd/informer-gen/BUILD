@@ -35,7 +35,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/informer-gen/generators:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/informer-gen/generators:all-srcs",
     ],
     tags = ["automanaged"],
 )

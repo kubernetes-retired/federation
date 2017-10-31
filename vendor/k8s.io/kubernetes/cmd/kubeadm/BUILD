@@ -24,7 +24,7 @@ go_library(
     name = "go_default_library",
     srcs = ["kubeadm.go"],
     importpath = "k8s.io/kubernetes/cmd/kubeadm",
-    deps = ["//cmd/kubeadm/app:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/cmd/kubeadm/app:go_default_library"],
 )
 
 filegroup(
@@ -38,8 +38,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cmd/kubeadm/app:all-srcs",
-        "//cmd/kubeadm/test:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/test:all-srcs",
     ],
     tags = ["automanaged"],
 )

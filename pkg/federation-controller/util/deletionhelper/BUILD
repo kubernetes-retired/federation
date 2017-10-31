@@ -10,8 +10,8 @@ go_library(
     srcs = ["deletion_helper.go"],
     importpath = "k8s.io/federation/pkg/federation-controller/util/deletionhelper",
     deps = [
-        "//federation/pkg/federation-controller/util:go_default_library",
-        "//federation/pkg/federation-controller/util/finalizers:go_default_library",
+        "//pkg/federation-controller/util:go_default_library",
+        "//pkg/federation-controller/util/finalizers:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",

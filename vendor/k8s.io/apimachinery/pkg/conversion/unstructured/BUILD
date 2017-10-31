@@ -33,7 +33,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/conversion/unstructured/testing:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/conversion/unstructured/testing:all-srcs",
     ],
     tags = ["automanaged"],
 )

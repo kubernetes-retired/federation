@@ -14,9 +14,8 @@ go_library(
     ],
     importpath = "k8s.io/federation/registry/cluster",
     deps = [
-        "//federation/apis/federation:go_default_library",
-        "//federation/apis/federation/validation:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
+        "//apis/federation:go_default_library",
+        "//apis/federation/validation:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/internalversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
@@ -29,6 +28,7 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/names:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
     ],
 )
 
@@ -38,15 +38,15 @@ go_test(
     importpath = "k8s.io/federation/registry/cluster",
     library = ":go_default_library",
     deps = [
-        "//federation/apis/federation:go_default_library",
-        "//pkg/api:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/api/testapi:go_default_library",
-        "//pkg/api/testing:go_default_library",
+        "//apis/federation:go_default_library",
+        "//test/testapi:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/testing:go_default_library",
     ],
 )
 
@@ -61,7 +61,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/registry/cluster/etcd:all-srcs",
+        "//registry/cluster/etcd:all-srcs",
     ],
     tags = ["automanaged"],
 )

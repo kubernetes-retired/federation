@@ -10,11 +10,11 @@ go_library(
     srcs = ["storage.go"],
     importpath = "k8s.io/kubernetes/pkg/registry/rbac/clusterrolebinding/storage",
     deps = [
-        "//pkg/apis/rbac:go_default_library",
-        "//pkg/registry/rbac/clusterrolebinding:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/generic:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/generic/registry:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/rbac:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/clusterrolebinding:go_default_library",
     ],
 )
 

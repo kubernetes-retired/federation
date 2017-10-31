@@ -10,14 +10,6 @@ go_library(
     srcs = ["controllermanager.go"],
     importpath = "k8s.io/kubernetes/cmd/cloud-controller-manager/app",
     deps = [
-        "//cmd/cloud-controller-manager/app/options:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/controller:go_default_library",
-        "//pkg/controller/cloud:go_default_library",
-        "//pkg/controller/route:go_default_library",
-        "//pkg/controller/service:go_default_library",
-        "//pkg/util/configz:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
         "//vendor/github.com/spf13/cobra:go_default_library",
@@ -34,6 +26,14 @@ go_library(
         "//vendor/k8s.io/client-go/tools/leaderelection:go_default_library",
         "//vendor/k8s.io/client-go/tools/leaderelection/resourcelock:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/cloud-controller-manager/app/options:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/cloud:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/route:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/service:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/configz:go_default_library",
     ],
 )
 
@@ -48,7 +48,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cmd/cloud-controller-manager/app/options:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/cloud-controller-manager/app/options:all-srcs",
     ],
     tags = ["automanaged"],
 )

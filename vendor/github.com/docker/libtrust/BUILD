@@ -1,0 +1,56 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "certificates.go",
+        "doc.go",
+        "ec_key.go",
+        "filter.go",
+        "hash.go",
+        "jsonsign.go",
+        "key.go",
+        "key_files.go",
+        "key_manager.go",
+        "rsa_key.go",
+        "util.go",
+    ],
+    importpath = "github.com/docker/libtrust",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "certificates_test.go",
+        "ec_key_test.go",
+        "filter_test.go",
+        "jsonsign_test.go",
+        "key_files_test.go",
+        "key_test.go",
+        "rsa_key_test.go",
+        "util_test.go",
+    ],
+    importpath = "github.com/docker/libtrust",
+    library = ":go_default_library",
+    deps = ["//vendor/github.com/docker/libtrust/testutil:go_default_library"],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/github.com/docker/libtrust/testutil:all-srcs",
+        "//vendor/github.com/docker/libtrust/tlsdemo:all-srcs",
+        "//vendor/github.com/docker/libtrust/trustgraph:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

@@ -65,8 +65,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/scale/fake:all-srcs",
-        "//staging/src/k8s.io/client-go/scale/scheme:all-srcs",
+        "//vendor/k8s.io/client-go/scale/fake:all-srcs",
+        "//vendor/k8s.io/client-go/scale/scheme:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

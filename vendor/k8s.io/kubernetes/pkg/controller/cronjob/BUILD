@@ -16,8 +16,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/controller/cronjob",
     deps = [
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/util/metrics:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/robfig/cron:go_default_library",
         "//vendor/k8s.io/api/batch/v1:go_default_library",
@@ -37,6 +35,8 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/tools/reference:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/metrics:go_default_library",
     ],
 )
 
@@ -49,8 +49,6 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/controller/cronjob",
     library = ":go_default_library",
     deps = [
-        "//pkg/api/install:go_default_library",
-        "//pkg/apis/batch/install:go_default_library",
         "//vendor/k8s.io/api/batch/v1:go_default_library",
         "//vendor/k8s.io/api/batch/v1beta1:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -58,6 +56,8 @@ go_test(
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/install:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/batch/install:go_default_library",
     ],
 )
 

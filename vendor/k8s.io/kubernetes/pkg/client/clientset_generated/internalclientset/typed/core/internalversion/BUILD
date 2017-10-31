@@ -35,12 +35,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/api/ref:go_default_library",
-        "//pkg/api/v1:go_default_library",
-        "//pkg/apis/extensions:go_default_library",
-        "//pkg/client/clientset_generated/internalclientset/scheme:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
@@ -49,6 +43,12 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/ref:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/scheme:go_default_library",
     ],
 )
 
@@ -63,7 +63,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/client/clientset_generated/internalclientset/typed/core/internalversion/fake:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -77,7 +77,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/validation:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/pkg/apiserver/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

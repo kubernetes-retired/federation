@@ -11,7 +11,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/util/net/sets:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/util/net/sets:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -29,7 +29,7 @@ go_library(
     srcs = ["kubectl.go"],
     importpath = "k8s.io/kubernetes/cmd/kubectl",
     visibility = ["//visibility:private"],
-    deps = ["//cmd/kubectl/app:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/cmd/kubectl/app:go_default_library"],
 )
 
 filegroup(
@@ -42,7 +42,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cmd/kubectl/app:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubectl/app:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = [

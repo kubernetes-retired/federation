@@ -33,10 +33,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/apis/authentication/fuzzer:all-srcs",
-        "//pkg/apis/authentication/install:all-srcs",
-        "//pkg/apis/authentication/v1:all-srcs",
-        "//pkg/apis/authentication/v1beta1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication/fuzzer:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication/v1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/authentication/v1beta1:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -52,11 +52,11 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/util/cache:all-srcs",
-        "//pkg/kubelet/util/format:all-srcs",
-        "//pkg/kubelet/util/ioutils:all-srcs",
-        "//pkg/kubelet/util/queue:all-srcs",
-        "//pkg/kubelet/util/sliceutils:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/cache:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/ioutils:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/queue:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/sliceutils:all-srcs",
     ],
     tags = ["automanaged"],
 )

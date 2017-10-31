@@ -10,8 +10,8 @@ go_library(
     srcs = ["imports.go"],
     importpath = "k8s.io/kubernetes/test/e2e/instrumentation",
     deps = [
-        "//test/e2e/instrumentation/logging:go_default_library",
-        "//test/e2e/instrumentation/monitoring:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/logging:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/monitoring:go_default_library",
     ],
 )
 
@@ -26,9 +26,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//test/e2e/instrumentation/common:all-srcs",
-        "//test/e2e/instrumentation/logging:all-srcs",
-        "//test/e2e/instrumentation/monitoring:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/common:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/logging:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/e2e/instrumentation/monitoring:all-srcs",
     ],
     tags = ["automanaged"],
 )

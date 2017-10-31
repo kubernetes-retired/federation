@@ -13,10 +13,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//build/debs:all-srcs",
-        "//build/release-tars:all-srcs",
-        "//build/rpms:all-srcs",
-        "//build/visible_to:all-srcs",
+        "//vendor/k8s.io/kubernetes/build/debs:all-srcs",
+        "//vendor/k8s.io/kubernetes/build/release-tars:all-srcs",
+        "//vendor/k8s.io/kubernetes/build/rpms:all-srcs",
+        "//vendor/k8s.io/kubernetes/build/visible_to:all-srcs",
     ],
     tags = ["automanaged"],
 )

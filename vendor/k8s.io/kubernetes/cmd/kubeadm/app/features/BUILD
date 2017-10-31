@@ -11,8 +11,8 @@ go_library(
     srcs = ["features.go"],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/features",
     deps = [
-        "//pkg/util/version:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/version:go_default_library",
     ],
 )
 

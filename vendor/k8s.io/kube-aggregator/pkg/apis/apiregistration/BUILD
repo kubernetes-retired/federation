@@ -34,9 +34,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/apis/apiregistration/install:all-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/apis/apiregistration/v1beta1:all-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/apis/apiregistration/validation:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration/install:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration/v1beta1:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

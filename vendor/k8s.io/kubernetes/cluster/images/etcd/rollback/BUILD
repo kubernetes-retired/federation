@@ -17,7 +17,6 @@ go_library(
     srcs = ["rollback.go"],
     importpath = "k8s.io/kubernetes/cluster/images/etcd/rollback",
     deps = [
-        "//third_party/forked/etcd221/wal:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/etcdserverpb:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/membership:go_default_library",
@@ -32,6 +31,7 @@ go_library(
         "//vendor/github.com/coreos/etcd/wal/walpb:go_default_library",
         "//vendor/github.com/coreos/go-semver/semver:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
+        "//vendor/k8s.io/kubernetes/third_party/forked/etcd221/wal:go_default_library",
     ],
 )
 

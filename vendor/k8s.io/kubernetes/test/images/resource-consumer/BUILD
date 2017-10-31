@@ -20,7 +20,7 @@ go_library(
         "utils.go",
     ],
     importpath = "k8s.io/kubernetes/test/images/resource-consumer",
-    deps = ["//test/images/resource-consumer/common:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/test/images/resource-consumer/common:go_default_library"],
 )
 
 filegroup(
@@ -34,9 +34,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//test/images/resource-consumer/common:all-srcs",
-        "//test/images/resource-consumer/consume-cpu:all-srcs",
-        "//test/images/resource-consumer/controller:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/resource-consumer/common:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/resource-consumer/consume-cpu:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/resource-consumer/controller:all-srcs",
     ],
     tags = ["automanaged"],
 )

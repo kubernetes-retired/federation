@@ -41,7 +41,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/kubernetes/typed/apps/v1beta2/fake:all-srcs",
+        "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1beta2/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

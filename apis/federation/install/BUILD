@@ -11,13 +11,13 @@ go_library(
     srcs = ["install.go"],
     importpath = "k8s.io/federation/apis/federation/install",
     deps = [
-        "//federation/apis/federation:go_default_library",
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
+        "//apis/federation:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/registered:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
     ],
 )
 
@@ -27,12 +27,12 @@ go_test(
     importpath = "k8s.io/federation/apis/federation/install",
     library = ":go_default_library",
     deps = [
-        "//federation/apis/federation:go_default_library",
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
+        "//apis/federation:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
     ],
 )
 

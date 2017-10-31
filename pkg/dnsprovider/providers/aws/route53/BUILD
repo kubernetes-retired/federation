@@ -19,9 +19,9 @@ go_library(
     ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/aws/route53",
     deps = [
-        "//federation/pkg/dnsprovider:go_default_library",
-        "//federation/pkg/dnsprovider/providers/aws/route53/stubs:go_default_library",
-        "//federation/pkg/dnsprovider/rrstype:go_default_library",
+        "//pkg/dnsprovider:go_default_library",
+        "//pkg/dnsprovider/providers/aws/route53/stubs:go_default_library",
+        "//pkg/dnsprovider/rrstype:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
@@ -38,10 +38,10 @@ go_test(
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/aws/route53",
     library = ":go_default_library",
     deps = [
-        "//federation/pkg/dnsprovider:go_default_library",
-        "//federation/pkg/dnsprovider/providers/aws/route53/stubs:go_default_library",
-        "//federation/pkg/dnsprovider/rrstype:go_default_library",
-        "//federation/pkg/dnsprovider/tests:go_default_library",
+        "//pkg/dnsprovider:go_default_library",
+        "//pkg/dnsprovider/providers/aws/route53/stubs:go_default_library",
+        "//pkg/dnsprovider/rrstype:go_default_library",
+        "//pkg/dnsprovider/tests:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/service/route53:go_default_library",
     ],
@@ -58,7 +58,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/pkg/dnsprovider/providers/aws/route53/stubs:all-srcs",
+        "//pkg/dnsprovider/providers/aws/route53/stubs:all-srcs",
     ],
     tags = ["automanaged"],
 )

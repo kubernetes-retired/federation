@@ -11,8 +11,8 @@ go_library(
     srcs = ["validation.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/scheduler/api/validation",
     deps = [
-        "//plugin/pkg/scheduler/api:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/api:go_default_library",
     ],
 )
 
@@ -21,7 +21,7 @@ go_test(
     srcs = ["validation_test.go"],
     importpath = "k8s.io/kubernetes/plugin/pkg/scheduler/api/validation",
     library = ":go_default_library",
-    deps = ["//plugin/pkg/scheduler/api:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/api:go_default_library"],
 )
 
 filegroup(

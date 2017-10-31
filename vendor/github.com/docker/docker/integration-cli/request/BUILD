@@ -1,0 +1,45 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "npipe.go",
+        "request.go",
+    ] + select({
+        "@io_bazel_rules_go//go/platform:windows_amd64": [
+            "npipe_windows.go",
+        ],
+        "//conditions:default": [],
+    }),
+    importpath = "github.com/docker/docker/integration-cli/request",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/docker/docker/api:go_default_library",
+        "//vendor/github.com/docker/docker/client:go_default_library",
+        "//vendor/github.com/docker/docker/opts:go_default_library",
+        "//vendor/github.com/docker/docker/pkg/ioutils:go_default_library",
+        "//vendor/github.com/docker/docker/pkg/testutil:go_default_library",
+        "//vendor/github.com/docker/go-connections/sockets:go_default_library",
+        "//vendor/github.com/docker/go-connections/tlsconfig:go_default_library",
+        "//vendor/github.com/pkg/errors:go_default_library",
+    ] + select({
+        "@io_bazel_rules_go//go/platform:windows_amd64": [
+            "//vendor/github.com/Microsoft/go-winio:go_default_library",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [":package-srcs"],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

@@ -46,7 +46,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/transport/spdy:all-srcs",
+        "//vendor/k8s.io/client-go/transport/spdy:all-srcs",
     ],
     tags = ["automanaged"],
 )

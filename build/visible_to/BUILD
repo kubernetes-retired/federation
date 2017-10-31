@@ -67,7 +67,7 @@ package_group(
     packages = [
         "//cluster/...",
         "//vendor/k8s.io/kubernetes/cluster",
-        ],
+    ],
 )
 
 package_group(

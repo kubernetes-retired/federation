@@ -25,17 +25,17 @@ go_library(
     srcs = ["controller-manager.go"],
     importpath = "k8s.io/kubernetes/cmd/cloud-controller-manager",
     deps = [
-        "//cmd/cloud-controller-manager/app:go_default_library",
-        "//cmd/cloud-controller-manager/app/options:go_default_library",
-        "//pkg/client/metrics/prometheus:go_default_library",
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/cloudprovider/providers:go_default_library",
-        "//pkg/version/prometheus:go_default_library",
-        "//pkg/version/verflag:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/flag:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/logs:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/cloud-controller-manager/app:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/cloud-controller-manager/app/options:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/metrics/prometheus:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/version/prometheus:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/version/verflag:go_default_library",
     ],
 )
 
@@ -50,7 +50,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cmd/cloud-controller-manager/app:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/cloud-controller-manager/app:all-srcs",
     ],
     tags = ["automanaged"],
 )

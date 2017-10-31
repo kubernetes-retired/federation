@@ -22,11 +22,8 @@ go_library(
     ],
     importpath = "k8s.io/federation/pkg/federation-controller/util",
     deps = [
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//federation/client/clientset_generated/federation_clientset:go_default_library",
-        "//pkg/api:go_default_library",
-        "//pkg/client/clientset_generated/internalclientset:go_default_library",
-        "//pkg/controller/deployment/util:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
+        "//client/clientset_generated/federation_clientset:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
@@ -43,6 +40,9 @@ go_library(
         "//vendor/k8s.io/client-go/tools/clientcmd/api:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/deployment/util:go_default_library",
     ],
 )
 
@@ -59,9 +59,8 @@ go_test(
     importpath = "k8s.io/federation/pkg/federation-controller/util",
     library = ":go_default_library",
     deps = [
-        "//federation/apis/federation/v1beta1:go_default_library",
-        "//federation/client/clientset_generated/federation_clientset/fake:go_default_library",
-        "//pkg/controller/deployment/util:go_default_library",
+        "//apis/federation/v1beta1:go_default_library",
+        "//client/clientset_generated/federation_clientset/fake:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
@@ -72,6 +71,7 @@ go_test(
         "//vendor/k8s.io/client-go/kubernetes/fake:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/deployment/util:go_default_library",
     ],
 )
 
@@ -86,15 +86,15 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/pkg/federation-controller/util/clusterselector:all-srcs",
-        "//federation/pkg/federation-controller/util/deletionhelper:all-srcs",
-        "//federation/pkg/federation-controller/util/eventsink:all-srcs",
-        "//federation/pkg/federation-controller/util/finalizers:all-srcs",
-        "//federation/pkg/federation-controller/util/hpa:all-srcs",
-        "//federation/pkg/federation-controller/util/planner:all-srcs",
-        "//federation/pkg/federation-controller/util/podanalyzer:all-srcs",
-        "//federation/pkg/federation-controller/util/replicapreferences:all-srcs",
-        "//federation/pkg/federation-controller/util/test:all-srcs",
+        "//pkg/federation-controller/util/clusterselector:all-srcs",
+        "//pkg/federation-controller/util/deletionhelper:all-srcs",
+        "//pkg/federation-controller/util/eventsink:all-srcs",
+        "//pkg/federation-controller/util/finalizers:all-srcs",
+        "//pkg/federation-controller/util/hpa:all-srcs",
+        "//pkg/federation-controller/util/planner:all-srcs",
+        "//pkg/federation-controller/util/podanalyzer:all-srcs",
+        "//pkg/federation-controller/util/replicapreferences:all-srcs",
+        "//pkg/federation-controller/util/test:all-srcs",
     ],
     tags = ["automanaged"],
 )

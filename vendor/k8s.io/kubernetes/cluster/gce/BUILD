@@ -34,7 +34,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cluster/gce/gci/mounter:all-srcs",
+        "//vendor/k8s.io/kubernetes/cluster/gce/gci/mounter:all-srcs",
     ],
     tags = ["automanaged"],
 )

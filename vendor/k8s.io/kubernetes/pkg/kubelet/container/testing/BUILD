@@ -14,14 +14,14 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/kubelet/container/testing",
     visibility = ["//visibility:public"],
     deps = [
-        "//pkg/kubelet/container:go_default_library",
-        "//pkg/volume:go_default_library",
         "//vendor/github.com/golang/mock/gomock:go_default_library",
         "//vendor/github.com/stretchr/testify/mock:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/client-go/tools/remotecommand:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
     ],
 )
 

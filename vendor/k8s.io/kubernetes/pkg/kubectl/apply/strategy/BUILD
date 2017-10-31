@@ -12,7 +12,7 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubectl/apply/strategy",
     visibility = ["//visibility:public"],
-    deps = ["//pkg/kubectl/apply:go_default_library"],
+    deps = ["//vendor/k8s.io/kubernetes/pkg/kubectl/apply:go_default_library"],
 )
 
 go_test(
@@ -35,16 +35,16 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubectl/apply/strategy_test",
     deps = [
         ":go_default_library",
-        "//pkg/kubectl/apply:go_default_library",
-        "//pkg/kubectl/apply/parse:go_default_library",
-        "//pkg/kubectl/cmd/util/openapi:go_default_library",
-        "//pkg/kubectl/cmd/util/openapi/testing:go_default_library",
         "//vendor/github.com/ghodss/yaml:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/ginkgo/config:go_default_library",
         "//vendor/github.com/onsi/ginkgo/types:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/apply:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/apply/parse:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi/testing:go_default_library",
     ],
 )
 

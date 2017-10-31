@@ -11,8 +11,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//api/openapi-spec:all-srcs",
-        "//api/swagger-spec:all-srcs",
+        "//vendor/k8s.io/kubernetes/api/openapi-spec:all-srcs",
+        "//vendor/k8s.io/kubernetes/api/swagger-spec:all-srcs",
     ],
     tags = ["automanaged"],
 )

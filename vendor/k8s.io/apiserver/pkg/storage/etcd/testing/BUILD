@@ -39,7 +39,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd/testing/testingcert:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd/testing/testingcert:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -13,10 +13,10 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/fake",
     deps = [
-        "//pkg/cloudprovider:go_default_library",
-        "//pkg/controller:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
 

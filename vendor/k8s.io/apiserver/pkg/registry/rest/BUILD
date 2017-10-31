@@ -67,7 +67,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/registry/rest/resttest:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/registry/rest/resttest:all-srcs",
     ],
     tags = ["automanaged"],
 )

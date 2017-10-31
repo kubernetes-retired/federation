@@ -77,10 +77,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd/etcdtest:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd/metrics:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd/testing:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/storage/etcd/util:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd/etcdtest:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd/metrics:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd/testing:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/storage/etcd/util:all-srcs",
     ],
     tags = ["automanaged"],
 )

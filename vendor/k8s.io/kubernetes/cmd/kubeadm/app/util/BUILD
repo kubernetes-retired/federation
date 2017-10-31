@@ -18,12 +18,12 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/util",
     deps = [
-        "//cmd/kubeadm/app/apis/kubeadm:go_default_library",
-        "//cmd/kubeadm/app/preflight:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/scheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/preflight:go_default_library",
     ],
 )
 
@@ -39,8 +39,8 @@ go_test(
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/util",
     library = ":go_default_library",
     deps = [
-        "//cmd/kubeadm/app/apis/kubeadm:go_default_library",
-        "//cmd/kubeadm/app/preflight:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/preflight:go_default_library",
     ],
 )
 
@@ -55,13 +55,13 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cmd/kubeadm/app/util/apiclient:all-srcs",
-        "//cmd/kubeadm/app/util/config:all-srcs",
-        "//cmd/kubeadm/app/util/dryrun:all-srcs",
-        "//cmd/kubeadm/app/util/kubeconfig:all-srcs",
-        "//cmd/kubeadm/app/util/pubkeypin:all-srcs",
-        "//cmd/kubeadm/app/util/staticpod:all-srcs",
-        "//cmd/kubeadm/app/util/token:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/apiclient:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/config:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/dryrun:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/kubeconfig:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/pubkeypin:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/staticpod:all-srcs",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/token:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -14,14 +14,14 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/policy/poddisruptionbudget",
     deps = [
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/apis/policy:go_default_library",
-        "//pkg/apis/policy/validation:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/equality:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/names:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/policy:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/policy/validation:go_default_library",
     ],
 )
 
@@ -31,10 +31,10 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/registry/policy/poddisruptionbudget",
     library = ":go_default_library",
     deps = [
-        "//pkg/apis/policy:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/policy:go_default_library",
     ],
 )
 
@@ -49,7 +49,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/policy/poddisruptionbudget/storage:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/registry/policy/poddisruptionbudget/storage:all-srcs",
     ],
     tags = ["automanaged"],
 )

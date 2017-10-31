@@ -39,9 +39,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/examples/client-go/apis/cr/v1:all-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/examples/client-go/client:all-srcs",
-        "//staging/src/k8s.io/apiextensions-apiserver/examples/client-go/controller:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/examples/client-go/apis/cr/v1:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/examples/client-go/client:all-srcs",
+        "//vendor/k8s.io/apiextensions-apiserver/examples/client-go/controller:all-srcs",
     ],
     tags = ["automanaged"],
 )

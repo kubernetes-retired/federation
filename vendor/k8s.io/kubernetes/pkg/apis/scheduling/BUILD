@@ -33,10 +33,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/apis/scheduling/fuzzer:all-srcs",
-        "//pkg/apis/scheduling/install:all-srcs",
-        "//pkg/apis/scheduling/v1alpha1:all-srcs",
-        "//pkg/apis/scheduling/validation:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/scheduling/fuzzer:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/scheduling/install:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/scheduling/v1alpha1:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/apis/scheduling/validation:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -18,9 +18,6 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/controller/bootstrap",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/helper:go_default_library",
-        "//pkg/bootstrap/api:go_default_library",
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -28,6 +25,9 @@ go_test(
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/fake:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/helper:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/bootstrap/api:go_default_library",
     ],
 )
 
@@ -42,9 +42,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/controller/bootstrap",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/bootstrap/api:go_default_library",
-        "//pkg/util/metrics:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/square/go-jose:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -58,6 +55,9 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/bootstrap/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/metrics:go_default_library",
     ],
 )
 

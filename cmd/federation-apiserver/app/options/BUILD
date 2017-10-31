@@ -13,11 +13,11 @@ go_library(
     ],
     importpath = "k8s.io/federation/cmd/federation-apiserver/app/options",
     deps = [
-        "//pkg/features:go_default_library",
-        "//pkg/kubeapiserver/options:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/server/options:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/storagebackend:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubeapiserver/options:go_default_library",
     ],
 )
 

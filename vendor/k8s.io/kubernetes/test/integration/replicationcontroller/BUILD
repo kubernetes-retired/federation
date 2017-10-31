@@ -15,8 +15,6 @@ go_test(
     importpath = "k8s.io/kubernetes/test/integration/replicationcontroller",
     tags = ["integration"],
     deps = [
-        "//pkg/controller/replication:go_default_library",
-        "//test/integration/framework:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
@@ -25,6 +23,8 @@ go_test(
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/replication:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/integration/framework:go_default_library",
     ],
 )
 

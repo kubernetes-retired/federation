@@ -44,7 +44,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/endpoints/openapi/testing:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/openapi/testing:all-srcs",
     ],
     tags = ["automanaged"],
 )

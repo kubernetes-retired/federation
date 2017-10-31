@@ -45,7 +45,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/plugin/pkg/authenticator/token/oidc/testing:all-srcs",
+        "//vendor/k8s.io/apiserver/plugin/pkg/authenticator/token/oidc/testing:all-srcs",
     ],
     tags = ["automanaged"],
 )

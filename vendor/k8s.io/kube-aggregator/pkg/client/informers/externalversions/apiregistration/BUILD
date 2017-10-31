@@ -26,7 +26,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/kube-aggregator/pkg/client/informers/externalversions/apiregistration/v1beta1:all-srcs",
+        "//vendor/k8s.io/kube-aggregator/pkg/client/informers/externalversions/apiregistration/v1beta1:all-srcs",
     ],
     tags = ["automanaged"],
 )

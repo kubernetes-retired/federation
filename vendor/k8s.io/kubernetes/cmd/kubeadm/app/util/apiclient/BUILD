@@ -17,9 +17,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/cmd/kubeadm/app/util/apiclient",
     deps = [
-        "//cmd/kubeadm/app/constants:go_default_library",
-        "//cmd/kubeadm/app/util:go_default_library",
-        "//pkg/registry/core/service/ipallocator:go_default_library",
         "//vendor/k8s.io/api/apps/v1beta2:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/rbac/v1:go_default_library",
@@ -36,6 +33,9 @@ go_library(
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
         "//vendor/k8s.io/client-go/tools/clientcmd:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/constants:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/registry/core/service/ipallocator:go_default_library",
     ],
 )
 

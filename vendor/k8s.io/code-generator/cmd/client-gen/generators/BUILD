@@ -42,9 +42,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/generators/fake:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/generators/scheme:all-srcs",
-        "//staging/src/k8s.io/code-generator/cmd/client-gen/generators/util:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/generators/fake:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/generators/scheme:all-srcs",
+        "//vendor/k8s.io/code-generator/cmd/client-gen/generators/util:all-srcs",
     ],
     tags = ["automanaged"],
 )

@@ -28,9 +28,6 @@ go_test(
     importpath = "k8s.io/kubernetes/plugin/pkg/admission/gc",
     library = ":go_default_library",
     deps = [
-        "//pkg/api:go_default_library",
-        "//pkg/api/legacyscheme:go_default_library",
-        "//pkg/kubeapiserver/admission:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
@@ -38,6 +35,9 @@ go_test(
         "//vendor/k8s.io/apiserver/pkg/admission/initializer:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubeapiserver/admission:go_default_library",
     ],
 )
 

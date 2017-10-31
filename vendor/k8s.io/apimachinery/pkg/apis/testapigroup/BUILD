@@ -33,9 +33,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apis/testapigroup/fuzzer:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apis/testapigroup/install:all-srcs",
-        "//staging/src/k8s.io/apimachinery/pkg/apis/testapigroup/v1:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apis/testapigroup/fuzzer:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apis/testapigroup/install:all-srcs",
+        "//vendor/k8s.io/apimachinery/pkg/apis/testapigroup/v1:all-srcs",
     ],
     tags = ["automanaged"],
 )

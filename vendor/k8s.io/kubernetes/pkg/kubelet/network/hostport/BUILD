@@ -16,11 +16,11 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/network/hostport",
     deps = [
-        "//pkg/proxy/iptables:go_default_library",
-        "//pkg/util/iptables:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/proxy/iptables:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/iptables:go_default_library",
     ],
 )
 
@@ -34,9 +34,9 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/kubelet/network/hostport",
     library = ":go_default_library",
     deps = [
-        "//pkg/util/iptables:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/iptables:go_default_library",
     ],
 )
 
@@ -51,7 +51,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/kubelet/network/hostport/testing:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/network/hostport/testing:all-srcs",
     ],
     tags = ["automanaged"],
 )

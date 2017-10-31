@@ -31,7 +31,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker",
     deps = [
-        "//pkg/kubelet/dockershim/metrics:go_default_library",
         "//vendor/github.com/docker/distribution/reference:go_default_library",
         "//vendor/github.com/docker/docker/api/types:go_default_library",
         "//vendor/github.com/docker/docker/api/types/container:go_default_library",
@@ -44,6 +43,7 @@ go_library(
         "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/clock:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/metrics:go_default_library",
     ],
 )
 

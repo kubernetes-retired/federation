@@ -12,13 +12,13 @@ go_test(
     importpath = "k8s.io/kubernetes/pkg/controller/certificates/approver",
     library = ":go_default_library",
     deps = [
-        "//pkg/apis/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/api/authorization/v1beta1:go_default_library",
         "//vendor/k8s.io/api/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/fake:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/certificates/v1beta1:go_default_library",
     ],
 )
 
@@ -27,14 +27,14 @@ go_library(
     srcs = ["sarapprove.go"],
     importpath = "k8s.io/kubernetes/pkg/controller/certificates/approver",
     deps = [
-        "//pkg/apis/certificates/v1beta1:go_default_library",
-        "//pkg/controller/certificates:go_default_library",
-        "//pkg/features:go_default_library",
         "//vendor/k8s.io/api/authorization/v1beta1:go_default_library",
         "//vendor/k8s.io/api/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
         "//vendor/k8s.io/client-go/informers/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/certificates/v1beta1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/controller/certificates:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
     ],
 )
 

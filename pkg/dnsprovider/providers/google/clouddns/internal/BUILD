@@ -27,8 +27,8 @@ go_library(
     ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/google/clouddns/internal",
     deps = [
-        "//federation/pkg/dnsprovider/providers/google/clouddns/internal/interfaces:go_default_library",
-        "//federation/pkg/dnsprovider/rrstype:go_default_library",
+        "//pkg/dnsprovider/providers/google/clouddns/internal/interfaces:go_default_library",
+        "//pkg/dnsprovider/rrstype:go_default_library",
         "//vendor/google.golang.org/api/dns/v1:go_default_library",
         "//vendor/google.golang.org/api/googleapi:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/uuid:go_default_library",
@@ -46,8 +46,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/pkg/dnsprovider/providers/google/clouddns/internal/interfaces:all-srcs",
-        "//federation/pkg/dnsprovider/providers/google/clouddns/internal/stubs:all-srcs",
+        "//pkg/dnsprovider/providers/google/clouddns/internal/interfaces:all-srcs",
+        "//pkg/dnsprovider/providers/google/clouddns/internal/stubs:all-srcs",
     ],
     tags = ["automanaged"],
 )

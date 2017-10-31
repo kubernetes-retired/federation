@@ -16,10 +16,6 @@ go_library(
     ],
     importpath = "k8s.io/kubernetes/test/e2e/auth",
     deps = [
-        "//pkg/util/version:go_default_library",
-        "//plugin/pkg/admission/serviceaccount:go_default_library",
-        "//test/e2e/framework:go_default_library",
-        "//test/utils/image:go_default_library",
         "//vendor/github.com/evanphx/json-patch:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
@@ -39,6 +35,10 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes/typed/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/util/cert:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/version:go_default_library",
+        "//vendor/k8s.io/kubernetes/plugin/pkg/admission/serviceaccount:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
+        "//vendor/k8s.io/kubernetes/test/utils/image:go_default_library",
     ],
 )
 

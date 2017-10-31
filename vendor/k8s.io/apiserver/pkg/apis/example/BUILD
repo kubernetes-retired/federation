@@ -33,9 +33,9 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/apis/example/fuzzer:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/apis/example/install:all-srcs",
-        "//staging/src/k8s.io/apiserver/pkg/apis/example/v1:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/apis/example/fuzzer:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/apis/example/install:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/apis/example/v1:all-srcs",
     ],
     tags = ["automanaged"],
 )

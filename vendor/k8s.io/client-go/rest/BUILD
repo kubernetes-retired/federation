@@ -93,8 +93,8 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/client-go/rest/fake:all-srcs",
-        "//staging/src/k8s.io/client-go/rest/watch:all-srcs",
+        "//vendor/k8s.io/client-go/rest/fake:all-srcs",
+        "//vendor/k8s.io/client-go/rest/watch:all-srcs",
     ],
     tags = ["automanaged"],
 )

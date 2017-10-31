@@ -1,0 +1,73 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "clone.go",
+        "decode.go",
+        "encode.go",
+        "equal.go",
+        "extensions.go",
+        "lib.go",
+        "message_set.go",
+        "pointer_unsafe.go",
+        "properties.go",
+        "text.go",
+        "text_parser.go",
+    ],
+    importpath = "github.com/golang/protobuf/proto",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "message_set_test.go",
+        "size2_test.go",
+    ],
+    importpath = "github.com/golang/protobuf/proto",
+    library = ":go_default_library",
+)
+
+go_test(
+    name = "go_default_xtest",
+    srcs = [
+        "all_test.go",
+        "any_test.go",
+        "clone_test.go",
+        "decode_test.go",
+        "encode_test.go",
+        "equal_test.go",
+        "extensions_test.go",
+        "proto3_test.go",
+        "size_test.go",
+        "text_parser_test.go",
+        "text_test.go",
+    ],
+    importpath = "github.com/golang/protobuf/proto_test",
+    deps = [
+        ":go_default_library",
+        "//vendor/github.com/golang/protobuf/proto/proto3_proto:go_default_library",
+        "//vendor/github.com/golang/protobuf/proto/testdata:go_default_library",
+        "//vendor/github.com/golang/protobuf/ptypes:go_default_library",
+        "//vendor/github.com/golang/protobuf/ptypes/any:go_default_library",
+    ],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/github.com/golang/protobuf/proto/proto3_proto:all-srcs",
+        "//vendor/github.com/golang/protobuf/proto/testdata:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

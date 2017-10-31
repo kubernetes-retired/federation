@@ -36,7 +36,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//staging/src/k8s.io/metrics/pkg/client/custom_metrics/fake:all-srcs",
+        "//vendor/k8s.io/metrics/pkg/client/custom_metrics/fake:all-srcs",
     ],
     tags = ["automanaged"],
 )

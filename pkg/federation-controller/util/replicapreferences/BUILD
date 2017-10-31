@@ -11,7 +11,7 @@ go_library(
     srcs = ["preferences.go"],
     importpath = "k8s.io/federation/pkg/federation-controller/util/replicapreferences",
     deps = [
-        "//federation/apis/federation:go_default_library",
+        "//apis/federation:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
     ],
