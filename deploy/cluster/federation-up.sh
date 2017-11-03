@@ -24,11 +24,13 @@ set -o pipefail
 # things don't break.
 # TODO(madhusudancs): Remove this script and its dependencies.
 
-
+# TODO(irfan): This needs to be updated with rest of the script cleanup
+# This assumes that kubernetes is checked out alongside federation
+REAL_KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../../../kubernetes
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
 # For $FEDERATION_NAME, $FEDERATION_NAMESPACE, $FEDERATION_KUBE_CONTEXT,
 # $HOST_CLUSTER_CONTEXT and $FEDERATION_USE_PV_FOR_ETCD.
-source "${KUBE_ROOT}/federation/cluster/common.sh"
+source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
 DNS_ZONE_NAME="${FEDERATION_DNS_ZONE_NAME:-}"
 DNS_PROVIDER="${FEDERATION_DNS_PROVIDER:-google-clouddns}"
@@ -43,16 +45,16 @@ DNS_PROVIDER="${FEDERATION_DNS_PROVIDER:-google-clouddns}"
 # These functions should be consolidated to read the version from
 # kubernetes version defs file.
 function get_version() {
-  local -r versions_file="${KUBE_ROOT}/_output/federation/versions"
+  local -r versions_file="${KUBE_ROOT}/version"
 
-  if [[ -n "${KUBERNETES_RELEASE:-}" ]]; then
-    echo "${KUBERNETES_RELEASE//+/_}"
+  if [[ -n "${FEDERATION_RELEASE:-}" ]]; then
+    echo "${FEDERATION_RELEASE//+/_}"
     return
   fi
 
   if [[ ! -f "${versions_file}" ]]; then
     echo "Couldn't determine the release version: neither the " \
-     "KUBERNETES_RELEASE environment variable is set, nor does " \
+     "FEDERATION_RELEASE environment variable is set, nor does " \
      "the versions file exist at ${versions_file}"
     exit 1
   fi
@@ -69,20 +71,20 @@ function wait_for_rbac() {
   # The very first thing that kubefed does when it comes up is run RBAC API
   # discovery. If it doesn't appear to be available, issue 'get role' to ensure
   # that kubectl updates its cache.
-  ${KUBE_ROOT}/cluster/kubectl.sh get role
+  ${REAL_KUBE_ROOT}/cluster/kubectl.sh get role
   local i=1
   local timeout=60
   while [[ ${i} -le ${timeout} ]]; do
-    if [[ "$(${KUBE_ROOT}/cluster/kubectl.sh api-versions)" =~ "rbac.authorization.k8s.io/" ]]; then
+    if [[ "$(${REAL_KUBE_ROOT}/cluster/kubectl.sh api-versions)" =~ "rbac.authorization.k8s.io/" ]]; then
       break
     fi
-    ${KUBE_ROOT}/cluster/kubectl.sh get role
+    ${REAL_KUBE_ROOT}/cluster/kubectl.sh get role
     sleep 1
     i=$((i+1))
   done
   if [[ ${i} -gt ${timeout} ]]; then
     kube::log::status "rbac.authorization.k8s.io API group not available after at least ${timeout} seconds:"
-    kube::log::status "$(${KUBE_ROOT}/cluster/kubectl.sh api-versions)"
+    kube::log::status "$(${REAL_KUBE_ROOT}/cluster/kubectl.sh api-versions)"
     exit 123
   fi
   kube::log::status "rbac.authorization.k8s.io API group is available"
@@ -98,19 +100,19 @@ function init() {
   local -r kube_version="$(get_version)"
 
   kube::log::status "DNS_ZONE_NAME: \"${DNS_ZONE_NAME}\", DNS_PROVIDER: \"${DNS_PROVIDER}\""
-  kube::log::status "Image: \"${kube_registry}/hyperkube-amd64:${kube_version}\""
+  kube::log::status "Image: \"${kube_registry}/fcp-amd64:${kube_version}\""
 
   wait_for_rbac
 
   # Send INT after 20m and KILL 1m after that if process is still alive.
   timeout --signal=INT --kill-after=1m 20m \
-      "${KUBE_ROOT}/federation/develop/kubefed.sh" init \
+      "${KUBE_ROOT}/deploy/kubefed.sh" init \
       "${FEDERATION_NAME}" \
       --federation-system-namespace=${FEDERATION_NAMESPACE} \
       --host-cluster-context="${HOST_CLUSTER_CONTEXT}" \
       --dns-zone-name="${DNS_ZONE_NAME}" \
       --dns-provider="${DNS_PROVIDER}" \
-      --image="${kube_registry}/hyperkube-amd64:${kube_version}" \
+      --image="${kube_registry}/fcp-amd64:${kube_version}" \
       --apiserver-enable-basic-auth=true \
       --apiserver-enable-token-auth=true \
       --apiserver-arg-overrides="--runtime-config=api/all=true,--v=4" \
@@ -125,7 +127,7 @@ function join_clusters() {
   for context in $(federation_cluster_contexts); do
     kube::log::status "Joining cluster with name '${context}' to federation with name '${FEDERATION_NAME}'"
 
-    "${KUBE_ROOT}/federation/develop/kubefed.sh" join \
+    "${KUBE_ROOT}/deploy/kubefed.sh" join \
         "${context}" \
         --federation-system-namespace=${FEDERATION_NAMESPACE} \
         --host-cluster-context="${HOST_CLUSTER_CONTEXT}" \
@@ -134,5 +136,21 @@ function join_clusters() {
   done
 }
 
+function push_to_registry() {
+  local -r project="${KUBE_PROJECT:-${PROJECT:-}}"
+  local -r kube_registry="${KUBE_REGISTRY:-gcr.io/${project}}"
+  local -r kube_version="$(get_version)"
+
+  kube::log::status "Pushing hyperkube image to the registry"
+  tar -xzf ${KUBE_ROOT}/server/federation-server-linux-amd64.tar.gz -C /tmp/
+  gcloud docker -- load -i /tmp/federation/fcp-amd64.tar
+  gcloud docker -- tag "gcr.io/google_containers/fcp-amd64:${kube_version}" "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- push "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "gcr.io/google_containers/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "${kube_registry}/fcp-amd64:${kube_version}"
+  rm -f /tmp/federation/fcp-amd64.tar
+}
+
+push_to_registry
 init
 join_clusters

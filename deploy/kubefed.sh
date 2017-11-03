@@ -22,13 +22,13 @@ set -o pipefail
 # This script is only for CI testing purposes. Don't use it in production.
 # "-=-=-=-=-=-=-=-=-=-="
 
-KUBE_ROOT=${KUBE_ROOT:-$(dirname "${BASH_SOURCE}")/../..}
+KUBE_ROOT=${KUBE_ROOT:-$(dirname "${BASH_SOURCE}")/..}
 source "${KUBE_ROOT}/cluster/clientbin.sh"
 
 # If KUBEFED_PATH isn't set, gather up the list of likely places and use ls
 # to find the latest one.
 if [[ -z "${KUBEFED_PATH:-}" ]]; then
-  kubefed=$( get_bin "kubefed" "federation/cmd/kubefed" )
+  kubefed=$( get_bin "kubefed" "cmd/kubefed" )
 
   if [[ ! -x "$kubefed" ]]; then
     print_error "kubefed"

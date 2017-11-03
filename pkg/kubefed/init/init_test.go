@@ -882,7 +882,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 	}
 
 	apiserverCommand := []string{
-		"/hyperkube",
+		"/fcp",
 		"federation-apiserver",
 	}
 	apiserverArgs := []string{
@@ -1015,7 +1015,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 	}
 
 	cmCommand := []string{
-		"/hyperkube",
+		"/fcp",
 		"federation-controller-manager",
 	}
 
