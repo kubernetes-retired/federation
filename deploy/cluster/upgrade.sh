@@ -18,18 +18,21 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# TODO(irfan): This needs to be updated with rest of the script cleanup
+# This assumes that kubernetes is checked out alongside federation
+REAL_KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../../../kubernetes
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
 # For $FEDERATION_NAME, $FEDERATION_NAMESPACE, $HOST_CLUSTER_CONTEXT,
-source "${KUBE_ROOT}/federation/cluster/common.sh"
+source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
 KUBE_VERSION="${1}"
 
-host_kubectl="${KUBE_ROOT}/cluster/kubectl.sh --context=${HOST_CLUSTER_CONTEXT} --namespace=${FEDERATION_NAMESPACE}"
+host_kubectl="${REAL_KUBE_ROOT}/cluster/kubectl.sh --context=${HOST_CLUSTER_CONTEXT} --namespace=${FEDERATION_NAMESPACE}"
 
 function upgrade() {
   local -r project="${KUBE_PROJECT:-${PROJECT:-}}"
   local -r kube_registry="${KUBE_REGISTRY:-gcr.io/${project}}"
-  local -r image_version="${kube_registry}/hyperkube-amd64:${KUBE_VERSION}"
+  local -r image_version="${kube_registry}/fcp-amd64:${KUBE_VERSION}"
 
   kube::log::status "Upgrading federation control plane ${FEDERATION_NAME} with image ${image_version}"
 

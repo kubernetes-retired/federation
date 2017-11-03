@@ -85,6 +85,7 @@ pkg_tar(
     files = [
         "//build:client-targets",
         "//build:server-targets",
+        "//build:docker-artifacts"
     ],
     mode = "0755",
     package_dir = "server/bin",
@@ -130,14 +131,18 @@ pkg_tar(
     ],
 )
 
+# TODO (irfan): do we need to include server binaries here?
+# We can also consider this as one final tar and include client bins too.
 pkg_tar(
     name = "federation",
     extension = "tar.gz",
     files = [
         "//:LICENSE",
         "//:README.md",
+        "//:version",
         "//cluster:all-srcs",
         "//develop:all-srcs",
+        "//deploy:all-srcs",
         "//docs:all-srcs",
         "//hack/lib:all-srcs",
     ],

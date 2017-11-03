@@ -18,6 +18,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# TODO(irfan): This needs to be updated with rest of the script cleanup
+# This assumes that kubernetes is checked out alongside federation
+REAL_KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../../kubernetes
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
 source "${KUBE_ROOT}/cluster/common.sh"
 source "${KUBE_ROOT}/hack/lib/init.sh"
@@ -38,7 +41,7 @@ GINKGO_NO_COLOR=${GINKGO_NO_COLOR:-n}
 # If 'y', will rerun failed tests once to give them a second chance.
 GINKGO_TOLERATE_FLAKES=${GINKGO_TOLERATE_FLAKES:-n}
 
-: ${KUBECTL:="${KUBE_ROOT}/cluster/kubectl.sh"}
+: ${KUBECTL:="${REAL_KUBE_ROOT}/cluster/kubectl.sh"}
 : ${KUBE_CONFIG_FILE:="config-test.sh"}
 
 export KUBECTL KUBE_CONFIG_FILE
