@@ -1,0 +1,48 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "cp.go",
+        "create.go",
+        "download.go",
+        "info.go",
+        "ls.go",
+        "mkdir.go",
+        "mv.go",
+        "remove.go",
+        "rm.go",
+        "tail.go",
+        "upload.go",
+    ],
+    importpath = "github.com/vmware/govmomi/govc/datastore",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/vmware/govmomi/govc/cli:go_default_library",
+        "//vendor/github.com/vmware/govmomi/govc/flags:go_default_library",
+        "//vendor/github.com/vmware/govmomi/object:go_default_library",
+        "//vendor/github.com/vmware/govmomi/property:go_default_library",
+        "//vendor/github.com/vmware/govmomi/units:go_default_library",
+        "//vendor/github.com/vmware/govmomi/vim25/mo:go_default_library",
+        "//vendor/github.com/vmware/govmomi/vim25/soap:go_default_library",
+        "//vendor/github.com/vmware/govmomi/vim25/types:go_default_library",
+    ],
+)
+
+filegroup(
+    name = "package-srcs",
+    srcs = glob(["**"]),
+    tags = ["automanaged"],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "all-srcs",
+    srcs = [
+        ":package-srcs",
+        "//vendor/github.com/vmware/govmomi/govc/datastore/disk:all-srcs",
+        "//vendor/github.com/vmware/govmomi/govc/datastore/vsan:all-srcs",
+    ],
+    tags = ["automanaged"],
+    visibility = ["//visibility:public"],
+)

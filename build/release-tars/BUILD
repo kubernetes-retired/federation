@@ -25,25 +25,25 @@ config_setting(
 )
 
 genrule(
-    name = "kubernetes-src-readme",
+    name = "federation-src-readme",
     outs = ["README-src.txt"],
     cmd = """
 echo For build efficiency, the src was not included in this release.>$@
 echo The full source code can be viewed at >>$@
-echo -n https://github.com/kubernetes/kubernetes/tree/ >>$@
+echo -n https://github.com/kubernetes/federation/tree/ >>$@
 grep ^STABLE_BUILD_GIT_COMMIT bazel-out/stable-status.txt | cut -d' ' -f2 >>$@
 """,
     stamp = 1,
 )
 
 pkg_tar(
-    name = "kubernetes-src",
+    name = "federation-src",
     extension = "tar.gz",
     files = select({
         ":package_src": ["//:all-srcs"],
         "//conditions:default": ["README-src.txt"],
     }),
-    package_dir = "kubernetes",
+    package_dir = "federation",
     strip_prefix = select({
         ":package_src": "//",
         "//conditions:default": ".",
@@ -53,12 +53,12 @@ pkg_tar(
 # FIXME: this should be configurable/auto-detected
 PLATFORM_ARCH_STRING = "linux-amd64"
 
-# Included in node and server tarballs.
+# Included in server tarballs.
 filegroup(
     name = "license-targets",
     srcs = [
-        ":kubernetes-src.tar.gz",
-        "//:Godeps/LICENSES",
+        ":federation-src.tar.gz",
+        "//:LICENSE",
     ],
     visibility = ["//visibility:private"],
 )
@@ -72,33 +72,11 @@ pkg_tar(
 )
 
 pkg_tar(
-    name = "kubernetes-client-%s" % PLATFORM_ARCH_STRING,
+    name = "federation-client-%s" % PLATFORM_ARCH_STRING,
     extension = "tar.gz",
-    package_dir = "kubernetes",
+    package_dir = "federation",
     deps = [
         ":_client-bin",
-    ],
-)
-
-pkg_tar(
-    name = "_node-bin",
-    files = [
-        "//build:client-targets",
-        "//build:node-targets",
-    ],
-    mode = "0755",
-    package_dir = "node/bin",
-    visibility = ["//visibility:private"],
-)
-
-pkg_tar(
-    name = "kubernetes-node-%s" % PLATFORM_ARCH_STRING,
-    extension = "tar.gz",
-    files = [":license-targets"],
-    mode = "0644",
-    package_dir = "kubernetes",
-    deps = [
-        ":_node-bin",
     ],
 )
 
@@ -106,8 +84,6 @@ pkg_tar(
     name = "_server-bin",
     files = [
         "//build:client-targets",
-        "//build:docker-artifacts",
-        "//build:node-targets",
         "//build:server-targets",
     ],
     mode = "0755",
@@ -122,24 +98,13 @@ genrule(
     visibility = ["//visibility:private"],
 )
 
-# Some of the startup scripts fail if there isn't an addons/ directory in the server tarball.
 pkg_tar(
-    name = "_server-addons",
-    files = [
-        ":.dummy",
-    ],
-    package_dir = "addons",
-    visibility = ["//visibility:private"],
-)
-
-pkg_tar(
-    name = "kubernetes-server-%s" % PLATFORM_ARCH_STRING,
+    name = "federation-server-%s" % PLATFORM_ARCH_STRING,
     extension = "tar.gz",
     files = [":license-targets"],
     mode = "0644",
-    package_dir = "kubernetes",
+    package_dir = "federation",
     deps = [
-        ":_server-addons",
         ":_server-bin",
     ],
 )
@@ -154,10 +119,10 @@ pkg_tar(
 )
 
 pkg_tar(
-    name = "kubernetes-test",
+    name = "federation-test",
     extension = "tar.gz",
     files = ["//build:test-portable-targets"],
-    package_dir = "kubernetes",
+    package_dir = "federation",
     strip_prefix = "//",
     deps = [
         # TODO: how to make this multiplatform?
@@ -166,63 +131,30 @@ pkg_tar(
 )
 
 pkg_tar(
-    name = "_full_server",
-    files = [
-        ":kubernetes-manifests.tar.gz",
-        ":kubernetes-salt.tar.gz",
-    ],
-    package_dir = "server",
-    visibility = ["//visibility:private"],
-)
-
-pkg_tar(
-    name = "kubernetes",
+    name = "federation",
     extension = "tar.gz",
     files = [
-        "//:Godeps/LICENSES",
+        "//:LICENSE",
         "//:README.md",
-        "//:Vagrantfile",
-        "//:version",
         "//cluster:all-srcs",
+        "//develop:all-srcs",
         "//docs:all-srcs",
-        "//examples:all-srcs",
         "//hack/lib:all-srcs",
-        "//third_party/htpasswd:all-srcs",
     ],
-    package_dir = "kubernetes",
+    package_dir = "federation",
     strip_prefix = "//",
     deps = [
-        ":_full_server",
-        "//federation:release",
-    ],
-)
-
-pkg_tar(
-    name = "kubernetes-manifests",
-    extension = "tar.gz",
-    deps = [
-        "//cluster:manifests",
-    ],
-)
-
-pkg_tar(
-    name = "kubernetes-salt",
-    extension = "tar.gz",
-    deps = [
-        "//cluster/saltbase:salt",
+        ":_server-bin",
     ],
 )
 
 release_filegroup(
     name = "release-tars",
     srcs = [
-        ":kubernetes.tar.gz",
-        ":kubernetes-client-%s.tar.gz" % PLATFORM_ARCH_STRING,
-        ":kubernetes-node-%s.tar.gz" % PLATFORM_ARCH_STRING,
-        ":kubernetes-server-%s.tar.gz" % PLATFORM_ARCH_STRING,
-        ":kubernetes-manifests.tar.gz",
-        ":kubernetes-salt.tar.gz",
-        ":kubernetes-src.tar.gz",
-        ":kubernetes-test.tar.gz",
+        ":federation.tar.gz",
+        ":federation-client-%s.tar.gz" % PLATFORM_ARCH_STRING,
+        ":federation-server-%s.tar.gz" % PLATFORM_ARCH_STRING,
+        ":federation-src.tar.gz",
+        ":federation-test.tar.gz",
     ],
 )

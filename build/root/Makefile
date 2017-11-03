@@ -40,7 +40,7 @@ MAKEFLAGS += --no-builtin-rules
 .EXPORT_ALL_VARIABLES:
 OUT_DIR ?= _output
 BIN_DIR := $(OUT_DIR)/bin
-PRJ_SRC_PATH := k8s.io/kubernetes
+PRJ_SRC_PATH := k8s.io/federation
 GENERATED_FILE_PREFIX := zz_generated.
 
 # Metadata for driving the build lives here.
@@ -289,8 +289,6 @@ test-cmd:
 	@echo "$$TEST_CMD_HELP_INFO"
 else
 test-cmd: generated_files
-	hack/make-rules/test-kubeadm-cmd.sh
-	hack/make-rules/test-cmd.sh
 	hack/make-rules/test-federation-cmd.sh
 endif
 
