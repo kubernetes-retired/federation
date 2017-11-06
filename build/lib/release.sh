@@ -513,6 +513,9 @@ function kube::release::package_final_tarball() {
 
   cp -R "${KUBE_ROOT}/deploy" "${release_stage}/"
 
+  # Copy the last know good k8s version (which carries a proper tag)
+  cp "${KUBE_ROOT}/k8s-version" "${release_stage}/"
+
   # Include hack/lib as a dependency for the cluster/ scripts
   mkdir -p "${release_stage}/hack"
   cp -R "${KUBE_ROOT}/hack/lib" "${release_stage}/hack/"

@@ -137,6 +137,7 @@ pkg_tar(
     name = "federation",
     extension = "tar.gz",
     files = [
+        "//:k8s-version",
         "//:LICENSE",
         "//:README.md",
         "//:version",
