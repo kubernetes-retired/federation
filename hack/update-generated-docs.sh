@@ -28,17 +28,13 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 kube::golang::setup_env
 
 BINS=(
-	cmd/gendocs
-	cmd/genkubedocs
-	cmd/genman
-	cmd/genyaml
-	federation/cmd/genfeddocs
+	cmd/genfeddocs
 )
 make -C "${KUBE_ROOT}" WHAT="${BINS[*]}"
 
 kube::util::ensure-temp-dir
 
-kube::util::gen-docs "${KUBE_TEMP}"
+kube::util::gen-fed-docs "${KUBE_TEMP}"
 
 # remove all of the old docs
 kube::util::remove-gen-docs

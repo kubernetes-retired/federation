@@ -24,17 +24,13 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 kube::golang::setup_env
 
 BINS=(
-	cmd/gendocs
-	cmd/genkubedocs
-	cmd/genman
-	cmd/genyaml
-	federation/cmd/genfeddocs
+	cmd/genfeddocs
 )
 make -C "${KUBE_ROOT}" WHAT="${BINS[*]}"
 
 kube::util::ensure-temp-dir
 
-kube::util::gen-docs "${KUBE_TEMP}"
+kube::util::gen-fed-docs "${KUBE_TEMP}"
 
 # Verify the list matches the expected list (diff should be empty)
 if [[ "$(diff ${KUBE_ROOT}/docs/.generated_docs ${KUBE_TEMP}/docs/.generated_docs)" != "" ]]; then
