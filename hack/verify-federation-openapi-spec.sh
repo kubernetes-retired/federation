@@ -23,7 +23,7 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
 
-SPECROOT="${KUBE_ROOT}/federation/apis/openapi-spec"
+SPECROOT="${KUBE_ROOT}/apis/openapi-spec"
 TMP_SPECROOT="${KUBE_ROOT}/_tmp_federation/openapi-spec"
 _tmp="${KUBE_ROOT}/_tmp_federation"
 
