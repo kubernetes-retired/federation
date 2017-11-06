@@ -22,8 +22,14 @@ set -o pipefail
 
 # The staging areas will be vendored as repos
 rm -rf vendor/k8s.io/kubernetes/staging
-# The kube root build file will break the bazel build file
+# The vendored kube root build file will break federation's bazel build
 rm vendor/k8s.io/kubernetes/BUILD.bazel
+# Symlinks to missing files will break hack/verify-bazel.sh
+rm vendor/k8s.io/kubernetes/.bazelrc
+rm vendor/k8s.io/kubernetes/.kazelcfg.json
+rm vendor/k8s.io/kubernetes/Makefile
+rm vendor/k8s.io/kubernetes/Makefile.generated
+rm vendor/k8s.io/kubernetes/WORKSPACE
 
 glide-vc --use-lock-file
 
@@ -58,6 +64,12 @@ git diff-index --name-only HEAD | grep -F \
   # Do not retain
   | grep -v 'vendor/github.com/jteeuwen/go-bindata/testdata' \
   | grep -v 'vendor/k8s.io/kubernetes/staging' \
+  | grep -v 'vendor/k8s.io/kubernetes/BUILD.bazel' \
+  | grep -v 'vendor/k8s.io/kubernetes/.bazelrc' \
+  | grep -v 'vendor/k8s.io/kubernetes/.kazelcfg.json' \
+  | grep -v 'vendor/k8s.io/kubernetes/Makefile' \
+  | grep -v 'vendor/k8s.io/kubernetes/Makefile.generated' \
+  | grep -v 'vendor/k8s.io/kubernetes/WORKSPACE' \
   | xargs -r git checkout -f
 
 # now cleanup what's dangling
