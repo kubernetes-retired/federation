@@ -24,7 +24,7 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 kube::golang::setup_env
 
 BINS=(
-	cmd/clicheck
+	vendor/k8s.io/kubernetes/cmd/clicheck
 )
 make -C "${KUBE_ROOT}" WHAT="${BINS[*]}"
 

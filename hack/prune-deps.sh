@@ -47,6 +47,7 @@ git diff-index --name-only HEAD | grep -F \
   -e 'k8s.io/gengo' \
   -e 'k8s.io/kube-openapi' \
   -e 'k8s.io/kubernetes/cluster' \
+  -e 'k8s.io/kubernetes/cmd/clicheck' \
   -e 'k8s.io/kubernetes/cmd/gen' \
   -e 'k8s.io/kubernetes/examples' \
   -e 'k8s.io/kubernetes/hack' \
