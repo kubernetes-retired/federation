@@ -29,12 +29,12 @@ hack/update-federation-generated-swagger-docs.sh first.
 __EOF__
 
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
-SWAGGER_ROOT_DIR="${KUBE_ROOT}/federation/apis/swagger-spec"
+SWAGGER_ROOT_DIR="${KUBE_ROOT}/apis/swagger-spec"
 source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
 
-make -C "${KUBE_ROOT}" WHAT="cmd/hyperkube"
+make -C "${KUBE_ROOT}" WHAT="cmd/fcp"
 
 function cleanup()
 {
@@ -59,7 +59,7 @@ kube::etcd::start
 
 # Start federation-apiserver
 kube::log::status "Starting federation-apiserver"
-"${KUBE_OUTPUT_HOSTBIN}/hyperkube" federation-apiserver \
+"${KUBE_OUTPUT_HOSTBIN}/fcp" federation-apiserver \
   --insecure-bind-address="${API_HOST}" \
   --bind-address="${API_HOST}" \
   --insecure-port="${API_PORT}" \
