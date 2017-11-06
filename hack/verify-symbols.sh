@@ -23,7 +23,7 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
 
-make -C "${KUBE_ROOT}" WHAT=cmd/hyperkube
+make -C "${KUBE_ROOT}" WHAT=cmd/fcp
 
 # Add other BADSYMBOLS here.
 BADSYMBOLS=(
@@ -32,8 +32,8 @@ BADSYMBOLS=(
   "testing[.]"
 )
 
-# b/c hyperkube binds everything simply check that for bad symbols
-SYMBOLS="$(nm ${KUBE_OUTPUT_HOSTBIN}/hyperkube)"
+# b/c fcp binds everything simply check that for bad symbols
+SYMBOLS="$(nm ${KUBE_OUTPUT_HOSTBIN}/fcp)"
 
 RESULT=0
 for BADSYMBOL in "${BADSYMBOLS[@]}"; do
