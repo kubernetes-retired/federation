@@ -43,16 +43,16 @@ DNS_PROVIDER="${FEDERATION_DNS_PROVIDER:-google-clouddns}"
 # These functions should be consolidated to read the version from
 # kubernetes version defs file.
 function get_version() {
-  local -r versions_file="${KUBE_ROOT}/_output/federation/versions"
+  local -r versions_file="${KUBE_ROOT}/version"
 
-  if [[ -n "${KUBERNETES_RELEASE:-}" ]]; then
-    echo "${KUBERNETES_RELEASE//+/_}"
+  if [[ -n "${FEDERATION_RELEASE:-}" ]]; then
+    echo "${FEDERATION_RELEASE//+/_}"
     return
   fi
 
   if [[ ! -f "${versions_file}" ]]; then
     echo "Couldn't determine the release version: neither the " \
-     "KUBERNETES_RELEASE environment variable is set, nor does " \
+     "FEDERATION_RELEASE environment variable is set, nor does " \
      "the versions file exist at ${versions_file}"
     exit 1
   fi
@@ -134,5 +134,21 @@ function join_clusters() {
   done
 }
 
+function push_to_registry() {
+  local -r project="${KUBE_PROJECT:-${PROJECT:-}}"
+  local -r kube_registry="${KUBE_REGISTRY:-gcr.io/${project}}"
+  local -r kube_version="$(get_version)"
+
+  kube::log::status "Pushing fcp image to the registry"
+  tar -xzf ${KUBE_ROOT}/server/federation-server-linux-amd64.tar.gz -C /tmp/
+  gcloud docker -- load -i /tmp/federation/fcp-amd64.tar
+  gcloud docker -- tag "gcr.io/google_containers/fcp-amd64:${kube_version}" "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- push "${kube_registry}/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "gcr.io/google_containers/fcp-amd64:${kube_version}"
+  gcloud docker -- rmi "${kube_registry}/fcp-amd64:${kube_version}"
+  rm -f /tmp/federation/fcp-amd64.tar
+}
+
+push_to_registry
 init
 join_clusters
