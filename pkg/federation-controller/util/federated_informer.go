@@ -22,6 +22,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/golang/glog"
+
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	pkgruntime "k8s.io/apimachinery/pkg/runtime"
@@ -33,9 +35,7 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
-	singleidentityprovider "k8s.io/federation/pkg/federation-controller/util/identityprovider/single"
-
-	"github.com/golang/glog"
+	userclusteridentityprovider "k8s.io/federation/pkg/federation-controller/util/identityprovider/usercluster"
 )
 
 const (
@@ -144,6 +144,8 @@ func NewFederatedInformer(
 	targetInformerFactory TargetInformerFactory,
 	clusterLifecycle *ClusterLifecycleHandlerFuncs) FederatedInformer {
 
+	identityProvider := userclusteridentityprovider.NewInClusterUserClusterIdentityProviderOrDie()
+
 	federatedInformer := &federatedInformerImpl{
 		targetInformerFactory: targetInformerFactory,
 		clientFactory: func(cluster *federationapi.Cluster) (kubeclientset.Interface, error) {
@@ -155,7 +157,7 @@ func NewFederatedInformer(
 			return nil, err
 		},
 		targetInformers:  make(map[string]informer),
-		identityProvider: singleidentityprovider.NewSingleIdentityProvider(),
+		identityProvider: identityProvider,
 		federationClient: federationClient,
 	}
 

@@ -34,6 +34,7 @@ const (
 	IdentityLocationCluster IdentityLocation = "Cluster"
 )
 
+// +k8s:deepcopy-gen=true
 // Identity contains the info to connect to a cluster
 type Identity struct {
 	// Location is where `CredentialRef` object was stored.
