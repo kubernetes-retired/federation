@@ -21,8 +21,13 @@ import "k8s.io/federation/pkg/dnsprovider/providers/google/clouddns/internal/int
 // Compile time check for interface adherence
 var _ interfaces.ManagedZonesListResponse = &ManagedZonesListResponse{}
 
-type ManagedZonesListResponse struct{ ManagedZones_ []interfaces.ManagedZone }
+type ManagedZonesListResponse struct {
+	Service       *ManagedZonesService
+	ManagedZones_ []interfaces.ManagedZone
+}
 
 func (response *ManagedZonesListResponse) ManagedZones() []interfaces.ManagedZone {
+	response.Service.Service.Lock()
+	defer response.Service.Service.Unlock()
 	return response.ManagedZones_
 }
