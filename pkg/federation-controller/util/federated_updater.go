@@ -22,10 +22,12 @@ import (
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	pkgruntime "k8s.io/apimachinery/pkg/runtime"
 	kubeclientset "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/record"
+	"k8s.io/federation/plugin/pkg/admission/lastupdatedby"
 	"k8s.io/kubernetes/pkg/api"
 )
 
@@ -96,8 +98,9 @@ func (fu *federatedUpdaterImpl) Update(ops []FederatedOperation) error {
 		go func(op FederatedOperation) {
 			clusterName := op.ClusterName
 
+			accessor, _ := meta.Accessor(op.Obj)
 			// TODO: Ensure that the clientset has reasonable timeout.
-			clientset, err := fu.federation.GetClientsetForCluster(clusterName)
+			clientset, err := fu.federation.GetClientsetForUserOnCluster(accessor.GetAnnotations()[lastupdatedby.LastUpdatedByUserAnno], clusterName)
 			if err != nil {
 				done <- err
 				return
