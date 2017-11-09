@@ -24,7 +24,8 @@ ARCH?=amd64
 FCP_BIN?=_output/dockerized/bin/linux/$(ARCH)/fcp
 VERSION?=1.0
 
-BASEIMAGE=gcr.io/google-containers/debian-base-$(ARCH):0.2
+# TODO(@irfan) : do we need to rather build our own image from scratch
+BASEIMAGE=gcr.io/google-containers/debian-hyperkube-base-$(ARCH):0.7
 TEMP_DIR:=$(shell mktemp -d -t fcpXXXXXX)
 
 all: build
