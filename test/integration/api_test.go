@@ -29,6 +29,7 @@ import (
 	batch_v1 "k8s.io/api/batch/v1"
 	"k8s.io/api/core/v1"
 	ext_v1b1 "k8s.io/api/extensions/v1beta1"
+	rbac_v1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	fed_v1b1 "k8s.io/federation/apis/federation/v1beta1"
@@ -39,6 +40,7 @@ import (
 var enabledGroupVersions = []schema.GroupVersion{
 	fed_v1b1.SchemeGroupVersion,
 	ext_v1b1.SchemeGroupVersion,
+	rbac_v1.SchemeGroupVersion,
 }
 
 // List of group versions that are disabled by default.
@@ -152,7 +154,7 @@ func testAPIGroupList(t *testing.T, host string, expectedGroupVersions []schema.
 		found := findGroup(apiGroupList.Groups, groupVersion.Group)
 		assert.NotNil(t, found)
 		assert.Equal(t, groupVersion.Group, found.Name)
-		assert.Equal(t, 1, len(found.Versions))
+		assert.True(t, len(found.Versions) >= 1)
 		groupVersionForDiscovery := groupVersionForDiscoveryMap[groupVersion.Group]
 		assert.Equal(t, groupVersionForDiscovery, found.Versions[0])
 		assert.Equal(t, groupVersionForDiscovery, found.PreferredVersion)
@@ -178,7 +180,7 @@ func testAPIGroup(t *testing.T, host string, expectedGroupVersions []schema.Grou
 			assert.Equal(t, "v1", apiGroup.APIVersion)
 		}
 		assert.Equal(t, apiGroup.Name, groupVersion.Group)
-		assert.Equal(t, 1, len(apiGroup.Versions))
+		assert.True(t, len(apiGroup.Versions) >= 1)
 		assert.Equal(t, groupVersion.String(), apiGroup.Versions[0].GroupVersion)
 		assert.Equal(t, groupVersion.Version, apiGroup.Versions[0].Version)
 		assert.Equal(t, apiGroup.PreferredVersion, apiGroup.Versions[0])
@@ -216,6 +218,7 @@ func testAPIResourceList(t *testing.T, host string, expectedGroupVersions []sche
 	testFederationResourceList(t, host)
 	testCoreResourceList(t, host)
 	testExtensionsResourceList(t, host)
+	testRbacResourceList(t, host)
 	if contains(expectedGroupVersions, batch_v1.SchemeGroupVersion) {
 		testBatchResourceList(t, host)
 	}
@@ -414,4 +417,36 @@ func testAutoscalingResourceList(t *testing.T, host string) {
 	found = findResource(apiResourceList.APIResources, "horizontalpodautoscalers/status")
 	assert.NotNil(t, found)
 	assert.True(t, found.Namespaced)
+}
+
+func testRbacResourceList(t *testing.T, host string) {
+	serverURL := host + "/apis/" + rbac_v1.SchemeGroupVersion.String()
+	contents, err := readResponse(serverURL)
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+	var apiResourceList metav1.APIResourceList
+	err = json.Unmarshal(contents, &apiResourceList)
+	if err != nil {
+		t.Fatalf("Error in unmarshalling response from server %s: %v", serverURL, err)
+	}
+	// empty APIVersion for extensions group
+	assert.Equal(t, "v1", apiResourceList.APIVersion)
+	assert.Equal(t, rbac_v1.SchemeGroupVersion.String(), apiResourceList.GroupVersion)
+	// Assert that there are exactly this number of resources.
+	assert.Equal(t, 4, len(apiResourceList.APIResources))
+
+	// Verify rbad resources
+	found := findResource(apiResourceList.APIResources, "roles")
+	assert.NotNil(t, found)
+	assert.True(t, found.Namespaced)
+	found = findResource(apiResourceList.APIResources, "rolebindings")
+	assert.NotNil(t, found)
+	assert.True(t, found.Namespaced)
+	found = findResource(apiResourceList.APIResources, "clusterroles")
+	assert.NotNil(t, found)
+	assert.False(t, found.Namespaced)
+	found = findResource(apiResourceList.APIResources, "clusterrolebindings")
+	assert.NotNil(t, found)
+	assert.False(t, found.Namespaced)
 }
