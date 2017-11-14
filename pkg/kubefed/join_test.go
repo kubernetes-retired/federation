@@ -227,7 +227,7 @@ func TestJoinFederation(t *testing.T) {
 
 func testJoinFederationFactory(clusterName, secretName, server string, isRBACAPIAvailable bool) cmdutil.Factory {
 
-	want := fakeCluster(clusterName, secretName, server, isRBACAPIAvailable)
+	want := fakeV1beta1Cluster(clusterName, secretName, server, isRBACAPIAvailable)
 	f, tf, _, _ := cmdtesting.NewAPIFactory()
 	codec := federationtestapi.Federation.Codec()
 	ns := dynamic.ContentConfig().NegotiatedSerializer
@@ -575,7 +575,7 @@ func fakeJoinTargetClusterFactory(clusterName, clusterCtx, dnsProvider, tmpDirPa
 	return f, nil
 }
 
-func fakeCluster(clusterName, secretName, server string, isRBACAPIAvailable bool) federationapi.Cluster {
+func fakeV1beta1Cluster(clusterName, secretName, server string, isRBACAPIAvailable bool) federationapi.Cluster {
 	cluster := federationapi.Cluster{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: clusterName,
