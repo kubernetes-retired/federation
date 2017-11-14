@@ -21,11 +21,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra/doc"
-	"k8s.io/kubernetes/cmd/genutils"
 	fedapiservapp "k8s.io/federation/cmd/federation-apiserver/app"
 	fedcmapp "k8s.io/federation/cmd/federation-controller-manager/app"
 	kubefedapp "k8s.io/federation/cmd/kubefed/app"
 	"k8s.io/federation/pkg/kubefed"
+	"k8s.io/kubernetes/cmd/genutils"
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 )
 
