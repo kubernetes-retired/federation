@@ -18,9 +18,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+REAL_KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../../../kubernetes
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
 
-: ${KUBECTL:=${KUBE_ROOT}/cluster/kubectl.sh}
+: ${KUBECTL:=${REAL_KUBE_ROOT}/cluster/kubectl.sh}
 : ${KUBE_CONFIG_FILE:="config-test.sh"}
 
 export KUBECTL KUBE_CONFIG_FILE
@@ -30,7 +31,7 @@ source "${KUBE_ROOT}/cluster/kube-util.sh"
 prepare-e2e
 
 if [[ "${FEDERATION:-}" == "true" ]]; then
-  source "${KUBE_ROOT}/federation/cluster/common.sh"
+  source "${KUBE_ROOT}/deploy/cluster/common.sh"
 
   for zone in ${E2E_ZONES};do
     # bring down an e2e cluster

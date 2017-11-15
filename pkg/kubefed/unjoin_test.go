@@ -32,8 +32,7 @@ import (
 	"k8s.io/client-go/rest/fake"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
-	federationapi "k8s.io/federation/apis/federation"
-	fedv1beta1 "k8s.io/federation/apis/federation/v1beta1"
+	"k8s.io/federation/apis/federation"
 	kubefedtesting "k8s.io/federation/pkg/kubefed/testing"
 	"k8s.io/federation/pkg/kubefed/util"
 	"k8s.io/federation/test/testapi"
@@ -183,7 +182,7 @@ func testUnjoinFederationFactory(name, server, secret string) cmdutil.Factory {
 	f, tf, _, _ := cmdtesting.NewAPIFactory()
 	codec := testapi.Federation.Codec()
 	tf.ClientConfig = kubefedtesting.DefaultClientConfig()
-	ns := serializer.NegotiatedSerializerWrapper(runtime.SerializerInfo{Serializer: runtime.NewCodec(f.JSONEncoder(), legacyscheme.Codecs.UniversalDecoder(fedv1beta1.SchemeGroupVersion))})
+	ns := serializer.NegotiatedSerializerWrapper(runtime.SerializerInfo{Serializer: runtime.NewCodec(f.JSONEncoder(), legacyscheme.Codecs.UniversalDecoder(federation.SchemeGroupVersion))})
 	tf.Client = &fake.RESTClient{
 		GroupVersion:         legacyscheme.Registry.GroupOrDie("federation").GroupVersion,
 		NegotiatedSerializer: ns,
@@ -192,7 +191,7 @@ func testUnjoinFederationFactory(name, server, secret string) cmdutil.Factory {
 			case strings.HasPrefix(p, urlPrefix):
 				got := strings.TrimPrefix(p, urlPrefix)
 				if got != name {
-					return nil, errors.NewNotFound(federationapi.Resource("clusters"), got)
+					return nil, errors.NewNotFound(federation.Resource("clusters"), got)
 				}
 
 				switch m {
@@ -304,4 +303,32 @@ func fakeUnjoinHostFactory(clusterName string) cmdutil.Factory {
 		}),
 	}
 	return f
+}
+
+func fakeCluster(clusterName, secretName, server string, isRBACAPIAvailable bool) federation.Cluster {
+	cluster := federation.Cluster{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: clusterName,
+		},
+		Spec: federation.ClusterSpec{
+			ServerAddressByClientCIDRs: []federation.ServerAddressByClientCIDR{
+				{
+					ClientCIDR:    defaultClientCIDR,
+					ServerAddress: server,
+				},
+			},
+			SecretRef: &api.LocalObjectReference{
+				Name: secretName,
+			},
+		},
+	}
+	if isRBACAPIAvailable {
+		saName := serviceAccountName(clusterName)
+		annotations := map[string]string{
+			ServiceAccountNameAnnotation: saName,
+			ClusterRoleNameAnnotation:    util.ClusterRoleName(testFederationName, saName),
+		}
+		cluster.ObjectMeta.SetAnnotations(annotations)
+	}
+	return cluster
 }

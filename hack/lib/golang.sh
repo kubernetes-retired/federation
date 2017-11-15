@@ -134,6 +134,7 @@ readonly KUBE_TEST_PORTABLE=(
   hack/e2e.go
   hack/e2e-internal
   hack/get-build.sh
+  hack/ginkgo-e2e.sh
   hack/federated-ginkgo-e2e.sh
   hack/lib
 )

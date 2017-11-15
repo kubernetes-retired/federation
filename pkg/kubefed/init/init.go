@@ -41,10 +41,10 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	certutil "k8s.io/client-go/util/cert"
 	triple "k8s.io/client-go/util/cert/triple"
-	kubeconfigutil "k8s.io/kubernetes/cmd/kubeadm/app/util/kubeconfig"
 	"k8s.io/federation/apis/federation"
 	"k8s.io/federation/pkg/dnsprovider/providers/coredns"
 	"k8s.io/federation/pkg/kubefed/util"
+	kubeconfigutil "k8s.io/kubernetes/cmd/kubeadm/app/util/kubeconfig"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/apis/extensions"
 	"k8s.io/kubernetes/pkg/apis/rbac"
@@ -715,7 +715,7 @@ func createPVC(clientset client.Interface, namespace, svcName, federationName, e
 
 func createAPIServer(clientset client.Interface, namespace, name, federationName, serverImage, etcdImage, advertiseAddress, credentialsName string, hasHTTPBasicAuthFile, hasTokenAuthFile bool, argOverrides map[string]string, pvc *api.PersistentVolumeClaim, dryRun bool, nodeSelector map[string]string, imagePullPolicy, imagePullSecrets string) (*extensions.Deployment, error) {
 	command := []string{
-		"/hyperkube",
+		"/fcp",
 		"federation-apiserver",
 	}
 	argsMap := map[string]string{
@@ -896,7 +896,7 @@ func createRoleBindings(clientset client.Interface, namespace, saName, federatio
 
 func createControllerManager(clientset client.Interface, namespace, name, svcName, cmName, image, kubeconfigName, dnsZoneName, dnsProvider, dnsProviderConfig, saName string, dnsProviderSecret *api.Secret, argOverrides map[string]string, dryRun bool, nodeSelector map[string]string, imagePullPolicy, imagePullSecrets string) (*extensions.Deployment, error) {
 	command := []string{
-		"/hyperkube",
+		"/fcp",
 		"federation-controller-manager",
 	}
 	argsMap := map[string]string{

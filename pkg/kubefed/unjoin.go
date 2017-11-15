@@ -25,6 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/federation/apis/federation"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/kubefed/util"
 	"k8s.io/kubernetes/pkg/api"
@@ -124,7 +125,12 @@ func (u *unjoinFederation) Run(f cmdutil.Factory, cmdOut, cmdErr io.Writer, conf
 	}
 
 	unjoiningClusterFactory := config.ClusterFactory(u.options.clusterContext, u.commonOptions.Kubeconfig)
-	unjoiningClusterClientset, err := unjoiningClusterFactory.ClientSet()
+	unjoiningClusterClientset, err := util.GetVersionedClientForRBACOrFail(unjoiningClusterFactory)
+	// If the cluster does not support the RBAC facility get a simple internal clientset
+	if err != nil {
+		unjoiningClusterClientset, err = unjoiningClusterFactory.ClientSet()
+	}
+
 	outerErr := err
 	if err != nil {
 		// Attempt to get a clientset using information from the cluster.
@@ -194,14 +200,27 @@ func popCluster(f cmdutil.Factory, name string) (*federationapi.Cluster, error) 
 	} else if err != nil {
 		return nil, err
 	}
-	cluster, ok := obj.(*federationapi.Cluster)
+
+	// TODO (@irfan): this is a stopgap
+	// Kubectl command factory no longer has any code relevant to federation
+	// and when asked to get the cluster resource it gets a generic rest
+	// client and gets the cluster object from the first available api in
+	// the list (which happens to be unversioned federation.Cluster).
+	cluster, ok := obj.(*federation.Cluster)
 	if !ok {
-		return nil, fmt.Errorf("unexpected object type: expected \"federation/v1beta1.Cluster\", got %T: obj: %#v", obj, obj)
+		return nil, fmt.Errorf("unexpected object type: expected \"federation.Cluster\", got %T: obj: %#v", obj, obj)
+	}
+
+	// We then translate it to the type v1beta1 for consumption.
+	v1beta1Cluster := &federationapi.Cluster{}
+	err = federationapi.Convert_federation_Cluster_To_v1beta1_Cluster(cluster, v1beta1Cluster, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error while converting federation cluster to federation v1beta1 cluster: %v", err)
 	}
 
 	// Remove the cluster resource in the federation API server by
 	// calling rh.Delete()
-	return cluster, rh.Delete("", name)
+	return v1beta1Cluster, rh.Delete("", name)
 }
 
 func updateConfigMapFromCluster(hostClientset, unjoiningClusterClientset internalclientset.Interface, fedSystemNamespace string) error {

@@ -27,7 +27,7 @@ RUN mkdir /var/run/kubernetes && chmod a+rwx /var/run/kubernetes
 
 # The kubernetes source is expected to be mounted here.  This will be the base
 # of operations.
-ENV HOME /go/src/k8s.io/kubernetes
+ENV HOME /go/src/k8s.io/federation
 WORKDIR ${HOME}
 
 # Make output from the dockerized build go someplace else
