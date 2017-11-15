@@ -390,74 +390,6 @@ function kube::release::create_docker_images_for_server() {
 
 }
 
-# Package up the salt configuration tree.  This is an optional helper to getting
-# a cluster up and running.
-function kube::release::package_salt_tarball() {
-  kube::log::status "Building tarball: salt"
-
-  local release_stage="${RELEASE_STAGE}/salt/kubernetes"
-  rm -rf "${release_stage}"
-  mkdir -p "${release_stage}"
-
-  cp -R "${KUBE_ROOT}/cluster/saltbase" "${release_stage}/"
-
-  # TODO(#3579): This is a temporary hack. It gathers up the yaml,
-  # yaml.in, json files in cluster/addons (minus any demos) and overlays
-  # them into kube-addons, where we expect them. (This pipeline is a
-  # fancy copy, stripping anything but the files we don't want.)
-  local objects
-  objects=$(cd "${KUBE_ROOT}/cluster/addons" && find . \( -name \*.yaml -or -name \*.yaml.in -or -name \*.json \) | grep -v demo)
-  tar c -C "${KUBE_ROOT}/cluster/addons" ${objects} | tar x -C "${release_stage}/saltbase/salt/kube-addons"
-
-  kube::release::clean_cruft
-
-  local package_name="${RELEASE_TARS}/kubernetes-salt.tar.gz"
-  kube::release::create_tarball "${package_name}" "${release_stage}/.."
-}
-
-# This will pack kube-system manifests files for distros without using salt
-# such as GCI and Ubuntu Trusty. We directly copy manifests from
-# cluster/addons and cluster/saltbase/salt. The script of cluster initialization
-# will remove the salt configuration and evaluate the variables in the manifests.
-function kube::release::package_kube_manifests_tarball() {
-  kube::log::status "Building tarball: manifests"
-
-  local salt_dir="${KUBE_ROOT}/cluster/saltbase/salt"
-
-  local release_stage="${RELEASE_STAGE}/manifests/kubernetes"
-  rm -rf "${release_stage}"
-
-  mkdir -p "${release_stage}"
-  cp "${salt_dir}/kube-registry-proxy/kube-registry-proxy.yaml" "${release_stage}/"
-  cp "${salt_dir}/kube-proxy/kube-proxy.manifest" "${release_stage}/"
-
-  local gci_dst_dir="${release_stage}/gci-trusty"
-  mkdir -p "${gci_dst_dir}"
-  cp "${salt_dir}/cluster-autoscaler/cluster-autoscaler.manifest" "${gci_dst_dir}/"
-  cp "${salt_dir}/etcd/etcd.manifest" "${gci_dst_dir}"
-  cp "${salt_dir}/kube-scheduler/kube-scheduler.manifest" "${gci_dst_dir}"
-  cp "${salt_dir}/kube-apiserver/kube-apiserver.manifest" "${gci_dst_dir}"
-  cp "${salt_dir}/kube-apiserver/abac-authz-policy.jsonl" "${gci_dst_dir}"
-  cp "${salt_dir}/kube-controller-manager/kube-controller-manager.manifest" "${gci_dst_dir}"
-  cp "${salt_dir}/kube-addons/kube-addon-manager.yaml" "${gci_dst_dir}"
-  cp "${salt_dir}/l7-gcp/glbc.manifest" "${gci_dst_dir}"
-  cp "${salt_dir}/rescheduler/rescheduler.manifest" "${gci_dst_dir}/"
-  cp "${salt_dir}/e2e-image-puller/e2e-image-puller.manifest" "${gci_dst_dir}/"
-  cp "${KUBE_ROOT}/cluster/gce/gci/configure-helper.sh" "${gci_dst_dir}/gci-configure-helper.sh"
-  cp "${KUBE_ROOT}/cluster/gce/gci/mounter/mounter" "${gci_dst_dir}/gci-mounter"
-  cp "${KUBE_ROOT}/cluster/gce/gci/health-monitor.sh" "${gci_dst_dir}/health-monitor.sh"
-  cp "${KUBE_ROOT}/cluster/gce/container-linux/configure-helper.sh" "${gci_dst_dir}/container-linux-configure-helper.sh"
-  cp -r "${salt_dir}/kube-admission-controls/limit-range" "${gci_dst_dir}"
-  local objects
-  objects=$(cd "${KUBE_ROOT}/cluster/addons" && find . \( -name \*.yaml -or -name \*.yaml.in -or -name \*.json \) | grep -v demo)
-  tar c -C "${KUBE_ROOT}/cluster/addons" ${objects} | tar x -C "${gci_dst_dir}"
-
-  kube::release::clean_cruft
-
-  local package_name="${RELEASE_TARS}/kubernetes-manifests.tar.gz"
-  kube::release::create_tarball "${package_name}" "${release_stage}/.."
-}
-
 # This is the stuff you need to run tests from the binary distribution.
 function kube::release::package_test_tarball() {
   kube::log::status "Building tarball: test"
@@ -495,7 +427,6 @@ function kube::release::package_test_tarball() {
 # using the bundled cluster/get-kube-binaries.sh script).
 # Included in this tarball:
 #   - Cluster spin up/down scripts and configs for various cloud providers
-#   - Tarballs for salt configs that are ready to be uploaded
 #     to master by whatever means appropriate.
 #   - Examples (which may or may not still work)
 #   - The remnants of the docs/ directory
@@ -506,10 +437,7 @@ function kube::release::package_final_tarball() {
   rm -rf "${release_stage}"
   mkdir -p "${release_stage}"
 
-  # We want everything in /cluster except saltbase.  That is only needed on the
-  # server.
   cp -R "${KUBE_ROOT}/cluster" "${release_stage}/"
-  rm -rf "${release_stage}/cluster/saltbase"
 
   cp -R "${KUBE_ROOT}/deploy" "${release_stage}/"
 

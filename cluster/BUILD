@@ -13,13 +13,11 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//cluster/addons:all-srcs",
         "//cluster/gce:all-srcs",
         "//cluster/images/etcd-version-monitor:all-srcs",
         "//cluster/images/etcd/attachlease:all-srcs",
         "//cluster/images/etcd/rollback:all-srcs",
         "//cluster/lib:all-srcs",
-        "//cluster/saltbase:all-srcs",
     ],
     tags = ["automanaged"],
 )
@@ -31,9 +29,7 @@ pkg_tar(
     package_dir = "gci-trusty",
     visibility = ["//visibility:private"],
     deps = [
-        "//cluster/addons",
         "//cluster/gce:gci-trusty-manifests",
-        "//cluster/saltbase:gci-trusty-salt-manifests",
     ],
 )
 
@@ -43,7 +39,6 @@ pkg_tar(
     package_dir = "kubernetes",
     deps = [
         ":_manifests-gci-trusty",
-        "//cluster/saltbase:salt-manifests",
     ],
 )
 
