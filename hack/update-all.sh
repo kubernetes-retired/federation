@@ -58,9 +58,11 @@ BASH_TARGETS="
 	update-generated-docs
 	update-federation-openapi-spec
 	update-federation-swagger-spec
-	update-federation-generated-swagger-docs
-	update-federation-api-reference-docs
 	update-bazel"
+# TODO(marun) Enable when the supporting commands are vendored with k/k
+#	update-federation-api-reference-docs
+#	update-federation-generated-swagger-docs
+
 
 for t in $BASH_TARGETS; do
 	echo -e "${color_yellow}Running $t${color_norm}"

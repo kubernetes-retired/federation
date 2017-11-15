@@ -162,46 +162,21 @@ kube::util::find-binary() {
   kube::util::find-binary-for-platform "$1" "$(kube::util::host_platform)"
 }
 
-# Run all known doc generators (today gendocs and genman for kubectl)
+# Run the federation doc generator.
 # $1 is the directory to put those generated documents
-kube::util::gen-docs() {
+kube::util::gen-fed-docs() {
   local dest="$1"
 
   # Find binary
-  gendocs=$(kube::util::find-binary "gendocs")
-  genkubedocs=$(kube::util::find-binary "genkubedocs")
-  genman=$(kube::util::find-binary "genman")
-  genyaml=$(kube::util::find-binary "genyaml")
   genfeddocs=$(kube::util::find-binary "genfeddocs")
 
-  mkdir -p "${dest}/docs/user-guide/kubectl/"
-  "${gendocs}" "${dest}/docs/user-guide/kubectl/"
   mkdir -p "${dest}/docs/admin/"
-  "${genkubedocs}" "${dest}/docs/admin/" "kube-apiserver"
-  "${genkubedocs}" "${dest}/docs/admin/" "kube-controller-manager"
-  "${genkubedocs}" "${dest}/docs/admin/" "cloud-controller-manager"
-  "${genkubedocs}" "${dest}/docs/admin/" "kube-proxy"
-  "${genkubedocs}" "${dest}/docs/admin/" "kube-scheduler"
-  "${genkubedocs}" "${dest}/docs/admin/" "kubelet"
-
   # We don't really need federation-apiserver and federation-controller-manager
   # binaries to generate the docs. We just pass their names to decide which docs
-  # to generate. The actual binary for running federation is hyperkube.
+  # to generate. The actual binary for running federation is fcp.
   "${genfeddocs}" "${dest}/docs/admin/" "federation-apiserver"
   "${genfeddocs}" "${dest}/docs/admin/" "federation-controller-manager"
   "${genfeddocs}" "${dest}/docs/admin/" "kubefed"
-
-  mkdir -p "${dest}/docs/man/man1/"
-  "${genman}" "${dest}/docs/man/man1/" "kube-apiserver"
-  "${genman}" "${dest}/docs/man/man1/" "kube-controller-manager"
-  "${genman}" "${dest}/docs/man/man1/" "cloud-controller-manager"
-  "${genman}" "${dest}/docs/man/man1/" "kube-proxy"
-  "${genman}" "${dest}/docs/man/man1/" "kube-scheduler"
-  "${genman}" "${dest}/docs/man/man1/" "kubelet"
-  "${genman}" "${dest}/docs/man/man1/" "kubectl"
-
-  mkdir -p "${dest}/docs/yaml/kubectl/"
-  "${genyaml}" "${dest}/docs/yaml/kubectl/"
 
   # create the list of generated files
   pushd "${dest}" > /dev/null

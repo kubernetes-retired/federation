@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
    "title": "Generic API Server",
-   "version": "v1.9.0"
+   "version": "v0.0.0"
   },
   "paths": {
    "/api/": {
@@ -14304,11 +14304,6 @@
       "kind": "DeleteOptions"
      },
      {
-      "group": "admission.k8s.io",
-      "version": "v1alpha1",
-      "kind": "DeleteOptions"
-     },
-     {
       "group": "admissionregistration.k8s.io",
       "version": "v1alpha1",
       "kind": "DeleteOptions"
@@ -14386,11 +14381,6 @@
      {
       "group": "federation",
       "version": "v1beta1",
-      "kind": "DeleteOptions"
-     },
-     {
-      "group": "imagepolicy.k8s.io",
-      "version": "v1alpha1",
       "kind": "DeleteOptions"
      },
      {
@@ -14823,11 +14813,6 @@
       "kind": "WatchEvent"
      },
      {
-      "group": "admission.k8s.io",
-      "version": "v1alpha1",
-      "kind": "WatchEvent"
-     },
-     {
       "group": "admissionregistration.k8s.io",
       "version": "v1alpha1",
       "kind": "WatchEvent"
@@ -14905,11 +14890,6 @@
      {
       "group": "federation",
       "version": "v1beta1",
-      "kind": "WatchEvent"
-     },
-     {
-      "group": "imagepolicy.k8s.io",
-      "version": "v1alpha1",
       "kind": "WatchEvent"
      },
      {

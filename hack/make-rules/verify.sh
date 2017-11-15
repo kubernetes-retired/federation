@@ -23,10 +23,32 @@ source "${KUBE_ROOT}/hack/lib/util.sh"
 
 # Excluded check patterns are always skipped.
 EXCLUDED_PATTERNS=(
-  "verify-all.sh"                # this script calls the make rule and would cause a loop
-  "verify-linkcheck.sh"          # runs in separate Jenkins job once per day due to high network usage
-  "verify-test-owners.sh"        # TODO(rmmh): figure out how to avoid endless conflicts
-  "verify-*-dockerized.sh"       # Don't run any scripts that intended to be run dockerized
+  "verify-all.sh"                          # this script calls the make rule and would cause a loop
+  "verify-linkcheck.sh"                    # runs in separate Jenkins job once per day due to high network usage
+  "verify-test-owners.sh"                  # TODO(rmmh): figure out how to avoid endless conflicts
+  "verify-*-dockerized.sh"                 # Don't run any scripts that intended to be run dockerized
+  "verify-api-groups.sh"                   ## Checks that aren't relevant for federation
+  "verify-api-reference-docs.sh"           # TODO(marun) Remove checks and their dependencies
+  "verify-description.sh"
+  "verify-generated-device-plugin.sh"
+  "verify-generated-runtime.sh"
+  "verify-generated-swagger-docs.sh"
+  "verify-godep-licenses.sh"
+  "verify-godeps.sh"
+  "verify-import-boss.sh"
+  "verify-openapi-spec.sh"
+  "verify-readonly-packages.sh"
+  "verify-staging-godeps.sh"
+  "verify-swagger-spec.sh"
+  "verify-test-owners.sh"
+  "verify-cli-conventions.sh"               ## TODO(marun) Checks that need to be fixed for federation
+  "verify-federation-api-reference-docs.sh"
+  "verify-generated-protobuf.sh"
+  "verify-imports.sh"
+  "verify-linkcheck.sh"
+  "verify-federation-generated-swagger-docs.sh"
+  "verify-federation-*-spec.sh"             # TODO(marun) Requires etcd to be in the path
+  "verify-golint.sh"                        # TODO(marun) Requires golint to be in the path
   )
 
 # Only run whitelisted fast checks in quick mode.
@@ -147,7 +169,7 @@ run-checks "${KUBE_ROOT}/hack/verify-*.sh" bash
 run-checks "${KUBE_ROOT}/hack/verify-*.py" python
 
 if [[ ${ret} -eq 1 ]]; then
-    print-failed-tests 
+    print-failed-tests
 fi
 exit ${ret}
 

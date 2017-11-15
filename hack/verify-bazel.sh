@@ -30,12 +30,13 @@ fi
 # Remove generated files prior to running kazel.
 # TODO(spxtr): Remove this line once Bazel is the only way to build.
 rm -f "${KUBE_ROOT}/pkg/generated/openapi/zz_generated.openapi.go"
+rm -f "${KUBE_ROOT}/vendor/k8s.io/kubernetes/pkg/generated/openapi/zz_generated.openapi.go"
 
 _tmpdir="$(mktemp -d -t verify-bazel.XXXXXX)"
 kube::util::trap_add "rm -rf ${_tmpdir}" EXIT
 
 _tmp_gopath="${_tmpdir}/go"
-_tmp_kuberoot="${_tmp_gopath}/src/k8s.io/kubernetes"
+_tmp_kuberoot="${_tmp_gopath}/src/k8s.io/federation"
 mkdir -p "${_tmp_kuberoot}/.."
 cp -a "${KUBE_ROOT}" "${_tmp_kuberoot}/.."
 

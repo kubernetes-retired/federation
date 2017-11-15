@@ -22,12 +22,12 @@ set -o nounset
 set -o pipefail
 
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
-OPENAPI_ROOT_DIR="${KUBE_ROOT}/federation/apis/openapi-spec"
+OPENAPI_ROOT_DIR="${KUBE_ROOT}/apis/openapi-spec"
 source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
 
-make -C "${KUBE_ROOT}" WHAT="cmd/hyperkube"
+make -C "${KUBE_ROOT}" WHAT="cmd/fcp"
 
 function cleanup()
 {
@@ -54,7 +54,7 @@ echo "dummy_token,admin,admin" > $TMP_DIR/tokenauth.csv
 
 # Start federation-apiserver
 kube::log::status "Starting federation-apiserver"
-"${KUBE_OUTPUT_HOSTBIN}/hyperkube" federation-apiserver \
+"${KUBE_OUTPUT_HOSTBIN}/fcp" federation-apiserver \
   --insecure-bind-address="${API_HOST}" \
   --bind-address="${API_HOST}" \
   --insecure-port="${API_PORT}" \
