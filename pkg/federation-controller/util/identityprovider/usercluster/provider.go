@@ -20,16 +20,16 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/golang/glog"
+
 	apiextensionsclient "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/rest"
 	fedv1 "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 )
 
 type UserClusterIdentityProvider struct {
-	client    *UserClusterIdentityCRDClient
-	namespace string
+	lister *userClusterIdentityLister
 }
 
 func NewUserClusterIdentityProvider(apiextClientConfig *rest.Config, identityNamespace string) (*UserClusterIdentityProvider, error) {
@@ -48,7 +48,9 @@ func NewUserClusterIdentityProvider(apiextClientConfig *rest.Config, identityNam
 		return nil, fmt.Errorf("failed creating UserClusterIdentity CRD client, err: %v", err)
 	}
 
-	return &UserClusterIdentityProvider{client, identityNamespace}, nil
+	return &UserClusterIdentityProvider{
+		lister: NewUserClusterIdentityLister(client.UserClusterIdentity(identityNamespace)),
+	}, nil
 }
 
 func NewInClusterUserClusterIdentityProviderOrDie() *UserClusterIdentityProvider {
@@ -70,18 +72,20 @@ func NewInClusterUserClusterIdentityProviderOrDie() *UserClusterIdentityProvider
 	return provider
 }
 
-// TODO: use a cache and indexer
 func (p *UserClusterIdentityProvider) GetUserIdentityForCluster(username string, cluster *fedv1.Cluster) (*identityprovider.Identity, error) {
-	identityList, err := p.client.UserClusterIdentity(p.namespace).List(metav1.ListOptions{})
+	identities, err := p.lister.ListByUserCluster(username, cluster.Name)
 	if err != nil {
 		return nil, fmt.Errorf("error listing UserClusterIdentity objects, err: %v", err)
 	}
-	for _, i := range identityList.Items {
-		// TODO: handle duplications
-		// TODO: prevent mutating Spec.Username and Spec.ClusterName, OpenAPI v3 CRD validation
-		if i.Spec.Username == username && i.Spec.ClusterName == cluster.Name {
-			return &i.Spec.Identity, nil
-		}
+
+	if len(identities) == 0 {
+		return nil, fmt.Errorf("identity not found for user %v on cluster %v", username, cluster.Name)
 	}
-	return nil, fmt.Errorf("identity not found for user %v on cluster %v", username, cluster.Name)
+
+	// TODO: handle duplications
+	// TODO: prevent mutating Spec.Username and Spec.ClusterName, OpenAPI v3 CRD validation
+	if len(identities) > 1 {
+		glog.Warningf("multiple (%v) identities found for user %v on cluster %v", len(identities), username, cluster.Name)
+	}
+	return &identities[0].Spec.Identity, nil
 }
