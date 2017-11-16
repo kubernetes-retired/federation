@@ -143,7 +143,6 @@ pkg_tar(
         "//:version",
         "//cluster:all-srcs",
         "//deploy:all-srcs",
-        "//develop:all-srcs",
         "//docs:all-srcs",
         "//hack/lib:all-srcs",
     ],
