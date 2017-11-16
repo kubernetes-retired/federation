@@ -108,7 +108,7 @@ func TestServiceController(t *testing.T) {
 		}
 	}
 
-	sc := New(fedClient)
+	sc := New(fedClient, nil)
 	ToFederatedInformerForTestOnly(sc.federatedInformer).SetClientFactory(fedInformerClientFactory)
 	ToFederatedInformerForTestOnly(sc.endpointFederatedInformer).SetClientFactory(fedInformerClientFactory)
 	sc.clusterAvailableDelay = 100 * time.Millisecond
@@ -227,7 +227,7 @@ func TestGetOperationsToPerformOnCluster(t *testing.T) {
 	obj := NewService("test-service-1", 80)
 	cluster1 := NewCluster("cluster1", v1.ConditionTrue)
 	fedClient := &fakefedclientset.Clientset{}
-	sc := New(fedClient)
+	sc := New(fedClient, nil)
 
 	testCases := map[string]struct {
 		expectedSendErr bool

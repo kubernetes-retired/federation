@@ -30,6 +30,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	fakefederationclientset "k8s.io/federation/client/clientset_generated/federation_clientset/fake"
+	singleidentityprovider "k8s.io/federation/pkg/federation-controller/util/identityprovider/single"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -106,7 +107,7 @@ func TestFederatedInformer(t *testing.T) {
 		},
 	}
 
-	informer := NewFederatedInformer(fakeFederationClient, targetInformerFactory, &lifecycle).(*federatedInformerImpl)
+	informer := NewFederatedInformer(fakeFederationClient, singleidentityprovider.NewSingleIdentityProvider(), targetInformerFactory, &lifecycle).(*federatedInformerImpl)
 	informer.clientFactory = func(cluster *federationapi.Cluster) (kubeclientset.Interface, error) {
 		return fakeKubeClient, nil
 	}

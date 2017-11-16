@@ -45,8 +45,8 @@ type Identity struct {
 	ImpersonatingUser *authv1.UserInfo
 }
 
-// Interface for a identity provider
-type IdentityProvider interface {
+// Interface of an identity provider
+type Interface interface {
 	// GetUserIdentityForCluster returns the identity should be used for the user to access the given cluster
 	GetUserIdentityForCluster(user string, cluster *fedv1.Cluster) (*Identity, error)
 }

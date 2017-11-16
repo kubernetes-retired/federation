@@ -51,6 +51,7 @@ import (
 	servicednscontroller "k8s.io/federation/pkg/federation-controller/service/dns"
 	synccontroller "k8s.io/federation/pkg/federation-controller/sync"
 	"k8s.io/federation/pkg/federation-controller/util/eventsink"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/util/configz"
 	"k8s.io/kubernetes/pkg/version"
@@ -200,6 +201,11 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config, sto
 
 	clustercontroller.StartClusterController(restClientCfg, stopChan, s.ClusterMonitorPeriod.Duration)
 
+	identityProvider, err := identityprovider.InitIdentityProvider(s.IdentityProvider, "")
+	if err != nil {
+		glog.Fatalf("Failed initialize identity provider %q, err: %v", s.IdentityProvider, err)
+	}
+
 	if controllerEnabled(s.Controllers, serverResources, servicecontroller.ControllerName, servicecontroller.RequiredResources, true) {
 		if controllerEnabled(s.Controllers, serverResources, servicednscontroller.ControllerName, servicecontroller.RequiredResources, true) {
 			serviceDNScontrollerClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, servicednscontroller.UserAgentName))
@@ -213,7 +219,7 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config, sto
 
 		glog.V(3).Infof("Loading client config for service controller %q", servicecontroller.UserAgentName)
 		scClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, servicecontroller.UserAgentName))
-		serviceController := servicecontroller.New(scClientset)
+		serviceController := servicecontroller.New(scClientset, identityProvider)
 		go serviceController.Run(s.ConcurrentServiceSyncs, stopChan)
 	}
 
@@ -221,14 +227,14 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config, sto
 	adapterSpecificArgs[federatedtypes.HpaKind] = &s.HpaScaleForbiddenWindow
 	for kind, federatedType := range federatedtypes.FederatedTypes() {
 		if controllerEnabled(s.Controllers, serverResources, federatedType.ControllerName, federatedType.RequiredResources, true) {
-			synccontroller.StartFederationSyncController(kind, federatedType.AdapterFactory, restClientCfg, stopChan, minimizeLatency, adapterSpecificArgs)
+			synccontroller.StartFederationSyncController(kind, identityProvider, federatedType.AdapterFactory, restClientCfg, stopChan, minimizeLatency, adapterSpecificArgs)
 		}
 	}
 
 	if controllerEnabled(s.Controllers, serverResources, jobcontroller.ControllerName, jobcontroller.RequiredResources, true) {
 		glog.V(3).Infof("Loading client config for job controller %q", jobcontroller.UserAgentName)
 		jobClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, jobcontroller.UserAgentName))
-		jobController := jobcontroller.NewJobController(jobClientset)
+		jobController := jobcontroller.NewJobController(jobClientset, identityProvider)
 		glog.V(3).Infof("Running job controller")
 		go jobController.Run(s.ConcurrentJobSyncs, wait.NeverStop)
 	}
@@ -236,7 +242,7 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config, sto
 	if controllerEnabled(s.Controllers, serverResources, ingresscontroller.ControllerName, ingresscontroller.RequiredResources, true) {
 		glog.V(3).Infof("Loading client config for ingress controller %q", ingresscontroller.UserAgentName)
 		ingClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, ingresscontroller.UserAgentName))
-		ingressController := ingresscontroller.NewIngressController(ingClientset)
+		ingressController := ingresscontroller.NewIngressController(ingClientset, identityProvider)
 		glog.V(3).Infof("Running ingress controller")
 		ingressController.Run(stopChan)
 	}

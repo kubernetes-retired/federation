@@ -24,4 +24,8 @@ import (
 	_ "k8s.io/federation/pkg/dnsprovider/providers/aws/route53"
 	_ "k8s.io/federation/pkg/dnsprovider/providers/coredns"
 	_ "k8s.io/federation/pkg/dnsprovider/providers/google/clouddns"
+
+	// Identity providers
+	_ "k8s.io/federation/pkg/federation-controller/util/identityprovider/single"
+	_ "k8s.io/federation/pkg/federation-controller/util/identityprovider/usercluster"
 )

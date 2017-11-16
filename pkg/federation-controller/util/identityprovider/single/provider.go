@@ -17,11 +17,16 @@ limitations under the License.
 package single
 
 import (
+	"io"
 	"os"
 
 	corev1 "k8s.io/api/core/v1"
 	fedv1 "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
+)
+
+const (
+	providerName = "single"
 )
 
 type singleIdentityProvider struct{}
@@ -40,4 +45,10 @@ func (p *singleIdentityProvider) GetUserIdentityForCluster(username string, clus
 			Name:      cluster.Spec.SecretRef.Name,
 		},
 	}, nil
+}
+
+func init() {
+	identityprovider.RegisterIdentityProvider(providerName, func(config io.Reader) (identityprovider.Interface, error) {
+		return NewSingleIdentityProvider(), nil
+	})
 }

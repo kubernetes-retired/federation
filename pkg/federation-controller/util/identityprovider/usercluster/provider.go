@@ -18,6 +18,7 @@ package usercluster
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/golang/glog"
@@ -26,6 +27,10 @@ import (
 	"k8s.io/client-go/rest"
 	fedv1 "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
+)
+
+const (
+	providerName = "usercluster"
 )
 
 type UserClusterIdentityProvider struct {
@@ -54,22 +59,30 @@ func NewUserClusterIdentityProvider(apiextClientConfig *rest.Config, identityNam
 }
 
 func NewInClusterUserClusterIdentityProviderOrDie() *UserClusterIdentityProvider {
+	provider, err := NewInClusterUserClusterIdentityProvider()
+	if err != nil {
+		panic(err)
+	}
+	return provider
+}
+
+func NewInClusterUserClusterIdentityProvider() (*UserClusterIdentityProvider, error) {
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		panic(fmt.Errorf("error in creating in-cluster config: %s", err))
+		return nil, fmt.Errorf("error in creating in-cluster config: %s", err)
 	}
 
 	namespace := os.Getenv("POD_NAMESPACE")
 	if namespace == "" {
-		panic(fmt.Errorf("unexpected: POD_NAMESPACE env var returned empty string"))
+		return nil, fmt.Errorf("unexpected: POD_NAMESPACE env var returned empty string")
 	}
 
 	provider, err := NewUserClusterIdentityProvider(config, namespace)
 	if err != nil {
-		panic(fmt.Errorf("error in creating identity provider: %s", err))
+		return nil, fmt.Errorf("error in creating identity provider: %s", err)
 	}
 
-	return provider
+	return provider, nil
 }
 
 func (p *UserClusterIdentityProvider) GetUserIdentityForCluster(username string, cluster *fedv1.Cluster) (*identityprovider.Identity, error) {
@@ -88,4 +101,10 @@ func (p *UserClusterIdentityProvider) GetUserIdentityForCluster(username string,
 		glog.Warningf("multiple (%v) identities found for user %v on cluster %v", len(identities), username, cluster.Name)
 	}
 	return &identities[0].Spec.Identity, nil
+}
+
+func init() {
+	identityprovider.RegisterIdentityProvider(providerName, func(config io.Reader) (identityprovider.Interface, error) {
+		return NewInClusterUserClusterIdentityProvider()
+	})
 }

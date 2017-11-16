@@ -35,7 +35,6 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
-	userclusteridentityprovider "k8s.io/federation/pkg/federation-controller/util/identityprovider/usercluster"
 )
 
 const (
@@ -141,10 +140,9 @@ type ClusterLifecycleHandlerFuncs struct {
 // Builds a FederatedInformer for the given federation client and factory.
 func NewFederatedInformer(
 	federationClient federationclientset.Interface,
+	identityProvider identityprovider.Interface,
 	targetInformerFactory TargetInformerFactory,
 	clusterLifecycle *ClusterLifecycleHandlerFuncs) FederatedInformer {
-
-	identityProvider := userclusteridentityprovider.NewInClusterUserClusterIdentityProviderOrDie()
 
 	federatedInformer := &federatedInformerImpl{
 		targetInformerFactory: targetInformerFactory,
@@ -271,7 +269,7 @@ type federatedInformerImpl struct {
 	// Structures returned by targetInformerFactory
 	targetInformers map[string]informer
 
-	identityProvider identityprovider.IdentityProvider
+	identityProvider identityprovider.Interface
 	federationClient federationclientset.Interface
 	// A function to build clients.
 	clientFactory func(*federationapi.Cluster) (kubeclientset.Interface, error)
@@ -348,6 +346,11 @@ func (f *federatedInformerImpl) GetClientsetForUserOnCluster(username string, cl
 	}
 	if !found {
 		return nil, fmt.Errorf("cluster %q not found", clusterName)
+	}
+
+	// fallback if no provider specified
+	if f.identityProvider == nil {
+		return f.getClientsetForClusterUnlocked(clusterName)
 	}
 
 	identity, err := f.identityProvider.GetUserIdentityForCluster(username, cluster)

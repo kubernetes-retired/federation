@@ -106,7 +106,7 @@ func TestJobController(t *testing.T) {
 			return nil, fmt.Errorf("Unknown cluster: %v", cluster.Name)
 		}
 	}
-	jobController := NewJobController(fedclientset)
+	jobController := NewJobController(fedclientset, nil)
 	fedjobinformer := testutil.ToFederatedInformerForTestOnly(jobController.fedJobInformer)
 	fedjobinformer.SetClientFactory(fedInformerClientFactory)
 
