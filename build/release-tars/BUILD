@@ -84,8 +84,8 @@ pkg_tar(
     name = "_server-bin",
     files = [
         "//build:client-targets",
+        "//build:docker-artifacts",
         "//build:server-targets",
-        "//build:docker-artifacts"
     ],
     mode = "0755",
     package_dir = "server/bin",
@@ -137,13 +137,13 @@ pkg_tar(
     name = "federation",
     extension = "tar.gz",
     files = [
-        "//:k8s-version",
         "//:LICENSE",
         "//:README.md",
+        "//:k8s-version",
         "//:version",
         "//cluster:all-srcs",
-        "//develop:all-srcs",
         "//deploy:all-srcs",
+        "//develop:all-srcs",
         "//docs:all-srcs",
         "//hack/lib:all-srcs",
     ],
