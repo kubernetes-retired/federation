@@ -89,7 +89,6 @@ filegroup(
 filegroup(
     name = "test-portable-targets",
     srcs = [
-        "//develop:all-srcs",
         "//hack:e2e.go",
         "//hack:federated-ginkgo-e2e.sh",
         "//hack:get-build.sh",
