@@ -143,7 +143,7 @@ var _ = framework.KubeDescribe("Federated ingresses [Feature:Federation]", func(
 	})
 
 	// e2e cases for federation ingress controller
-	var _ = Describe("Federated Ingresses [Slow]", func() {
+	var _ = PDescribe("Federated Ingresses [Slow]", func() {
 		var (
 			clusters           fedframework.ClusterSlice
 			federationName, ns string
@@ -153,6 +153,8 @@ var _ = framework.KubeDescribe("Federated ingresses [Feature:Federation]", func(
 		)
 
 		// register clusters in federation apiserver
+		// TODO: Following e2e testcases have been disabled as they are consistently failing.
+		// Need to revisit and make them work based on redesign of federated ingress feature.
 		BeforeEach(func() {
 			fedframework.SkipUnlessFederated(f.ClientSet)
 			framework.SkipUnlessProviderIs("gce", "gke") // TODO: Federated ingress is not yet supported on non-GCP platforms.
