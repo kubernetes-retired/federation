@@ -27,6 +27,7 @@ go_library(
         "//apis/federation/v1beta1:go_default_library",
         "//cmd/federation-apiserver/app/options:go_default_library",
         "//pkg/generated/openapi:go_default_library",
+        "//plugin/pkg/admission/lastupdatedby:go_default_library",
         "//plugin/pkg/admission/schedulingpolicy:go_default_library",
         "//registry/cluster/etcd:go_default_library",
         "//vendor/github.com/go-openapi/spec:go_default_library",
