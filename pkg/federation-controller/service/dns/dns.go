@@ -53,6 +53,17 @@ const (
 	serviceSyncPeriod = 30 * time.Second
 )
 
+// Abstracting away the internet
+type NetWrapper interface {
+	LookupHost(host string) (addrs []string, err error)
+}
+
+type NetWrapperDefaultImplementation struct{}
+
+func (r *NetWrapperDefaultImplementation) LookupHost(host string) (addrs []string, err error) {
+	return net.LookupHost(host)
+}
+
 type ServiceDNSController struct {
 	// Client to federation api server
 	federationClient fedclientset.Interface
@@ -73,16 +84,20 @@ type ServiceDNSController struct {
 	workQueue          workqueue.Interface
 	objectDeliverer    *util.DelayingDeliverer
 	flowcontrolBackoff *flowcontrol.Backoff
+	// Wraps DNS resolving so it can be mocked.
+	netWrapper NetWrapper
 }
 
 // NewServiceDNSController returns a new service dns controller to manage DNS records for federated services
 func NewServiceDNSController(client fedclientset.Interface, dnsProvider, dnsProviderConfig, federationName,
 	serviceDNSSuffix, zoneName, zoneID string) (*ServiceDNSController, error) {
+
 	dns, err := dnsprovider.InitDnsProvider(dnsProvider, dnsProviderConfig)
 	if err != nil {
 		runtime.HandleError(fmt.Errorf("DNS provider could not be initialized: %v", err))
 		return nil, err
 	}
+
 	d := &ServiceDNSController{
 		federationClient:   client,
 		dns:                dns,
@@ -93,6 +108,7 @@ func NewServiceDNSController(client fedclientset.Interface, dnsProvider, dnsProv
 		workQueue:          workqueue.New(),
 		objectDeliverer:    util.NewDelayingDeliverer(),
 		flowcontrolBackoff: flowcontrol.NewBackOff(5*time.Second, time.Minute),
+		netWrapper:         &NetWrapperDefaultImplementation{},
 	}
 	if err := d.validateConfig(); err != nil {
 		runtime.HandleError(fmt.Errorf("Invalid configuration passed to DNS provider: %v", err))
@@ -139,6 +155,7 @@ func (s *ServiceDNSController) DNSControllerRun(workers int, stopCh <-chan struc
 	go s.serviceController.Run(stopCh)
 
 	for i := 0; i < workers; i++ {
+		// Control loop running every second ensuring DNS records are in sync.
 		go wait.Until(s.worker, time.Second, stopCh)
 	}
 
@@ -361,13 +378,14 @@ func findRrset(list []dnsprovider.ResourceRecordSet, rrset dnsprovider.ResourceR
    and returns a list of IPv4 addresses.  If any of the endpoints are neither valid IPv4 addresses nor resolvable DNS names,
    non-nil error is also returned (possibly along with a partially complete list of resolved endpoints.
 */
-func getResolvedEndpoints(endpoints []string) ([]string, error) {
+func getResolvedEndpoints(endpoints []string, netWrapper NetWrapper) ([]string, error) {
 	resolvedEndpoints := sets.String{}
 	for _, endpoint := range endpoints {
 		if net.ParseIP(endpoint) == nil {
 			// It's not a valid IP address, so assume it's a DNS name, and try to resolve it,
 			// replacing its DNS name with its IP addresses in expandedEndpoints
-			ipAddrs, err := net.LookupHost(endpoint)
+			// through an interface abstracting the internet
+			ipAddrs, err := netWrapper.LookupHost(endpoint)
 			if err != nil {
 				return resolvedEndpoints.List(), err
 			}
@@ -414,10 +432,12 @@ func (s *ServiceDNSController) ensureDNSRrsets(dnsZone dnsprovider.Zone, dnsName
 			// But first resolve DNS names, as some cloud providers (like AWS) expose
 			// load balancers behind DNS names, not IP addresses.
 			glog.V(4).Infof("We have valid endpoint addresses %v at level %q, so add them as A records, after resolving DNS names", endpoints, dnsName)
-			resolvedEndpoints, err := getResolvedEndpoints(endpoints)
+			// Resolve DNS through network
+			resolvedEndpoints, err := getResolvedEndpoints(endpoints, s.netWrapper)
 			if err != nil {
 				return err // TODO: We could potentially add the ones we did get back, even if some of them failed to resolve.
 			}
+
 			newRrset := rrsets.New(dnsName, resolvedEndpoints, minDNSTTL, rrstype.A)
 			glog.V(4).Infof("Adding recordset %v", newRrset)
 			err = rrsets.StartChangeset().Add(newRrset).Apply()
@@ -463,7 +483,7 @@ func (s *ServiceDNSController) ensureDNSRrsets(dnsZone dnsprovider.Zone, dnsName
 			// We have an rrset in DNS, possibly with some missing addresses and some unwanted addresses.
 			// And we have healthy endpoints.  Just replace what's there with the healthy endpoints, if it's not already correct.
 			glog.V(4).Infof("%s: Healthy endpoints %v exist. Recordset %v exists.  Reconciling.", dnsName, endpoints, rrsetList)
-			resolvedEndpoints, err := getResolvedEndpoints(endpoints)
+			resolvedEndpoints, err := getResolvedEndpoints(endpoints, s.netWrapper)
 			if err != nil { // Some invalid addresses or otherwise unresolvable DNS names.
 				return err // TODO: We could potentially add the ones we did get back, even if some of them failed to resolve.
 			}
@@ -541,6 +561,7 @@ func (s *ServiceDNSController) ensureDNSRecords(clusterName string, service *v1.
 	}
 	endpoints := [][]string{zoneEndpoints, regionEndpoints, globalEndpoints}
 	for i, endpoint := range endpoints {
+		// This is where the DNS resolving of endpoints happens
 		if err = s.ensureDNSRrsets(s.dnsZone, dnsNames[i], endpoint, dnsNames[i+1]); err != nil {
 			return err
 		}
