@@ -30,10 +30,10 @@ source "${KUBE_ROOT}/hack/lib/swagger.sh"
 kube::golang::setup_env
 
 REPO_DIR=${REPO_DIR:-"${KUBE_ROOT}"}
-DEFAULT_OUTPUT="${REPO_DIR}/federation/docs/api-reference"
+DEFAULT_OUTPUT="${REPO_DIR}/docs/api-reference"
 OUTPUT=${1:-${DEFAULT_OUTPUT}}
 
-SWAGGER_SPEC_PATH="${REPO_DIR}/federation/apis/swagger-spec"
+SWAGGER_SPEC_PATH="${REPO_DIR}/apis/swagger-spec"
 
 GROUP_VERSIONS=("federation/v1beta1" "v1" "extensions/v1beta1")
 GV_DIRS=()

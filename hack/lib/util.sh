@@ -221,20 +221,7 @@ kube::util::remove-gen-docs() {
 # * Special handling for groups suffixed with ".k8s.io": foo.k8s.io/v1 -> apis/foo/v1
 # * Very special handling for when both group and version are "": / -> api
 kube::util::group-version-to-pkg-path() {
-  staging_apis=(
-  $(
-    pushd ${KUBE_ROOT}/staging/src/k8s.io/api > /dev/null
-      find . -name types.go | xargs -n1 dirname | sed "s|\./||g" | sort
-    popd > /dev/null
-  )
-  )
-
   local group_version="$1"
-
-  if [[ " ${staging_apis[@]} " =~ " ${group_version/.*k8s.io/} " ]]; then
-    echo "vendor/k8s.io/api/${group_version/.*k8s.io/}"
-    return
-  fi
 
   # "v1" is the API GroupVersion
   if [[ "${group_version}" == "v1" ]]; then
@@ -248,34 +235,25 @@ kube::util::group-version-to-pkg-path() {
   case "${group_version}" in
     # both group and version are "", this occurs when we generate deep copies for internal objects of the legacy v1 API.
     __internal)
-      echo "pkg/api"
+      echo "vendor/k8s.io/api"
       ;;
     federation/v1beta1)
-      echo "federation/apis/federation/v1beta1"
+      echo "apis/federation/v1beta1"
       ;;
     meta/v1)
       echo "vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
       ;;
-    meta/v1)
-      echo "../vendor/k8s.io/apimachinery/pkg/apis/meta/v1"
-      ;;
     meta/v1alpha1)
       echo "vendor/k8s.io/apimachinery/pkg/apis/meta/v1alpha1"
       ;;
-    meta/v1alpha1)
-      echo "../vendor/k8s.io/apimachinery/pkg/apis/meta/v1alpha1"
-      ;;
-    unversioned)
-      echo "pkg/api/unversioned"
-      ;;
     *.k8s.io)
-      echo "pkg/apis/${group_version%.*k8s.io}"
+      echo "vendor/k8s.io/api/${group_version%.*k8s.io}"
       ;;
     *.k8s.io/*)
-      echo "pkg/apis/${group_version/.*k8s.io/}"
+      echo "vendor/k8s.io/api/${group_version/.*k8s.io/}"
       ;;
     *)
-      echo "pkg/apis/${group_version%__internal}"
+      echo "vendor/k8s.io/api/${group_version%__internal}"
       ;;
   esac
 }
