@@ -25,7 +25,7 @@ source "${KUBE_ROOT}/hack/lib/init.sh"
 
 kube::golang::setup_env
 
-API_REFERENCE_DOCS_ROOT="${KUBE_ROOT}/federation/docs/api-reference"
+API_REFERENCE_DOCS_ROOT="${KUBE_ROOT}/docs/api-reference"
 OUTPUT_DIR="${KUBE_ROOT}/_tmp_federation/api-reference"
 mkdir -p ${OUTPUT_DIR}
 TMP_ROOT="${KUBE_ROOT}/_tmp_federation"
