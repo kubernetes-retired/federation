@@ -22,12 +22,18 @@ import (
 
 	"github.com/pborman/uuid"
 
+	apiv1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	pkgruntime "k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apiserver/pkg/storage/names"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federatedtypes"
 	"k8s.io/federation/pkg/federatedtypes/crudtester"
 	"k8s.io/federation/test/integration/framework"
 )
+
+// This test includes tests for resource deletion within a namespace that was reworked from existing
+// e2e tests.
 
 // TestFederationCRUD validates create/read/update/delete operations for federated resource types.
 func TestFederationCRUD(t *testing.T) {
@@ -94,6 +100,68 @@ func TestFederationCRUD(t *testing.T) {
 		objectExpected = false
 		crudTester.CheckPropagationForClients(updatedObj, fedFixture.ClusterClients[1:2], objectExpected)
 
+	})
+
+	// Rewrite of existing e2e namespace test
+	t.Run("ReplicaSets should be deleted when namespace is deleted", func(t *testing.T) {
+
+		// Create namespace crudtester
+		fixtureOne, namespaceTester, nsObj, _ := initCRUDTest(t, &fedFixture, federatedtypes.NewNamespaceAdapter, federatedtypes.NamespaceKind)
+		defer fixtureOne.TearDown(t)
+
+		// Create namespace
+		namespaceObj := namespaceTester.CheckCreate(nsObj)
+		nsName := namespaceObj.(*apiv1.Namespace).Name
+
+		// Create replicaset
+		config := fedFixture.APIFixture.NewConfig()
+		client := fedFixture.APIFixture.NewClient(fmt.Sprintf("crud-test-%s", federatedtypes.ReplicaSetKind))
+		rsAdapter := adapterFactory(client, config, nil)
+		obj := rsAdapter.NewTestObject(nsName)
+
+		// Create replicaset inside of namespace
+		replicasetObj, err := rsAdapter.FedCreate(obj)
+		if err != nil {
+			t.Logf("Failed to create replicasets %v in namespace %s, err: %s", &replicasetObj, nsName, err)
+		}
+
+		objectExpected := true
+		namespaceTester.CheckDelete(namespaceObj, &objectExpected)
+
+	})
+
+	// Rewrite of existing e2e event test
+	t.Run("Events should be deleted when namespace is deleted", func(t *testing.T) {
+		// Create namespace crudtester
+		fixtureOne, namespaceTester, nsObj, _ := initCRUDTest(t, &fedFixture, federatedtypes.NewNamespaceAdapter, federatedtypes.NamespaceKind)
+		defer fixtureOne.TearDown(t)
+
+		// Create namespace
+		namespaceObj := namespaceTester.CheckCreate(nsObj)
+		nsName := namespaceObj.(*apiv1.Namespace).Name
+
+		// Create event
+		event := apiv1.Event{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      names.SimpleNameGenerator.GenerateName("integration-namespace-test-event"),
+				Namespace: nsName,
+			},
+			InvolvedObject: apiv1.ObjectReference{
+				Kind:      "Pod",
+				Namespace: nsName,
+				Name:      "sample-pod",
+			},
+		}
+
+		client := fedFixture.APIFixture.NewClient(fmt.Sprintf("crud-test-%s", kind))
+		// Create event inside of namespace
+		eventObj, err := client.Core().Events(nsName).Create(&event)
+		if err != nil {
+			t.Logf("Failed to create event %v in namespace %s, err: %s", &eventObj, nsName, err)
+		}
+
+		objectExpected := true
+		namespaceTester.CheckDelete(namespaceObj, &objectExpected)
 	})
 }
 
