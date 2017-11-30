@@ -384,6 +384,14 @@ func (f *federatedInformerImpl) GetClientsetForUserOnCluster(username string, cl
 		return nil, err
 	}
 
+	if identity.ImpersonatingUser != nil {
+		clientConfig.Impersonate.UserName = identity.ImpersonatingUser.Username
+		clientConfig.Impersonate.Groups = identity.ImpersonatingUser.Groups
+		for k, v := range identity.ImpersonatingUser.Extra {
+			clientConfig.Impersonate.Extra[k] = v
+		}
+	}
+
 	return kubeclientset.NewForConfig(restclient.AddUserAgent(clientConfig, userAgentName))
 }
 
