@@ -262,6 +262,8 @@ func TestValidateClusterUpdate(t *testing.T) {
 		},
 	}
 	for testName, errorCase := range errorCases {
+		errorCase.old.ObjectMeta.ResourceVersion = "1"
+		errorCase.update.ObjectMeta.ResourceVersion = "1"
 		errs := ValidateClusterUpdate(&errorCase.update, &errorCase.old)
 		if len(errs) == 0 {
 			t.Errorf("expected failure: %s", testName)
@@ -322,6 +324,8 @@ func TestValidateClusterStatusUpdate(t *testing.T) {
 
 	errorCases := map[string]clusterUpdateTest{}
 	for testName, errorCase := range errorCases {
+		errorCase.old.ObjectMeta.ResourceVersion = "1"
+		errorCase.update.ObjectMeta.ResourceVersion = "1"
 		errs := ValidateClusterStatusUpdate(&errorCase.update, &errorCase.old)
 		if len(errs) == 0 {
 			t.Errorf("expected failure: %s", testName)
