@@ -37,6 +37,12 @@ type UserClusterIdentityProvider struct {
 	lister *userClusterIdentityLister
 }
 
+func newFakeUserClusterIdentityProvider(client *fakeCRD, identityNamespace string) (*UserClusterIdentityProvider, error) {
+	return &UserClusterIdentityProvider{
+		lister: NewUserClusterIdentityLister(client.UserClusterIdentity(identityNamespace), identityNamespace),
+	}, nil
+}
+
 func NewUserClusterIdentityProvider(apiextClientConfig *rest.Config, identityNamespace string) (*UserClusterIdentityProvider, error) {
 	apiextClient, err := apiextensionsclient.NewForConfig(apiextClientConfig)
 	if err != nil {
@@ -54,7 +60,7 @@ func NewUserClusterIdentityProvider(apiextClientConfig *rest.Config, identityNam
 	}
 
 	return &UserClusterIdentityProvider{
-		lister: NewUserClusterIdentityLister(client.UserClusterIdentity(identityNamespace)),
+		lister: NewUserClusterIdentityLister(client.UserClusterIdentity(identityNamespace), identityNamespace),
 	}, nil
 }
 

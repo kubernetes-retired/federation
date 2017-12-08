@@ -33,12 +33,17 @@ const (
 	userAtClusterIndex = "userAtCluster"
 )
 
+type userClusterIdentityInterface interface {
+	List(opts metav1.ListOptions) (result *UserClusterIdentityList, err error)
+	Watch(opts metav1.ListOptions) (watch.Interface, error)
+}
+
 type userClusterIdentityLister struct {
 	indexer   cache.Indexer
 	namespace string
 }
 
-func NewUserClusterIdentityLister(client *userClusterIdentityClient) *userClusterIdentityLister {
+func NewUserClusterIdentityLister(client userClusterIdentityInterface, namespace string) *userClusterIdentityLister {
 	indexers := cache.Indexers{
 		userAtClusterIndex: func(obj interface{}) ([]string, error) {
 			identity, ok := obj.(*UserClusterIdentity)
@@ -67,7 +72,7 @@ func NewUserClusterIdentityLister(client *userClusterIdentityClient) *userCluste
 
 	return &userClusterIdentityLister{
 		indexer:   informer.GetIndexer(),
-		namespace: client.ns,
+		namespace: namespace,
 	}
 }
 
