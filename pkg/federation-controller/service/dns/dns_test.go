@@ -17,6 +17,7 @@ limitations under the License.
 package dns
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"testing"
@@ -32,6 +33,41 @@ import (
 	. "k8s.io/federation/pkg/federation-controller/util/test"
 )
 
+const (
+	cluster1Name string = "c1"
+	cluster2Name string = "c2"
+)
+
+type testDeployment struct {
+	name     string
+	service  v1.Service
+	expected sets.String
+}
+
+type NetWrapperMock struct {
+	result map[string][]string
+}
+
+func (mock *NetWrapperMock) LookupHost(host string) (addrs []string, err error) {
+
+	// If nothing to return, return empty list
+	if mock.result == nil || len(mock.result) == 0 {
+		return make([]string, 0), errors.New("Mock error response")
+	}
+
+	return mock.result[host], nil
+}
+
+func (mock *NetWrapperMock) AddHost(host string, addrs []string) {
+
+	// Initialise if null
+	if mock.result == nil {
+		mock.result = make(map[string][]string)
+	}
+
+	mock.result[host] = addrs
+}
+
 // NewClusterWithRegionZone builds a new cluster object with given region and zone attributes.
 func NewClusterWithRegionZone(name string, readyStatus v1.ConditionStatus, region, zone string) *v1beta1.Cluster {
 	cluster := NewCluster(name, readyStatus)
@@ -40,22 +76,15 @@ func NewClusterWithRegionZone(name string, readyStatus v1.ConditionStatus, regio
 	return cluster
 }
 
-func TestServiceController_ensureDnsRecords(t *testing.T) {
-	cluster1Name := "c1"
-	cluster2Name := "c2"
-	cluster1 := NewClusterWithRegionZone(cluster1Name, v1.ConditionTrue, "fooregion", "foozone")
-	cluster2 := NewClusterWithRegionZone(cluster2Name, v1.ConditionTrue, "barregion", "barzone")
+func createTestServiceDeployments(cluster1 *v1beta1.Cluster, cluster2 *v1beta1.Cluster) []testDeployment {
+
 	globalDNSName := "servicename.servicenamespace.myfederation.svc.federation.example.com"
 	fooRegionDNSName := "servicename.servicenamespace.myfederation.svc.fooregion.federation.example.com"
 	fooZoneDNSName := "servicename.servicenamespace.myfederation.svc.foozone.fooregion.federation.example.com"
 	barRegionDNSName := "servicename.servicenamespace.myfederation.svc.barregion.federation.example.com"
 	barZoneDNSName := "servicename.servicenamespace.myfederation.svc.barzone.barregion.federation.example.com"
 
-	tests := []struct {
-		name     string
-		service  v1.Service
-		expected sets.String
-	}{
+	tests := []testDeployment{
 		{
 			name: "ServiceWithSingleLBIngress",
 			service: v1.Service{
@@ -74,21 +103,6 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 				"example.com:"+barZoneDNSName+":CNAME:180:["+barRegionDNSName+"]",
 			),
 		},
-		/*
-			TODO: getResolvedEndpoints preforms DNS lookup.
-			Mock and maybe look at error handling when some endpoints resolve, but also caching?
-			{
-				name: "withname",
-				service: v1.Service{
-					ObjectMeta: metav1.ObjectMeta{},
-				},
-				expected: []string{
-					"example.com:"+globalDNSName+":A:180:[198.51.100.1]",
-					"example.com:"+fooRegionDNSName+":A:180:[198.51.100.1]",
-					"example.com:"+fooZoneDNSName+":A:180:[198.51.100.1]",
-				},
-			},
-		*/
 		{
 			name: "ServiceWithNoLBIngress",
 			service: v1.Service{
@@ -125,6 +139,25 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 			),
 		},
 		{
+			// Tests getResolvedEndpoints DNS lookup
+			name: "ServiceWithAWSAndGCPMultipleLBIngress",
+			service: v1.Service{
+				ObjectMeta: metav1.ObjectMeta{Annotations: map[string]string{
+					ingress.FederatedServiceIngressAnnotation: ingress.NewFederatedServiceIngress().
+						AddHostnameEndpoints(cluster1Name, []string{"a9.us-west-2.elb.amazonaws.com"}).
+						AddEndpoints(cluster2Name, []string{"198.51.200.1"}).
+						String()},
+				},
+			},
+			expected: sets.NewString(
+				"example.com:"+globalDNSName+":A:180:[198.51.100.1 198.51.200.1]",
+				"example.com:"+fooRegionDNSName+":A:180:[198.51.100.1]",
+				"example.com:"+fooZoneDNSName+":A:180:[198.51.100.1]",
+				"example.com:"+barRegionDNSName+":A:180:[198.51.200.1]",
+				"example.com:"+barZoneDNSName+":A:180:[198.51.200.1]",
+			),
+		},
+		{
 			name: "ServiceWithLBIngressAndServiceDeleted",
 			service: v1.Service{
 				ObjectMeta: metav1.ObjectMeta{Annotations: map[string]string{
@@ -136,7 +169,8 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 				},
 			},
 			expected: sets.NewString(
-				// TODO: Ideally we should expect that there are no DNS records when federated service is deleted. Need to remove these leaks in future
+				// TODO: Ideally we should expect that there are no DNS records
+				// when federated service is deleted. Need to remove these leaks in future
 				"example.com:"+fooRegionDNSName+":CNAME:180:["+globalDNSName+"]",
 				"example.com:"+fooZoneDNSName+":CNAME:180:["+fooRegionDNSName+"]",
 				"example.com:"+barRegionDNSName+":CNAME:180:["+globalDNSName+"]",
@@ -182,14 +216,33 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 			),
 		},
 	}
+	return tests
+}
+
+func TestServiceController_ensureDnsRecords(t *testing.T) {
+
+	cluster1 := NewClusterWithRegionZone(cluster1Name, v1.ConditionTrue, "fooregion", "foozone")
+	cluster2 := NewClusterWithRegionZone(cluster2Name, v1.ConditionTrue, "barregion", "barzone")
+
+	tests := createTestServiceDeployments(cluster1, cluster2)
+
 	for _, test := range tests {
+
+		fmt.Println("Running test: ", test.name)
+
 		fakedns, _ := clouddns.NewFakeInterface()
 		fakednsZones, ok := fakedns.Zones()
 		if !ok {
 			t.Error("Unable to fetch zones")
 		}
+
 		fakeClient := &fakefedclientset.Clientset{}
 		RegisterFakeClusterGet(&fakeClient.Fake, &v1beta1.ClusterList{Items: []v1beta1.Cluster{*cluster1, *cluster2}})
+
+		// Fake out the internet
+		netmock := &NetWrapperMock{}
+		netmock.AddHost("a9.us-west-2.elb.amazonaws.com", []string{"198.51.100.1"})
+
 		d := ServiceDNSController{
 			federationClient: fakeClient,
 			dns:              fakedns,
@@ -197,6 +250,7 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 			serviceDNSSuffix: "federation.example.com",
 			zoneName:         "example.com",
 			federationName:   "myfederation",
+			netWrapper:       netmock,
 		}
 
 		dnsZones, err := getDNSZones(d.zoneName, d.zoneID, d.dnsZones)
@@ -213,6 +267,7 @@ func TestServiceController_ensureDnsRecords(t *testing.T) {
 			return
 		}
 		for _, clusterIngress := range ingress.Items {
+			// **** Main function being tested ****
 			d.ensureDNSRecords(clusterIngress.Cluster, &test.service)
 		}
 

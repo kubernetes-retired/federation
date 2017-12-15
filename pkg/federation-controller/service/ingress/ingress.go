@@ -85,12 +85,22 @@ func (ingress *FederatedServiceIngress) AddClusterLoadBalancerIngresses(cluster 
 	sort.Sort(ingress)
 }
 
-// AddEndpoints add one or more endpoints to federated service ingress.
-// endpoints are federated cluster's loadbalancer ip/hostname for the service
+// AddEndpoints adds one or more endpoints to the federated service ingress.
+// Endpoints are the federated cluster's loadbalancer ip/hostname for the service
 func (ingress *FederatedServiceIngress) AddEndpoints(cluster string, endpoints []string) *FederatedServiceIngress {
 	lbIngress := []v1.LoadBalancerIngress{}
 	for _, endpoint := range endpoints {
 		lbIngress = append(lbIngress, v1.LoadBalancerIngress{IP: endpoint})
+	}
+	ingress.AddClusterLoadBalancerIngresses(cluster, lbIngress)
+	return ingress
+}
+
+// AddHostnameEndpoints adds one or more endpoints to the federated service ingress.
+func (ingress *FederatedServiceIngress) AddHostnameEndpoints(cluster string, endpoints []string) *FederatedServiceIngress {
+	lbIngress := []v1.LoadBalancerIngress{}
+	for _, endpoint := range endpoints {
+		lbIngress = append(lbIngress, v1.LoadBalancerIngress{Hostname: endpoint})
 	}
 	ingress.AddClusterLoadBalancerIngresses(cluster, lbIngress)
 	return ingress
