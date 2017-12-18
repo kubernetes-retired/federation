@@ -25,20 +25,20 @@ import (
 )
 
 // Adapt the methods to log/fail in e2e to the interface expected by CRUDHelper
-type e2eTestLogger struct{}
+type E2eTestLogger struct{}
 
-func (e2eTestLogger) Fatal(msg string) {
+func (E2eTestLogger) Fatal(msg string) {
 	Fail(msg)
 }
 
-func (e2eTestLogger) Fatalf(format string, args ...interface{}) {
+func (E2eTestLogger) Fatalf(format string, args ...interface{}) {
 	framework.Failf(format, args...)
 }
 
-func (e2eTestLogger) Logf(format string, args ...interface{}) {
+func (E2eTestLogger) Logf(format string, args ...interface{}) {
 	framework.Logf(format, args...)
 }
 
 func NewFederatedTypeCRUDTester(adapter federatedtypes.FederatedTypeAdapter, clusterClients []kubeclientset.Interface) *crudtester.FederatedTypeCRUDTester {
-	return crudtester.NewFederatedTypeCRUDTester(&e2eTestLogger{}, adapter, clusterClients, framework.Poll, FederatedDefaultTestTimeout)
+	return crudtester.NewFederatedTypeCRUDTester(&E2eTestLogger{}, adapter, clusterClients, framework.Poll, FederatedDefaultTestTimeout)
 }

@@ -29,12 +29,11 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federatedtypes"
 	"k8s.io/federation/pkg/federatedtypes/crudtester"
+	"k8s.io/federation/test/common"
 	"k8s.io/federation/test/integration/framework"
 )
 
-// This test includes tests for resource deletion within a namespace that was reworked from existing
-// e2e tests.
-
+// This test is intended to allow api-only tests to run in both integration and e2e
 // TestFederationCRUD validates create/read/update/delete operations for federated resource types.
 func TestFederationCRUD(t *testing.T) {
 	fedFixture := framework.FederationFixture{DesiredClusterCount: 2}
@@ -106,27 +105,12 @@ func TestFederationCRUD(t *testing.T) {
 	t.Run("ReplicaSets should be deleted when namespace is deleted", func(t *testing.T) {
 
 		// Create namespace crudtester
-		fixtureOne, namespaceTester, nsObj, _ := initCRUDTest(t, &fedFixture, federatedtypes.NewNamespaceAdapter, federatedtypes.NamespaceKind)
+		fixtureOne, _, _, _ := initCRUDTest(t, &fedFixture, federatedtypes.NewNamespaceAdapter, federatedtypes.NamespaceKind)
 		defer fixtureOne.TearDown(t)
+		client := fedFixture.APIFixture.NewClient(fmt.Sprintf("crud-test-%s", federatedtypes.NamespaceKind))
+		logger := &framework.IntegrationLogger{t}
 
-		// Create namespace
-		namespaceObj := namespaceTester.CheckCreate(nsObj)
-		nsName := namespaceObj.(*apiv1.Namespace).Name
-
-		// Create replicaset
-		config := fedFixture.APIFixture.NewConfig()
-		client := fedFixture.APIFixture.NewClient(fmt.Sprintf("crud-test-%s", federatedtypes.ReplicaSetKind))
-		rsAdapter := adapterFactory(client, config, nil)
-		obj := rsAdapter.NewTestObject(nsName)
-
-		// Create replicaset inside of namespace
-		replicasetObj, err := rsAdapter.FedCreate(obj)
-		if err != nil {
-			t.Logf("Failed to create replicasets %v in namespace %s, err: %s", &replicasetObj, nsName, err)
-		}
-
-		objectExpected := true
-		namespaceTester.CheckDelete(namespaceObj, &objectExpected)
+		common.CheckNamespaceContentsRemoved(client, logger)
 
 	})
 
