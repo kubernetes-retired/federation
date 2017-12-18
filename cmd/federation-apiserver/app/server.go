@@ -31,6 +31,7 @@ import (
 	"github.com/spf13/pflag"
 
 	appsv1beta2 "k8s.io/api/apps/v1beta2"
+	batchv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
 	extensionsapiv1beta1 "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -308,6 +309,10 @@ func defaultResourceConfig() *serverstorage.ResourceConfig {
 		appsv1beta2.SchemeGroupVersion.WithResource("daemonsets"),
 		appsv1beta2.SchemeGroupVersion.WithResource("deployments"),
 		appsv1beta2.SchemeGroupVersion.WithResource("replicasets"),
+	)
+	// All batch resources except these are disabled by default.
+	rc.EnableResources(
+		batchv1.SchemeGroupVersion.WithResource("jobs"),
 	)
 	return rc
 }
