@@ -28,6 +28,26 @@ import (
 	"k8s.io/kubernetes/test/e2e/framework"
 )
 
+var _ = framework.KubeDescribe("Federated namespace [Feature:Federation][Experimental]", func() {
+	//var clusterClients []kubeclientset.Interface
+	f := fedframework.NewDefaultFederatedFramework("federated-namespace")
+	//	clusterClients = f.GetClusterClients()
+	Describe(fmt.Sprintf("Federated namespace resources"), func() {
+		It("should create, read, update and delete successfully", func() {
+			//		fedframework.SkipUnlessFederated(f.ClientSet)
+			// Load clients only if not skipping to avoid doing
+			// unnecessary work.  Assume clients can be shared
+			// across tests.
+			clientset := f.FederationClientset
+			logger := &fedframework.E2eTestLogger{}
+			common.CheckNamespaceContentsRemoved(clientset, logger)
+			//			if clusterClients == nil {
+			//				clusterClients = f.GetClusterClients()
+			//			}
+		})
+	})
+})
+
 var _ = framework.KubeDescribe("Federated types [Feature:Federation][Experimental] ", func() {
 	var clusterClients []kubeclientset.Interface
 
@@ -38,10 +58,6 @@ var _ = framework.KubeDescribe("Federated types [Feature:Federation][Experimenta
 		Describe(fmt.Sprintf("Federated %q resources", name), func() {
 			It("should be created, read, updated and deleted successfully", func() {
 				fedframework.SkipUnlessFederated(f.ClientSet)
-
-				clientset := f.FederationClientset
-				logger := &fedframework.E2eTestLogger{}
-				common.CheckNamespaceContentsRemoved(clientset, logger)
 
 				// Load clients only if not skipping to avoid doing
 				// unnecessary work.  Assume clients can be shared
