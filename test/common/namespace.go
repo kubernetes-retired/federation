@@ -83,10 +83,10 @@ func CheckNamespaceContentsRemoved(client federationclientset.Interface, l TestL
 		l.Fatalf("Failed to create replicaset %v in namespace %s, err: %s", rs, ns.Name, err)
 	}
 	l.Logf(fmt.Sprintf("Deleting namespace %s", ns.Name))
-	orphanDependents := true
+	orphanDeletion := metav1.DeletePropagationOrphan
 	getter := client.Core().Namespaces().Get
 	deleter := client.Core().Namespaces().Delete
-	err = deleter(ns.Name, &metav1.DeleteOptions{OrphanDependents: &orphanDependents})
+	err = deleter(ns.Name, &metav1.DeleteOptions{PropagationPolicy: &orphanDeletion})
 	if err != nil {
 		l.Fatalf("Failed to set %s for deletion: %v", ns.Name, err)
 	}

@@ -15,14 +15,15 @@
 # Build the fcp image.
 #
 # Usage:
-#   [ARCH=amd64] [REGISTRY="gcr.io/google-containers"] make (build|push) 
+#   [ARCH=amd64] [REGISTRY="gcr.io/google-containers"] make (build|push)
 # TODO (irfan) figure out a proper release strategy, including version and what all bins
 # VERSION={some_released_version_of_kubernetes}
 
 REGISTRY?=gcr.io/google-containers
 ARCH?=amd64
-FCP_BIN?=_output/dockerized/bin/linux/$(ARCH)/fcp
+FCP_BIN?=_output/local/bin/linux/$(ARCH)/fcp
 VERSION?=1.0
+FCP_IMAGE?=gcr.io/google-containers/fcp-amd64:1.0
 
 # TODO(@irfan) : do we need to rather build our own image from scratch
 BASEIMAGE=gcr.io/google-containers/debian-hyperkube-base-$(ARCH):0.7
