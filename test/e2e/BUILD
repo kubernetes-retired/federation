@@ -30,6 +30,7 @@ go_library(
         "//client/clientset_generated/federation_clientset/typed/core/v1:go_default_library",
         "//pkg/federatedtypes:go_default_library",
         "//pkg/federation-controller/util:go_default_library",
+        "//test/common:go_default_library",
         "//test/e2e/framework:go_default_library",
         "//test/e2e/upgrades:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",

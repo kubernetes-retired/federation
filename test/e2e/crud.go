@@ -23,15 +23,35 @@ import (
 
 	kubeclientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
+	"k8s.io/federation/test/common"
 	fedframework "k8s.io/federation/test/e2e/framework"
 	"k8s.io/kubernetes/test/e2e/framework"
 )
+
+var _ = framework.KubeDescribe("Federated namespace [Feature:Federation][Experimental]", func() {
+	//var clusterClients []kubeclientset.Interface
+	f := fedframework.NewDefaultFederatedFramework("federated-namespace")
+	//	clusterClients = f.GetClusterClients()
+	Describe(fmt.Sprintf("Federated namespace resources"), func() {
+		It("should create, read, update and delete successfully", func() {
+			//		fedframework.SkipUnlessFederated(f.ClientSet)
+			// Load clients only if not skipping to avoid doing
+			// unnecessary work.  Assume clients can be shared
+			// across tests.
+			clientset := f.FederationClientset
+			logger := &fedframework.E2eTestLogger{}
+			common.CheckNamespaceContentsRemoved(clientset, logger)
+			//			if clusterClients == nil {
+			//				clusterClients = f.GetClusterClients()
+			//			}
+		})
+	})
+})
 
 var _ = framework.KubeDescribe("Federated types [Feature:Federation][Experimental] ", func() {
 	var clusterClients []kubeclientset.Interface
 
 	f := fedframework.NewDefaultFederatedFramework("federated-types")
-
 	fedTypes := federatedtypes.FederatedTypes()
 	for name := range fedTypes {
 		fedType := fedTypes[name]
