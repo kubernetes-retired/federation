@@ -20,7 +20,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	kubeclientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
-	"k8s.io/federation/pkg/federatedtypes/crudtester"
+	"k8s.io/federation/test/common/crudtester"
 	"k8s.io/kubernetes/test/e2e/framework"
 )
 

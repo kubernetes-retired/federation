@@ -18,8 +18,8 @@ go_test(
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//pkg/federatedtypes:go_default_library",
-        "//pkg/federatedtypes/crudtester:go_default_library",
         "//test/common:go_default_library",
+        "//test/common/crudtester:go_default_library",
         "//test/integration/framework:go_default_library",
         "//vendor/github.com/pborman/uuid:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

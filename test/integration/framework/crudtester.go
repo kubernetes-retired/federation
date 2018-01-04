@@ -22,7 +22,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
-	"k8s.io/federation/pkg/federatedtypes/crudtester"
+	"k8s.io/federation/test/common/crudtester"
 )
 
 type IntegrationLogger struct {

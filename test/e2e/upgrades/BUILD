@@ -14,7 +14,7 @@ go_library(
     importpath = "k8s.io/federation/test/e2e/upgrades",
     deps = [
         "//pkg/federatedtypes:go_default_library",
-        "//pkg/federatedtypes/crudtester:go_default_library",
+        "//test/common/crudtester:go_default_library",
         "//test/e2e/framework:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",

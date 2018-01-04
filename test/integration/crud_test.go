@@ -28,8 +28,8 @@ import (
 	"k8s.io/apiserver/pkg/storage/names"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federatedtypes"
-	"k8s.io/federation/pkg/federatedtypes/crudtester"
 	"k8s.io/federation/test/common"
+	"k8s.io/federation/test/common/crudtester"
 	"k8s.io/federation/test/integration/framework"
 )
 
