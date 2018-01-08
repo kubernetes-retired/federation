@@ -649,28 +649,25 @@ func populateSecretInHostCluster(clusterClientset, hostClientset internalclients
 		return nil, nil
 	}
 	// Get the secret from the joining cluster.
-	var sa *api.ServiceAccount
-	err := wait.PollImmediate(1*time.Second, serviceAccountSecretTimeout, func() (bool, error) {
-		var err error
-		sa, err = clusterClientset.Core().ServiceAccounts(namespace).Get(saName, metav1.GetOptions{})
-		if err != nil {
-			return false, nil
-		}
-		return len(sa.Secrets) == 1, nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	glog.V(2).Infof("Getting secret named: %s", sa.Secrets[0].Name)
 	var secret *api.Secret
-	err = wait.PollImmediate(1*time.Second, serviceAccountSecretTimeout, func() (bool, error) {
-		var err error
-		secret, err = clusterClientset.Core().Secrets(namespace).Get(sa.Secrets[0].Name, metav1.GetOptions{})
+	err := wait.PollImmediate(1*time.Second, serviceAccountSecretTimeout, func() (bool, error) {
+		sa, err := clusterClientset.Core().ServiceAccounts(namespace).Get(saName, metav1.GetOptions{})
 		if err != nil {
 			return false, nil
 		}
-		return true, nil
+		for _, objReference := range sa.Secrets {
+			secretName := objReference.Name
+			var err error
+			secret, err = clusterClientset.Core().Secrets(namespace).Get(secretName, metav1.GetOptions{})
+			if err != nil {
+				return false, nil
+			}
+			if secret.Type == api.SecretTypeServiceAccountToken {
+				glog.V(2).Infof("Using secret named: %s", secret.Name)
+				return true, nil
+			}
+		}
+		return false, nil
 	})
 	if err != nil {
 		glog.V(2).Infof("Could not get service account secret from joining cluster: %v", err)

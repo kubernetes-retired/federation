@@ -28,8 +28,9 @@ import (
 	kubeclientset "k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
-	"k8s.io/federation/pkg/federation-controller/util"
+	"k8s.io/federation/pkg/kubefed/util"
 	"k8s.io/kubernetes/test/e2e/framework"
 
 	. "github.com/onsi/ginkgo"
@@ -157,7 +158,7 @@ func ClusterIsReadyOrFail(f *Framework, clusterName string) {
 type clusterConfig struct {
 	name   string
 	host   string
-	config []byte
+	config *restclient.Config
 }
 
 var cachedClusterConfigs []*clusterConfig
@@ -170,8 +171,7 @@ func registeredClustersFromSecrets(f *Framework) ClusterSlice {
 
 	clusters := ClusterSlice{}
 	for _, clusterConf := range cachedClusterConfigs {
-		restConfig := restConfigForCluster(clusterConf)
-		clientset := clientsetFromConfig(f, restConfig, clusterConf.host)
+		clientset := clientsetFromConfig(f, clusterConf.config, clusterConf.host)
 		clusters = append(clusters, &Cluster{
 			Name:      clusterConf.name,
 			Clientset: clientset,
@@ -209,28 +209,39 @@ func clusterConfigFromSecrets(f *Framework) []*clusterConfig {
 
 // clusterConfigFromSecret retrieves configuration for a accessing a
 // cluster from a secret in the host cluster
-func clusterConfigFromSecret(f *Framework, clusterName string, secretName string) []byte {
+func clusterConfigFromSecret(f *Framework, clusterName string, secretName string) *restclient.Config {
 	By(fmt.Sprintf("Loading configuration for cluster %q", clusterName))
 	namespace := FederationSystemNamespace()
 	secret, err := f.Framework.ClientSet.Core().Secrets(namespace).Get(secretName, metav1.GetOptions{})
 	framework.ExpectNoError(err, fmt.Sprintf("Error loading config secret \"%s/%s\" for cluster %q: %+v", namespace, secretName, clusterName, err))
 
-	config, ok := secret.Data[util.KubeconfigSecretDataKey]
-	if !ok || len(config) == 0 {
-		framework.Failf("Secret \"%s/%s\" for cluster %q has no value for key %q", namespace, secretName, clusterName, util.KubeconfigSecretDataKey)
+	var clusterConfig *restclient.Config
+	// Pre-1.7, the secret contained a serialized kubeconfig which contained appropriate credentials.
+	// Post-1.7, the secret contains credentials for a service account.
+	// Check for the service account credentials, and use them if they exist; if not, use the
+	// serialized kubeconfig.
+	token, tokenFound := secret.Data["token"]
+	ca, caFound := secret.Data["ca.crt"]
+	if tokenFound != caFound {
+		framework.Failf("secret should have values for either both 'ca.crt' and 'token' in its Data, or neither: %v", secret)
+	} else if tokenFound && caFound {
+		clusterConfig, err = clientcmd.BuildConfigFromFlags("TEMP_ADDRESS", "")
+		clusterConfig.CAData = ca
+		clusterConfig.BearerToken = string(token)
+	} else {
+		var err error
+		// Host address will be populated on client creation, so use a temp address here
+		clusterConfig, err = clientcmd.BuildConfigFromKubeconfigGetter("TEMP ADDRESS", func() (*clientcmdapi.Config, error) {
+			data, ok := secret.Data[util.KubeconfigSecretDataKey]
+			if !ok {
+				return nil, fmt.Errorf("secret does not have data with key: %s", util.KubeconfigSecretDataKey)
+			}
+			return clientcmd.Load(data)
+		})
+		framework.ExpectNoError(err, fmt.Sprintf("Error loading config secret \"%s/%s\" for cluster %q: %+v", namespace, secretName, clusterName, err))
 	}
 
-	return config
-}
-
-// restConfigForCluster creates a rest client config for the given cluster config
-func restConfigForCluster(clusterConf *clusterConfig) *restclient.Config {
-	cfg, err := clientcmd.Load(clusterConf.config)
-	framework.ExpectNoError(err, fmt.Sprintf("Error loading configuration for cluster %q: %+v", clusterConf.name, err))
-
-	restConfig, err := clientcmd.NewDefaultClientConfig(*cfg, &clientcmd.ConfigOverrides{}).ClientConfig()
-	framework.ExpectNoError(err, fmt.Sprintf("Error creating client for cluster %q: %+v", clusterConf.name, err))
-	return restConfig
+	return clusterConfig
 }
 
 func GetZoneFromClusterName(clusterName string) string {
