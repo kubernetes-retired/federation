@@ -26,25 +26,19 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
+	"k8s.io/federation/test/common"
 )
 
 const (
 	AnnotationTestFederationCRUDUpdate string = "federation.kubernetes.io/test-federation-crud-update"
 )
 
-// TestLogger defines operations common across different types of testing
-type TestLogger interface {
-	Fatalf(format string, args ...interface{})
-	Fatal(msg string)
-	Logf(format string, args ...interface{})
-}
-
 // FederatedTypeCRUDTester exercises Create/Read/Update/Delete operations for
 // federated types via the Federation API and validates that the
 // results of those operations are propagated to clusters that are
 // members of a federation.
 type FederatedTypeCRUDTester struct {
-	tl             TestLogger
+	tl             common.TestLogger
 	adapter        federatedtypes.FederatedTypeAdapter
 	kind           string
 	clusterClients []clientset.Interface
@@ -55,7 +49,7 @@ type FederatedTypeCRUDTester struct {
 	clusterWaitTimeout time.Duration
 }
 
-func NewFederatedTypeCRUDTester(testLogger TestLogger, adapter federatedtypes.FederatedTypeAdapter, clusterClients []clientset.Interface, waitInterval, clusterWaitTimeout time.Duration) *FederatedTypeCRUDTester {
+func NewFederatedTypeCRUDTester(testLogger common.TestLogger, adapter federatedtypes.FederatedTypeAdapter, clusterClients []clientset.Interface, waitInterval, clusterWaitTimeout time.Duration) *FederatedTypeCRUDTester {
 	return &FederatedTypeCRUDTester{
 		tl:                 testLogger,
 		adapter:            adapter,

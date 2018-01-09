@@ -22,23 +22,23 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
-	"k8s.io/federation/pkg/federatedtypes/crudtester"
+	"k8s.io/federation/test/common/crudtester"
 )
 
 type IntegrationLogger struct {
-	t *testing.T
+	T *testing.T
 }
 
 func (l *IntegrationLogger) Logf(format string, args ...interface{}) {
-	l.t.Logf(format, args...)
+	l.T.Logf(format, args...)
 }
 
 func (l *IntegrationLogger) Fatalf(format string, args ...interface{}) {
-	l.t.Fatalf(format, args...)
+	l.T.Fatalf(format, args...)
 }
 
 func (l *IntegrationLogger) Fatal(msg string) {
-	l.t.Fatal(msg)
+	l.T.Fatal(msg)
 }
 
 func NewFederatedTypeCRUDTester(t *testing.T, adapter federatedtypes.FederatedTypeAdapter, clusterClients []clientset.Interface) *crudtester.FederatedTypeCRUDTester {
