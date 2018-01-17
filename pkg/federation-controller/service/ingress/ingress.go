@@ -18,6 +18,7 @@ package ingress
 
 import (
 	"encoding/json"
+	"net"
 	"sort"
 	"strings"
 
@@ -90,7 +91,11 @@ func (ingress *FederatedServiceIngress) AddClusterLoadBalancerIngresses(cluster 
 func (ingress *FederatedServiceIngress) AddEndpoints(cluster string, endpoints []string) *FederatedServiceIngress {
 	lbIngress := []v1.LoadBalancerIngress{}
 	for _, endpoint := range endpoints {
-		lbIngress = append(lbIngress, v1.LoadBalancerIngress{IP: endpoint})
+		if net.ParseIP(endpoint) == nil {
+			lbIngress = append(lbIngress, v1.LoadBalancerIngress{Hostname: endpoint})
+		} else {
+			lbIngress = append(lbIngress, v1.LoadBalancerIngress{IP: endpoint})
+		}
 	}
 	ingress.AddClusterLoadBalancerIngresses(cluster, lbIngress)
 	return ingress
@@ -103,20 +108,6 @@ func (ingress *FederatedServiceIngress) AddHostnameEndpoints(cluster string, end
 		lbIngress = append(lbIngress, v1.LoadBalancerIngress{Hostname: endpoint})
 	}
 	ingress.AddClusterLoadBalancerIngresses(cluster, lbIngress)
-	return ingress
-}
-
-// RemoveEndpoint removes a single endpoint (ip/hostname) from the federated service ingress
-func (ingress *FederatedServiceIngress) RemoveEndpoint(cluster string, endpoint string) *FederatedServiceIngress {
-	for i, clusterIngress := range ingress.Items {
-		if cluster == clusterIngress.Cluster {
-			for j, lbIngress := range clusterIngress.Items {
-				if lbIngress.IP == endpoint {
-					ingress.Items[i].Items = append(ingress.Items[i].Items[:j], ingress.Items[i].Items[j+1:]...)
-				}
-			}
-		}
-	}
 	return ingress
 }
 
