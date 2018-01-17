@@ -459,7 +459,12 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 }
 
 func createNamespace(clientset client.Interface, federationName, namespace string, dryRun bool) (*api.Namespace, error) {
-	ns := &api.Namespace{
+	ns, err := clientset.Core().Namespaces().Get(namespace, metav1.GetOptions{})
+	if err == nil {
+		return ns, nil
+	}
+
+	ns = &api.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:        namespace,
 			Annotations: map[string]string{federation.FederationNameAnnotation: federationName},
