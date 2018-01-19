@@ -19,9 +19,9 @@ package coredns
 import (
 	"encoding/json"
 	"fmt"
+	dnsmsg "github.com/coredns/coredns/plugin/etcd/msg"
 	etcdc "github.com/coreos/etcd/client"
 	"github.com/golang/glog"
-	dnsmsg "github.com/miekg/coredns/middleware/etcd/msg"
 	"golang.org/x/net/context"
 	"k8s.io/federation/pkg/dnsprovider"
 	"k8s.io/federation/pkg/dnsprovider/rrstype"
