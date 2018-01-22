@@ -29,8 +29,8 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	fedclient "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/pkg/kubefed/util"
-	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 )
 

@@ -43,8 +43,8 @@ pkg/kubefed
 pkg/kubefed/init
 pkg/kubefed/testing
 pkg/kubefed/util
-registry/cluster
-registry/cluster/etcd
+pkg/registry/cluster
+pkg/registry/cluster/etcd
 test/e2e
 test/e2e/framework
 test/e2e/upgrades

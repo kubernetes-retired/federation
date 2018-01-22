@@ -23,13 +23,13 @@ set -o pipefail
 # The staging areas will be vendored as repos
 rm -rf vendor/k8s.io/kubernetes/staging
 # The vendored kube root build file will break federation's bazel build
-rm vendor/k8s.io/kubernetes/BUILD.bazel
+rm -f vendor/k8s.io/kubernetes/BUILD.bazel
 # Symlinks to missing files will break hack/verify-bazel.sh
-rm vendor/k8s.io/kubernetes/.bazelrc
-rm vendor/k8s.io/kubernetes/.kazelcfg.json
-rm vendor/k8s.io/kubernetes/Makefile
-rm vendor/k8s.io/kubernetes/Makefile.generated
-rm vendor/k8s.io/kubernetes/WORKSPACE
+rm -f vendor/k8s.io/kubernetes/.bazelrc
+rm -f vendor/k8s.io/kubernetes/.kazelcfg.json
+rm -f vendor/k8s.io/kubernetes/Makefile
+rm -f vendor/k8s.io/kubernetes/Makefile.generated
+rm -rf vendor/k8s.io/kubernetes/WORKSPACE
 
 glide-vc --use-lock-file
 
@@ -37,7 +37,6 @@ glide-vc --use-lock-file
 git diff-index --name-only --diff-filter=M HEAD | xargs -r git checkout -f
 # we need to preserve code that is not referenced in the code
 git diff-index --name-only HEAD | grep -F \
-  # Retain
   -e 'BUILD' \
   -e 'LICENSE' \
   -e 'github.com/jteeuwen/go-bindata' \
@@ -62,7 +61,6 @@ git diff-index --name-only HEAD | grep -F \
   -e 'vendor/k8s.io/apimachinery/pkg/util/sets/types' \
   -e 'vendor/k8s.io/client-go/util/cert/testdata' \
   -e 'vendor/k8s.io/code-generator' \
-  # Do not retain
   | grep -v 'vendor/github.com/jteeuwen/go-bindata/testdata' \
   | grep -v 'vendor/k8s.io/kubernetes/staging' \
   | grep -v 'vendor/k8s.io/kubernetes/BUILD.bazel' \

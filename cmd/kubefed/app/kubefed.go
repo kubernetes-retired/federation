@@ -21,10 +21,10 @@ import (
 	"os"
 	"strings"
 
+	"k8s.io/apiserver/pkg/util/logs"
 	"k8s.io/federation/pkg/kubefed"
 	_ "k8s.io/kubernetes/pkg/client/metrics/prometheus" // for client metric registration
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
-	"k8s.io/kubernetes/pkg/kubectl/util/logs"
 	"k8s.io/kubernetes/pkg/version"
 	_ "k8s.io/kubernetes/pkg/version/prometheus" // for version metric registration
 )

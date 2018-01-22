@@ -30,8 +30,8 @@ type Registry interface {
 	ListClusters(ctx genericapirequest.Context, options *metainternalversion.ListOptions) (*federation.ClusterList, error)
 	WatchCluster(ctx genericapirequest.Context, options *metainternalversion.ListOptions) (watch.Interface, error)
 	GetCluster(ctx genericapirequest.Context, name string, options *metav1.GetOptions) (*federation.Cluster, error)
-	CreateCluster(ctx genericapirequest.Context, cluster *federation.Cluster) error
-	UpdateCluster(ctx genericapirequest.Context, cluster *federation.Cluster) error
+	CreateCluster(ctx genericapirequest.Context, cluster *federation.Cluster, createValidation rest.ValidateObjectFunc) (*federation.Cluster, error)
+	UpdateCluster(ctx genericapirequest.Context, cluster *federation.Cluster, createValidation rest.ValidateObjectFunc, updateValidation rest.ValidateObjectUpdateFunc) (*federation.Cluster, error)
 	DeleteCluster(ctx genericapirequest.Context, name string) error
 }
 
@@ -66,14 +66,20 @@ func (s *storage) GetCluster(ctx genericapirequest.Context, name string, options
 	return obj.(*federation.Cluster), nil
 }
 
-func (s *storage) CreateCluster(ctx genericapirequest.Context, cluster *federation.Cluster) error {
-	_, err := s.Create(ctx, cluster, false)
-	return err
+func (s *storage) CreateCluster(ctx genericapirequest.Context, cluster *federation.Cluster, createValidation rest.ValidateObjectFunc) (*federation.Cluster, error) {
+	obj, err := s.Create(ctx, cluster, rest.ValidateAllObjectFunc, false)
+	if err != nil {
+		return nil, err
+	}
+	return obj.(*federation.Cluster), nil
 }
 
-func (s *storage) UpdateCluster(ctx genericapirequest.Context, cluster *federation.Cluster) error {
-	_, _, err := s.Update(ctx, cluster.Name, rest.DefaultUpdatedObjectInfo(cluster))
-	return err
+func (s *storage) UpdateCluster(ctx genericapirequest.Context, cluster *federation.Cluster, createValidation rest.ValidateObjectFunc, updateValidation rest.ValidateObjectUpdateFunc) (*federation.Cluster, error) {
+	obj, _, err := s.Update(ctx, cluster.Name, rest.DefaultUpdatedObjectInfo(cluster), createValidation, updateValidation)
+	if err != nil {
+		return nil, err
+	}
+	return obj.(*federation.Cluster), nil
 }
 
 func (s *storage) DeleteCluster(ctx genericapirequest.Context, name string) error {

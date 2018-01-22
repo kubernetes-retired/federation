@@ -33,12 +33,12 @@ type getResourcesStorageFunc func() map[string]rest.Storage
 func enabledResources(groupVersion schema.GroupVersion, resourcesStorageMap map[string]getResourcesStorageFunc, apiResourceConfigSource storage.APIResourceConfigSource) (bool, map[string]rest.Storage) {
 	enabledResources := map[string]rest.Storage{}
 	groupName := groupVersion.Group
-	if !apiResourceConfigSource.AnyResourcesForGroupEnabled(groupName) {
+	if !apiResourceConfigSource.AnyVersionForGroupEnabled(groupName) {
 		glog.V(1).Infof("Skipping disabled API group %q", groupName)
 		return false, enabledResources
 	}
 	for resource, fn := range resourcesStorageMap {
-		if apiResourceConfigSource.ResourceEnabled(groupVersion.WithResource(resource)) {
+		if apiResourceConfigSource.AnyVersionForGroupEnabled(groupVersion.WithResource(resource).Group) {
 			resources := fn()
 			for k, v := range resources {
 				enabledResources[k] = v

@@ -47,9 +47,6 @@ func (options *ServerRunOptions) Validate() []error {
 	if errs := options.Authorization.Validate(); len(errs) > 0 {
 		errors = append(errors, errs...)
 	}
-	if errs := options.CloudProvider.Validate(); len(errs) > 0 {
-		errors = append(errors, errs...)
-	}
 	if options.EventTTL <= 0 {
 		errors = append(errors, fmt.Errorf("--event-ttl must be greater than 0"))
 	}

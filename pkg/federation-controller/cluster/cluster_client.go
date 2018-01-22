@@ -27,7 +27,7 @@ import (
 	restclient "k8s.io/client-go/rest"
 	federation_v1beta1 "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/federation-controller/util"
-	"k8s.io/kubernetes/pkg/api"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	clientset "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset"
 	kubeletapis "k8s.io/kubernetes/pkg/kubelet/apis"
 )
