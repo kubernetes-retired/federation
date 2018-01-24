@@ -299,9 +299,9 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 		rbacAvailable = false
 	}
 
-	serverName := fmt.Sprintf("%s-%s", i.commonOptions.Name, APIServerNameSuffix)
-	serverCredName := fmt.Sprintf("%s-%s", serverName, CredentialSuffix)
-	cmName := fmt.Sprintf("%s-%s", i.commonOptions.Name, CMNameSuffix)
+	serverName := APIServerNameSuffix
+	serverCredName := fmt.Sprintf("%s-%s", APIServerNameSuffix, CredentialSuffix)
+	cmName := CMNameSuffix
 	cmKubeconfigName := fmt.Sprintf("%s-%s", cmName, KubeconfigNameSuffix)
 
 	var dnsProviderConfigBytes []byte
@@ -332,7 +332,7 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 
 	fmt.Fprint(cmdOut, "Creating federation control plane objects (credentials, persistent volume claim)...")
 	glog.V(4).Info("Generating TLS certificates and credentials for communicating with the federation API server")
-	credentials, err := generateCredentials(i.commonOptions.FederationSystemNamespace, i.commonOptions.Name, svc.Name, HostClusterLocalDNSZoneName, serverCredName, ips, hostnames, i.options.apiServerEnableHTTPBasicAuth, i.options.apiServerEnableTokenAuth, i.options.dryRun)
+	credentials, err := generateCredentials(i.commonOptions.FederationSystemNamespace, i.commonOptions.Name, svc.Name, HostClusterLocalDNSZoneName, ips, hostnames, i.options.apiServerEnableHTTPBasicAuth, i.options.apiServerEnableTokenAuth, i.options.dryRun)
 	if err != nil {
 		return err
 	}
@@ -591,7 +591,7 @@ func waitForLoadBalancerAddress(cmdOut io.Writer, clientset client.Interface, sv
 	return ips, hostnames, nil
 }
 
-func generateCredentials(svcNamespace, name, svcName, localDNSZoneName, serverCredName string, ips, hostnames []string, enableHTTPBasicAuth, enableTokenAuth, dryRun bool) (*credentials, error) {
+func generateCredentials(svcNamespace, name, svcName, localDNSZoneName string, ips, hostnames []string, enableHTTPBasicAuth, enableTokenAuth, dryRun bool) (*credentials, error) {
 	credentials := credentials{
 		username: AdminCN,
 	}

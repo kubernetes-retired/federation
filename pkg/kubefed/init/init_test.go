@@ -644,10 +644,10 @@ func TestCertsHTTPS(t *testing.T) {
 }
 
 func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, namespaceName, advertiseAddress, lbIp, dnsZoneName, serverImage, etcdImage, dnsProvider, dnsProviderConfig, etcdPersistence, etcdPVCapacity, etcdPVStorageClass, apiserverOverrideArg, cmOverrideArg, tmpDirPath string, apiserverEnableHTTPBasicAuth, apiserverEnableTokenAuth, isRBACAPIAvailable bool, nodeSelectorString string, imagePullPolicy, imagePullSecrets string) (cmdutil.Factory, error) {
-	svcName := federationName + "-apiserver"
+	svcName := "apiserver"
 	svcUrlPrefix := "/api/v1/namespaces/federation-system/services"
-	credSecretName := svcName + "-credentials"
-	cmKubeconfigSecretName := federationName + "-controller-manager-kubeconfig"
+	credSecretName := "apiserver" + "-credentials"
+	cmKubeconfigSecretName := "controller-manager-kubeconfig"
 	pvCap := "10Gi"
 	if etcdPVCapacity != "" {
 		pvCap = etcdPVCapacity
@@ -1036,7 +1036,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 	sort.Strings(cmArgs)
 	cmCommand = append(cmCommand, cmArgs...)
 
-	cmName := federationName + "-controller-manager"
+	cmName := "controller-manager"
 	cm := &v1beta1.Deployment{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Deployment",
