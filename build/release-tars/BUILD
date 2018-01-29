@@ -83,7 +83,6 @@ pkg_tar(
 pkg_tar(
     name = "_server-bin",
     files = [
-        "//build:client-targets",
         "//build:docker-artifacts",
         "//build:server-targets",
     ],
