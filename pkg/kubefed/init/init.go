@@ -140,6 +140,7 @@ type initFederationOptions struct {
 	imagePullSecrets                 string
 	dnsProvider                      string
 	dnsProviderConfig                string
+	etcdServers                      string
 	etcdImage                        string
 	etcdPVCapacity                   string
 	etcdPVStorageClass               string
@@ -167,6 +168,7 @@ func (o *initFederationOptions) Bind(flags *pflag.FlagSet, defaultServerImage, d
 	flags.StringVar(&o.imagePullSecrets, "image-pull-secrets", "", "Provide secrets that can access the private registry.")
 	flags.StringVar(&o.dnsProvider, "dns-provider", "", "Dns provider to be used for this deployment.")
 	flags.StringVar(&o.dnsProviderConfig, "dns-provider-config", "", "Config file path on local file system for configuring DNS provider.")
+	flags.StringVar(&o.etcdServers, "etcd-servers", "", "External pre-deployed etcd server to be used to store federation state.")
 	flags.StringVar(&o.etcdImage, "etcd-image", defaultEtcdImage, "Image to use for etcd server.")
 	flags.StringVar(&o.etcdPVCapacity, "etcd-pv-capacity", "10Gi", "Size of persistent volume claim to be used for etcd.")
 	flags.StringVar(&o.etcdPVStorageClass, "etcd-pv-storage-class", "", "The storage class of the persistent volume claim used for etcd.   Must be provided if a default storage class is not enabled for the host cluster.")
@@ -352,7 +354,7 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 	glog.V(4).Info("Credentials secret successfully created")
 
 	var pvc *api.PersistentVolumeClaim
-	if i.options.etcdPersistentStorage {
+	if i.options.etcdServers == "" && i.options.etcdPersistentStorage {
 		glog.V(4).Info("Creating a persistent volume and a claim to store the federation API server's state, including etcd data")
 		pvc, err = createPVC(hostClientset, i.commonOptions.FederationSystemNamespace, svc.Name, i.commonOptions.Name, i.options.etcdPVCapacity, i.options.etcdPVStorageClass, i.options.dryRun)
 		if err != nil {
@@ -372,7 +374,7 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 
 	fmt.Fprint(cmdOut, "Creating federation component deployments...")
 	glog.V(4).Info("Creating federation control plane components")
-	_, err = createAPIServer(hostClientset, i.commonOptions.FederationSystemNamespace, serverName, i.commonOptions.Name, i.options.serverImage, i.options.etcdImage, advertiseAddress, serverCredName, i.options.apiServerEnableHTTPBasicAuth, i.options.apiServerEnableTokenAuth, i.options.apiServerOverrides, pvc, i.options.dryRun, i.options.nodeSelector, i.options.imagePullPolicy, i.options.imagePullSecrets)
+	_, err = createAPIServer(hostClientset, i.commonOptions.FederationSystemNamespace, serverName, i.commonOptions.Name, i.options.serverImage, i.options.etcdImage, advertiseAddress, serverCredName, i.options.etcdServers, i.options.apiServerEnableHTTPBasicAuth, i.options.apiServerEnableTokenAuth, i.options.apiServerOverrides, pvc, i.options.dryRun, i.options.nodeSelector, i.options.imagePullPolicy, i.options.imagePullSecrets)
 	if err != nil {
 		return err
 	}
@@ -718,19 +720,23 @@ func createPVC(clientset client.Interface, namespace, svcName, federationName, e
 	return clientset.Core().PersistentVolumeClaims(namespace).Create(pvc)
 }
 
-func createAPIServer(clientset client.Interface, namespace, name, federationName, serverImage, etcdImage, advertiseAddress, credentialsName string, hasHTTPBasicAuthFile, hasTokenAuthFile bool, argOverrides map[string]string, pvc *api.PersistentVolumeClaim, dryRun bool, nodeSelector map[string]string, imagePullPolicy, imagePullSecrets string) (*extensions.Deployment, error) {
+func createAPIServer(clientset client.Interface, namespace, name, federationName, serverImage, etcdImage, advertiseAddress, credentialsName, etcdServers string, hasHTTPBasicAuthFile, hasTokenAuthFile bool, argOverrides map[string]string, pvc *api.PersistentVolumeClaim, dryRun bool, nodeSelector map[string]string, imagePullPolicy, imagePullSecrets string) (*extensions.Deployment, error) {
 	command := []string{
 		"/fcp",
 		"federation-apiserver",
 	}
 	argsMap := map[string]string{
 		"--bind-address":         "0.0.0.0",
-		"--etcd-servers":         "http://localhost:2379",
 		"--secure-port":          fmt.Sprintf("%d", apiServerSecurePort),
 		"--client-ca-file":       "/etc/federation/apiserver/ca.crt",
 		"--tls-cert-file":        "/etc/federation/apiserver/server.crt",
 		"--tls-private-key-file": "/etc/federation/apiserver/server.key",
 		"--admission-control":    "NamespaceLifecycle",
+	}
+	if etcdServers != "" {
+		argsMap["--etcd-servers"] = etcdServers
+	} else {
+		argsMap["--etcd-servers"] = "http://localhost:2379"
 	}
 
 	if advertiseAddress != "" {
@@ -786,15 +792,6 @@ func createAPIServer(clientset client.Interface, namespace, name, federationName
 								},
 							},
 						},
-						{
-							Name:  "etcd",
-							Image: etcdImage,
-							Command: []string{
-								"/usr/local/bin/etcd",
-								"--data-dir",
-								"/var/etcd/data",
-							},
-						},
 					},
 					NodeSelector: nodeSelector,
 					ImagePullSecrets: []api.LocalObjectReference{
@@ -817,7 +814,20 @@ func createAPIServer(clientset client.Interface, namespace, name, federationName
 		},
 	}
 
-	if pvc != nil {
+	if etcdServers == "" {
+		etcdContainer := api.Container{
+			Name:  "etcd",
+			Image: etcdImage,
+			Command: []string{
+				"/usr/local/bin/etcd",
+				"--data-dir",
+				"/var/etcd/data",
+			},
+		}
+		dep.Spec.Template.Spec.Containers = append(dep.Spec.Template.Spec.Containers, etcdContainer)
+	}
+
+	if etcdServers == "" && pvc != nil {
 		dataVolumeName := "etcddata"
 		etcdVolume := api.Volume{
 			Name: dataVolumeName,
