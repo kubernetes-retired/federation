@@ -74,6 +74,8 @@ pkg_tar(
 pkg_tar(
     name = "federation-client-%s" % PLATFORM_ARCH_STRING,
     extension = "tar.gz",
+    files = [":license-targets"],
+    mode = "0644",
     package_dir = "federation",
     deps = [
         ":_client-bin",
