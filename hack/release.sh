@@ -24,7 +24,7 @@ RELEASE_VERSION=${1:-}
 RELEASE_TAG=${RELEASE_VERSION:-}
 GCP_PROJECT=${GCP_PROJECT:-k8s-jkns-e2e-gce-federation}
 GCS_BUCKET=${GCS_BUCKET:-kubernetes-federation-release}
-GCR_REPO_PATH=${GCR_REPO_PATH:-"gcr.io/google_containers/fcp-amd64"}
+GCR_REPO_PATH=${GCR_REPO_PATH:-"google_containers/fcp-amd64"}
 TMPDIR="$(mktemp -d /tmp/k8s-fed-relXXXXXXXX)"
 KUBE_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
@@ -56,43 +56,31 @@ if [[ "${KUBE_GIT_VERSION}" != "${RELEASE_TAG}" ]]; then
   echo "Version being build: ${KUBE_GIT_VERSION} does not match the release version: ${RELEASE_TAG}, there probably is uncommited work."
   exit 1
 else
-  echo "Using ${KUBE_GIT_VERSION} for release push"
+  echo "Using ${RELEASE_TAG} for release push"
 fi
 
 # Check for and install (some) necessary dependencies.
-# TODO: irfanurrehman we are yet to move completely to bazel, which can
-# avoid docker as dependency.
-command -v docker >/dev/null 2>&1 || { echo >&2 "Please install docker before running this script."; exit 1; }
 command -v gcloud >/dev/null 2>&1 || { echo >&2 "Please install gcloud before running this script."; exit 1; }
-gcloud components install gsutil
+gcloud components install gsutil docker-credential-gcr
+docker-credential-gcr configure-docker 1>&2
 
 RELEASE_TMPDIR="${TMPDIR}/${RELEASE_TAG}"
 
-# Build the tarballs of the tools.
-make quick-release
+# Build the tarballs.
+make bazel-release
 
 # Copy the archives.
 mkdir -p "${RELEASE_TMPDIR}"
 cp \
-  _output/release-tars/federation-client-linux-amd64.tar.gz \
-  _output/release-tars/federation-server-linux-amd64.tar.gz \
+  bazel-bin/build/release-tars/federation-client-linux-amd64.tar.gz \
+  bazel-bin/build/release-tars/federation-server-linux-amd64.tar.gz \
   "${RELEASE_TMPDIR}"
 
 # Create the `latest` file.
-echo "${RELEASE_VERSION}" > "${TMPDIR}/latest"
+# We consider a version built and pushed in chronology as latest
+echo "${RELEASE_TAG}" > "${TMPDIR}/latest"
 
 pushd "${RELEASE_TMPDIR}" 1>&2
-
-# extract tar, load fcp image and push to gcr.
-tar -xf federation-server-linux-amd64.tar.gz 1>&2
-gcloud docker -- load -i federation/fcp-amd64.tar
-gcloud docker -- push "${GCR_REPO_PATH}:${RELEASE_TAG}"
-gcloud docker -- rmi "${GCR_REPO_PATH}:${RELEASE_TAG}"
-
-# We don't further need the fcp image in the release server tar
-rm -r federation/fcp-amd64.tar
-tar -czf federation-server-linux-amd64.tar.gz federation 1>&2
-rm -r federation
 
 # Create the SHAs.
 sha256sum federation-client-linux-amd64.tar.gz > federation-client-linux-amd64.tar.gz.sha
@@ -101,7 +89,24 @@ sha256sum federation-server-linux-amd64.tar.gz > federation-server-linux-amd64.t
 popd 1>&2
 
 # Upload the files to GCS.
-gsutil -m cp -r "${TMPDIR}"/* "gs://${GCS_BUCKET}/release"
+gsutil -m cp -r "${RELEASE_TMPDIR}" "gs://${GCS_BUCKET}/release"
+
+# Push the server container image.
+bazel run //build:push-fcp-image --define repository="${GCR_REPO_PATH}" 1>&2
+
+# Adjust the tags on the image. The `push-fcp-image` rule tags the
+# pushed image with the `dev` tag by default. This consistent tag allows the
+# tool to easily add other tags to the image. The tool then removes the `dev`
+# tag since this is not a development image.
+gcloud container images add-tag --quiet \
+  "gcr.io/${GCR_REPO_PATH}:dev" \
+  "gcr.io/${GCR_REPO_PATH}:${RELEASE_TAG}"
+# We consider a version built and pushed in chronology as latest
+gcloud container images add-tag --quiet \
+  "gcr.io/${GCR_REPO_PATH}:dev" \
+  "gcr.io/${GCR_REPO_PATH}:latest"
+gcloud container images untag --quiet \
+  "gcr.io/${GCR_REPO_PATH}:dev"
 
 echo "Pushing the release completed for federation ${RELEASE_TAG} release"
 

@@ -1,3 +1,5 @@
+load("//pkg/version:def.bzl", "version_x_defs")
+
 package(default_visibility = ["//visibility:public"])
 
 load(
@@ -10,6 +12,7 @@ go_binary(
     name = "federation-controller-manager",
     importpath = "k8s.io/federation/cmd/federation-controller-manager",
     library = ":go_default_library",
+    x_defs = version_x_defs(),
 )
 
 go_library(

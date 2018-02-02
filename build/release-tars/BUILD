@@ -74,6 +74,8 @@ pkg_tar(
 pkg_tar(
     name = "federation-client-%s" % PLATFORM_ARCH_STRING,
     extension = "tar.gz",
+    files = [":license-targets"],
+    mode = "0644",
     package_dir = "federation",
     deps = [
         ":_client-bin",
@@ -83,12 +85,20 @@ pkg_tar(
 pkg_tar(
     name = "_server-bin",
     files = [
-        "//build:client-targets",
-        "//build:docker-artifacts",
         "//build:server-targets",
     ],
     mode = "0755",
     package_dir = "server/bin",
+    visibility = ["//visibility:private"],
+)
+
+pkg_tar(
+    name = "_server_image-bin",
+    files = [
+        "//build:docker-artifacts",
+    ],
+    mode = "0755",
+    package_dir = "server/bin/image",
     visibility = ["//visibility:private"],
 )
 
@@ -107,6 +117,7 @@ pkg_tar(
     package_dir = "federation",
     deps = [
         ":_server-bin",
+        ":_server_image-bin",
     ],
 )
 

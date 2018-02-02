@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_docker//docker:docker.bzl", "docker_image", "docker_bundle")
+load("@io_bazel_rules_docker//docker:docker.bzl", "docker_image", "docker_bundle", "docker_push")
 load("@io_kubernetes_build//defs:build.bzl", "release_filegroup")
 
 filegroup(
@@ -27,12 +27,21 @@ docker_image(
     files = ["//cmd/fcp"],
 )
 
+# This is to pack the image in the release tar also.
 docker_bundle(
     name = "fcp-amd64",
     images = {
         "gcr.io/google_containers/fcp-amd64:{STABLE_DOCKER_TAG}": "fcp-image",
     },
     stamp = True,
+)
+
+docker_push(
+    name = "push-fcp-image",
+    image = ":fcp-image",
+    registry = "gcr.io",
+    repository = "$(repository)",
+    tag = "dev",
 )
 
 release_filegroup(
