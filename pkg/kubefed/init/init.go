@@ -726,12 +726,12 @@ func createAPIServer(clientset client.Interface, namespace, name, federationName
 		"federation-apiserver",
 	}
 	argsMap := map[string]string{
-		"--bind-address":         "0.0.0.0",
-		"--secure-port":          fmt.Sprintf("%d", apiServerSecurePort),
-		"--client-ca-file":       "/etc/federation/apiserver/ca.crt",
-		"--tls-cert-file":        "/etc/federation/apiserver/server.crt",
-		"--tls-private-key-file": "/etc/federation/apiserver/server.key",
-		"--admission-control":    "NamespaceLifecycle",
+		"--bind-address":             "0.0.0.0",
+		"--secure-port":              fmt.Sprintf("%d", apiServerSecurePort),
+		"--client-ca-file":           "/etc/federation/apiserver/ca.crt",
+		"--tls-cert-file":            "/etc/federation/apiserver/server.crt",
+		"--tls-private-key-file":     "/etc/federation/apiserver/server.key",
+		"--enable-admission-plugins": "NamespaceLifecycle",
 	}
 	if etcdServers != "" {
 		argsMap["--etcd-servers"] = etcdServers
