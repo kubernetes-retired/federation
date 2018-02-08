@@ -32,6 +32,22 @@ The `fcp` binary, which self contains `federation-apiserver` and
 `federation-server-*.tar.gz` includes `fcp-*.tar`, which is the fcp docker 
 image in the tar format and can be consumed by the `kubefed` tool.
 
+To run the docker image load the container on your build machine and push to your repository:
+```shell
+# Run from $GOPATH/src/k8s.io/kubernetes/federation
+docker load -i  _output/release-images/amd64/fcp-amd64.tar
+
+# Tag to your REGISTRY/REPO/IMAGENAME[:TAG]
+docker docker tag gcr.io/google_containers/fcp-amd64:v1.9.0-alpha.2.60_430416309f9e58-dirty REGISTRY/REPO/IMAGENAME[:TAG] 
+
+# push to your registry
+docker push REGISTRY/REPO/IMAGENAME[:TAG]
+```
+
+then bring up the new control plane:
+```shell
+_output/dockerized/bin/linux/amd64/kubefed init myfed --host-cluster-context=HOST_CLUSTER_CONTEXT --image=REGISTRY/REPO/IMAGENAME[:TAG] --dns-provider="PROVIDER" --dns-zone-name="YOUR_ZONE" --dns-provider-config=/path/to/provider.conf
+```
 
 # A note to the reader
 Kubernetes federation code is in a state of flux. Since its incubation, it 
