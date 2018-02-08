@@ -89,7 +89,7 @@ func Run(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 // stop with the given channel.
 func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	// register all admission plugins
-	RegisterAllAdmissionPlugins(s.Admission.Plugins)
+	RegisterAllAdmissionPlugins(s.Admission)
 
 	// set defaults
 	if err := s.GenericServerRunOptions.DefaultAdvertiseAddress(s.SecureServing); err != nil {
@@ -201,17 +201,6 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	quotaConfiguration := quotainstall.NewQuotaConfigurationForAdmission()
 	pluginInitializer := kubeapiserveradmission.NewPluginInitializer(client, sharedInformers, nil, restMapper, quotaConfiguration)
 
-	err = s.Admission.ApplyTo(
-		genericConfig,
-		versionedInformers,
-		kubeClientConfig,
-		legacyscheme.Scheme,
-		pluginInitializer,
-	)
-	if err != nil {
-		return fmt.Errorf("failed to initialize plugins: %v", err)
-	}
-
 	kubeVersion := version.Get()
 	genericConfig.Version = &kubeVersion
 	genericConfig.Authenticator = apiAuthenticator
@@ -224,6 +213,17 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 		sets.NewString("watch", "proxy"),
 		sets.NewString("attach", "exec", "proxy", "log", "portforward"),
 	)
+
+	err = s.Admission.ApplyTo(
+		genericConfig,
+		versionedInformers,
+		kubeClientConfig,
+		legacyscheme.Scheme,
+		pluginInitializer,
+	)
+	if err != nil {
+		return fmt.Errorf("failed to initialize plugins: %v", err)
+	}
 
 	// TODO: Move this to generic api server (Need to move the command line flag).
 	if s.Etcd.EnableWatchCache {

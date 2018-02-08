@@ -37,7 +37,7 @@ import (
 )
 
 const (
-	pluginName               = "SchedulingPolicy"
+	PluginName               = "SchedulingPolicy"
 	configKey                = "schedulingPolicy"
 	policyConfigMapNamespace = "kube-federation-scheduling-policy"
 
@@ -62,7 +62,7 @@ type admissionController struct {
 
 // Register registers the plugin.
 func Register(plugins *admission.Plugins) {
-	plugins.Register(pluginName, func(file io.Reader) (admission.Interface, error) {
+	plugins.Register(PluginName, func(file io.Reader) (admission.Interface, error) {
 		return newAdmissionController(file)
 	})
 }
@@ -89,7 +89,7 @@ func newAdmissionController(file io.Reader) (*admissionController, error) {
 
 func (c *admissionController) Validate() error {
 	if c.client == nil {
-		return fmt.Errorf("%s requires a client", pluginName)
+		return fmt.Errorf("%s requires a client", PluginName)
 	}
 	return nil
 }
