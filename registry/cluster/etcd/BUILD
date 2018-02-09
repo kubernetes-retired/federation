@@ -8,11 +8,11 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["storage.go"],
-    importpath = "k8s.io/federation/pkg/registry/cluster/storage",
+    srcs = ["etcd.go"],
+    importpath = "k8s.io/federation/registry/cluster/etcd",
     deps = [
         "//apis/federation:go_default_library",
-        "//pkg/registry/cluster:go_default_library",
+        "//registry/cluster:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/generic:go_default_library",
@@ -23,9 +23,9 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["storage_test.go"],
-    importpath = "k8s.io/federation/pkg/registry/cluster/storage",
-    library = ":go_default_library",
+    srcs = ["etcd_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/federation/registry/cluster/etcd",
     deps = [
         "//apis/federation:go_default_library",
         "//test/testapi:go_default_library",

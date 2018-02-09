@@ -8,8 +8,8 @@ load(
 
 go_binary(
     name = "mounter",
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/cluster/gce/gci/mounter",
-    library = ":go_default_library",
 )
 
 go_library(

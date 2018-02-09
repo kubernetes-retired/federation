@@ -35,8 +35,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["route53_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/aws/route53",
-    library = ":go_default_library",
     deps = [
         "//pkg/dnsprovider:go_default_library",
         "//pkg/dnsprovider/providers/aws/route53/stubs:go_default_library",

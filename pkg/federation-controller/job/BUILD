@@ -34,8 +34,8 @@ go_library(
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )
@@ -43,8 +43,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["jobcontroller_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/pkg/federation-controller/job",
-    library = ":go_default_library",
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset/fake:go_default_library",

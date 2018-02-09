@@ -9,8 +9,8 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["controller_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/pkg/federation-controller/sync",
-    library = ":go_default_library",
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//pkg/federatedtypes:go_default_library",
@@ -49,8 +49,8 @@ go_library(
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
     ],
 )

@@ -12,7 +12,7 @@ go_library(
         "registry.go",
         "strategy.go",
     ],
-    importpath = "k8s.io/federation/pkg/registry/cluster",
+    importpath = "k8s.io/federation/registry/cluster",
     deps = [
         "//apis/federation:go_default_library",
         "//apis/federation/validation:go_default_library",
@@ -35,8 +35,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["strategy_test.go"],
-    importpath = "k8s.io/federation/pkg/registry/cluster",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/federation/registry/cluster",
     deps = [
         "//apis/federation:go_default_library",
         "//test/testapi:go_default_library",
@@ -61,7 +61,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//pkg/registry/cluster/storage:all-srcs",
+        "//registry/cluster/etcd:all-srcs",
     ],
     tags = ["automanaged"],
 )
