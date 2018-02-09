@@ -23,8 +23,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["client_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/heketi/heketi/client/api/go-client",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/gorilla/mux:go_default_library",
         "//vendor/github.com/heketi/heketi/apps/glusterfs:go_default_library",

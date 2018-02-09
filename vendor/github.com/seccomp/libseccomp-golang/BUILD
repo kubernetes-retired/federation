@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "go_default_library",
     srcs = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "seccomp.go",
             "seccomp_internal.go",
         ],
@@ -11,7 +11,7 @@ go_library(
     }),
     cgo = True,
     clinkopts = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "-lseccomp",
             "-lseccomp",
         ],
@@ -24,13 +24,13 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "seccomp_test.go",
         ],
         "//conditions:default": [],
     }),
+    embed = [":go_default_library"],
     importpath = "github.com/seccomp/libseccomp-golang",
-    library = ":go_default_library",
 )
 
 filegroup(

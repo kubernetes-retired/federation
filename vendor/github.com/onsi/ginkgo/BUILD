@@ -31,9 +31,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/onsi/ginkgo/config:all-srcs",
-        "//vendor/github.com/onsi/ginkgo/extensions/table:all-srcs",
         "//vendor/github.com/onsi/ginkgo/ginkgo:all-srcs",
-        "//vendor/github.com/onsi/ginkgo/integration:all-srcs",
         "//vendor/github.com/onsi/ginkgo/internal/codelocation:all-srcs",
         "//vendor/github.com/onsi/ginkgo/internal/containernode:all-srcs",
         "//vendor/github.com/onsi/ginkgo/internal/failer:all-srcs",

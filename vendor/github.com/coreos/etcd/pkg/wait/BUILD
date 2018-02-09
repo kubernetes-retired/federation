@@ -16,8 +16,8 @@ go_test(
         "wait_test.go",
         "wait_time_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/etcd/pkg/wait",
-    library = ":go_default_library",
 )
 
 filegroup(

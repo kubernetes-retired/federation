@@ -37,8 +37,8 @@ go_test(
         "toml_test.go",
         "tomltree_conversions_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/pelletier/go-toml",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/davecgh/go-spew/spew:go_default_library"],
 )
 
@@ -51,10 +51,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/pelletier/go-toml/cmd:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

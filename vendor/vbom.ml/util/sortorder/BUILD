@@ -13,8 +13,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["natsort_test.go"],
+    embed = [":go_default_library"],
     importpath = "vbom.ml/util/sortorder",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/xlab/handysort:go_default_library"],
 )
 

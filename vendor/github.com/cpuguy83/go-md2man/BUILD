@@ -10,8 +10,8 @@ go_library(
 
 go_binary(
     name = "go-md2man",
+    embed = [":go_default_library"],
     importpath = "github.com/cpuguy83/go-md2man",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 

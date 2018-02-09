@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -12,6 +7,7 @@ go_library(
         "plugins.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/network",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -41,11 +37,12 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/cni:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/network/dns:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/hairpin:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/hostport:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/kubenet:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/metrics:all-srcs",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/network/testing:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

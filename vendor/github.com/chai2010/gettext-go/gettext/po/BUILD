@@ -26,8 +26,8 @@ go_test(
         "poedit_test.go",
         "util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/chai2010/gettext-go/gettext/po",
-    library = ":go_default_library",
 )
 
 filegroup(

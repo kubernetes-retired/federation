@@ -1,33 +1,30 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
         "configsync.go",
         "controller.go",
-        "rollback.go",
         "watch.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/kubeletconfig",
+    visibility = ["//visibility:public"],
     deps = [
+        "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/validation:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/checkpoint:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/checkpoint/store:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/configfiles:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/status:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/equal:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/log:go_default_library",
@@ -55,7 +52,7 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/files:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/log:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/panic:all-srcs",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/util/test:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

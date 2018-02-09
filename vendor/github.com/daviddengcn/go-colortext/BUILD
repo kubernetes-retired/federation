@@ -4,9 +4,38 @@ go_library(
     name = "go_default_library",
     srcs = [
         "ct.go",
-        "ct_ansi.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "ct_ansi.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "ct_win.go",
         ],
         "//conditions:default": [],
@@ -18,12 +47,75 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
-        "ct_ansi_test.go",
         "ct_test.go",
-    ],
+    ] + select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "ct_ansi_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "ct_ansi_test.go",
+        ],
+        "//conditions:default": [],
+    }),
+    embed = [":go_default_library"],
     importpath = "github.com/daviddengcn/go-colortext",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/golangplus/testing/assert:go_default_library"],
+    deps = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "//vendor/github.com/golangplus/testing/assert:go_default_library",
+        ],
+        "//conditions:default": [],
+    }),
 )
 
 filegroup(

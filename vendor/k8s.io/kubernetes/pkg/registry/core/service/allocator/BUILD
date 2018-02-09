@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -14,6 +8,7 @@ go_library(
         "utils.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/service/allocator",
+    visibility = ["//visibility:public"],
 )
 
 go_test(
@@ -22,8 +17,8 @@ go_test(
         "bitmap_test.go",
         "utils_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/registry/core/service/allocator",
-    library = ":go_default_library",
     deps = ["//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library"],
 )
 
@@ -41,4 +36,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/registry/core/service/allocator/storage:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

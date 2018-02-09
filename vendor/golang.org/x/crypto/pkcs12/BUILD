@@ -25,8 +25,8 @@ go_test(
         "pbkdf_test.go",
         "pkcs12_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/crypto/pkcs12",
-    library = ":go_default_library",
 )
 
 filegroup(

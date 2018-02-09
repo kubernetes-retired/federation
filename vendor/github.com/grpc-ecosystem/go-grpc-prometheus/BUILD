@@ -25,8 +25,8 @@ go_test(
         "client_test.go",
         "server_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/grpc-ecosystem/go-grpc-prometheus",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/grpc-ecosystem/go-grpc-prometheus/examples/testproto:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
@@ -48,10 +48,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/grpc-ecosystem/go-grpc-prometheus/examples/testproto:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

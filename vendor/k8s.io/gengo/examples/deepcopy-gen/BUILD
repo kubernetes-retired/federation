@@ -15,8 +15,8 @@ go_library(
 
 go_binary(
     name = "deepcopy-gen",
+    embed = [":go_default_library"],
     importpath = "k8s.io/gengo/examples/deepcopy-gen",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 

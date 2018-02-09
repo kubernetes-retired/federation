@@ -37,8 +37,8 @@ go_test(
         "type_test.go",
         "values_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/go-openapi/validate",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/go-openapi/analysis:go_default_library",
         "//vendor/github.com/go-openapi/errors:go_default_library",

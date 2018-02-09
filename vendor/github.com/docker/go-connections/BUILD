@@ -19,7 +19,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/docker/go-connections/nat:all-srcs",
-        "//vendor/github.com/docker/go-connections/proxy:all-srcs",
         "//vendor/github.com/docker/go-connections/sockets:all-srcs",
         "//vendor/github.com/docker/go-connections/tlsconfig:all-srcs",
     ],

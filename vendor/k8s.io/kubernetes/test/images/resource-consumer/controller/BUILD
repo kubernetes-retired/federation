@@ -1,22 +1,18 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "controller",
-    importpath = "k8s.io/kubernetes/test/images/resource-consumer/controller",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["controller.go"],
     importpath = "k8s.io/kubernetes/test/images/resource-consumer/controller",
+    visibility = ["//visibility:private"],
     deps = ["//vendor/k8s.io/kubernetes/test/images/resource-consumer/common:go_default_library"],
+)
+
+go_binary(
+    name = "controller",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/test/images/resource-consumer/controller",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -30,4 +26,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

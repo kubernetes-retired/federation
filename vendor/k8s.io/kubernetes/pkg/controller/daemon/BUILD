@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -14,6 +8,7 @@ go_library(
         "update.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/controller/daemon",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/apps/v1beta1:go_default_library",
@@ -45,17 +40,17 @@ go_library(
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/integer:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/v1/pod:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/v1/helper:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller/daemon/util:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/algorithm:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/algorithm/predicates:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/schedulercache:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/labels:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/metrics:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache:go_default_library",
     ],
 )
 
@@ -65,8 +60,8 @@ go_test(
         "daemon_controller_test.go",
         "update_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/controller/daemon",
-    library = ":go_default_library",
     deps = [
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
@@ -83,15 +78,15 @@ go_test(
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/workqueue:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/v1/pod:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/algorithm:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/securitycontext:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/labels:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm:go_default_library",
     ],
 )
 
@@ -109,4 +104,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/controller/daemon/util:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

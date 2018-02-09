@@ -19,8 +19,8 @@ go_test(
         "internal_test.go",
         "match_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/text/internal",
-    library = ":go_default_library",
     deps = ["//vendor/golang.org/x/text/language:go_default_library"],
 )
 
@@ -35,17 +35,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/golang.org/x/text/internal/catmsg:all-srcs",
-        "//vendor/golang.org/x/text/internal/colltab:all-srcs",
-        "//vendor/golang.org/x/text/internal/export/idna:all-srcs",
-        "//vendor/golang.org/x/text/internal/format:all-srcs",
-        "//vendor/golang.org/x/text/internal/gen:all-srcs",
-        "//vendor/golang.org/x/text/internal/number:all-srcs",
-        "//vendor/golang.org/x/text/internal/stringset:all-srcs",
         "//vendor/golang.org/x/text/internal/tag:all-srcs",
-        "//vendor/golang.org/x/text/internal/testtext:all-srcs",
-        "//vendor/golang.org/x/text/internal/triegen:all-srcs",
-        "//vendor/golang.org/x/text/internal/ucd:all-srcs",
         "//vendor/golang.org/x/text/internal/utf8internal:all-srcs",
     ],
     tags = ["automanaged"],

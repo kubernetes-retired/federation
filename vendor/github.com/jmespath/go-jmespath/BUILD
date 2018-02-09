@@ -19,14 +19,15 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
+        "api_test.go",
         "compliance_test.go",
         "interpreter_test.go",
         "lexer_test.go",
         "parser_test.go",
         "util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/jmespath/go-jmespath",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
@@ -39,10 +40,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/jmespath/go-jmespath/fuzz:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

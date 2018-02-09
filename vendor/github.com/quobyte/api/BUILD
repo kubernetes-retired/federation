@@ -14,8 +14,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["rpc_client_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/quobyte/api",
-    library = ":go_default_library",
 )
 
 filegroup(

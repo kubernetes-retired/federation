@@ -42,11 +42,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/containernetworking/cni/pkg/version/legacy_examples:all-srcs",
-        "//vendor/github.com/containernetworking/cni/pkg/version/testhelpers:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

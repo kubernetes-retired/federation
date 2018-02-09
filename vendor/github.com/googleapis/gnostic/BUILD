@@ -18,16 +18,16 @@ go_library(
 
 go_binary(
     name = "gnostic",
+    embed = [":go_default_library"],
     importpath = "github.com/googleapis/gnostic",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["gnostic_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/googleapis/gnostic",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -42,18 +42,8 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/googleapis/gnostic/OpenAPIv2:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/OpenAPIv3:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/apps/petstore-builder:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/apps/report:all-srcs",
         "//vendor/github.com/googleapis/gnostic/compiler:all-srcs",
         "//vendor/github.com/googleapis/gnostic/extensions:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/generate-gnostic:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/jsonschema:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/jsonwriter:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/plugins:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/printer:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/tools/format-schema:all-srcs",
-        "//vendor/github.com/googleapis/gnostic/tools/j2y2j:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

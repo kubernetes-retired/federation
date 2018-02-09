@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -19,6 +14,7 @@ go_library(
         "util.go",
     ],
     importpath = "k8s.io/kubernetes/test/e2e_node/services",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/api/v2http:go_default_library",
@@ -26,17 +22,25 @@ go_library(
         "//vendor/github.com/coreos/etcd/pkg/types:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/kardianos/osext:go_default_library",
+        "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/flag:go_default_library",
         "//vendor/k8s.io/client-go/dynamic:go_default_library",
         "//vendor/k8s.io/client-go/informers:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app/options:go_default_library",
+        "//vendor/k8s.io/kubernetes/cmd/kubelet/app/options:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller/namespace:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/scheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig/v1alpha1:go_default_library",
         "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
         "//vendor/k8s.io/kubernetes/test/e2e_node/builder:go_default_library",
     ],
@@ -53,4 +57,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

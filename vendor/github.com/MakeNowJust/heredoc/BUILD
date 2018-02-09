@@ -8,11 +8,15 @@ go_library(
 )
 
 go_test(
+    name = "go_default_test",
+    srcs = ["heredoc_test.go"],
+    embed = [":go_default_library"],
+    importpath = "github.com/MakeNowJust/heredoc",
+)
+
+go_test(
     name = "go_default_xtest",
-    srcs = [
-        "example_test.go",
-        "heredoc_test.go",
-    ],
+    srcs = ["example_test.go"],
     importpath = "github.com/MakeNowJust/heredoc_test",
     deps = [":go_default_library"],
 )
@@ -26,10 +30,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/MakeNowJust/heredoc/dot:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

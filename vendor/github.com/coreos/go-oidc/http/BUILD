@@ -18,8 +18,8 @@ go_test(
         "http_test.go",
         "url_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/go-oidc/http",
-    library = ":go_default_library",
 )
 
 filegroup(

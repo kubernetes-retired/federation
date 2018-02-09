@@ -16,8 +16,8 @@ go_test(
         "duration_convert_test.go",
         "timestamp_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/docker/docker/api/types/time",
-    library = ":go_default_library",
 )
 
 filegroup(

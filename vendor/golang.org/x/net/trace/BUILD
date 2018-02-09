@@ -23,8 +23,8 @@ go_test(
         "histogram_test.go",
         "trace_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/trace",
-    library = ":go_default_library",
 )
 
 filegroup(

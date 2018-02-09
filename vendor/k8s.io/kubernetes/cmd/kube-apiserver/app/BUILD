@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,11 +8,11 @@ go_library(
         "server.go",
     ],
     importpath = "k8s.io/kubernetes/cmd/kube-apiserver/app",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/go-openapi/spec:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/cobra:go_default_library",
-        "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1:go_default_library",
         "//vendor/k8s.io/apiextensions-apiserver/pkg/apiserver:go_default_library",
         "//vendor/k8s.io/apiextensions-apiserver/pkg/client/informers/internalversion:go_default_library",
@@ -29,7 +24,8 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/webhook:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/config:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/initializer:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authentication/authenticator:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/server:go_default_library",
@@ -44,19 +40,24 @@ go_library(
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration:go_default_library",
+        "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration/v1:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/apis/apiregistration/v1beta1:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/apiserver:go_default_library",
+        "//vendor/k8s.io/kube-aggregator/pkg/apiserver/scheme:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/client/clientset_generated/internalclientset/typed/apiregistration/internalversion:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/client/informers/internalversion/apiregistration/internalversion:go_default_library",
         "//vendor/k8s.io/kube-aggregator/pkg/controllers/autoregister:go_default_library",
         "//vendor/k8s.io/kube-openapi/pkg/common:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app/options:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/apps:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/batch:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/events:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/networking:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/storage:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/capabilities:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion:go_default_library",
@@ -79,6 +80,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/util/reflector/prometheus:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/workqueue/prometheus:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/version/verflag:go_default_library",
         "//vendor/k8s.io/kubernetes/plugin/pkg/auth/authenticator/token/bootstrap:go_default_library",
     ],
 )
@@ -95,7 +97,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app/options:all-srcs",
-        "//vendor/k8s.io/kubernetes/cmd/kube-apiserver/app/testing:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

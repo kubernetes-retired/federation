@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -12,6 +7,7 @@ go_library(
         "types.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/gpu",
+    visibility = ["//visibility:public"],
     deps = ["//vendor/k8s.io/api/core/v1:go_default_library"],
 )
 
@@ -29,4 +25,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/gpu/nvidia:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

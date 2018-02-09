@@ -1,25 +1,21 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "net",
-    importpath = "k8s.io/kubernetes/test/images/net",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
     importpath = "k8s.io/kubernetes/test/images/net",
+    visibility = ["//visibility:private"],
     deps = [
         "//vendor/k8s.io/kubernetes/test/images/net/common:go_default_library",
         "//vendor/k8s.io/kubernetes/test/images/net/nat:go_default_library",
     ],
+)
+
+go_binary(
+    name = "net",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/test/images/net",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -37,4 +33,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/test/images/net/nat:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

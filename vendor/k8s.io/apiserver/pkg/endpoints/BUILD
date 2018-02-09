@@ -1,9 +1,32 @@
-package(default_visibility = ["//visibility:public"])
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "doc.go",
+        "groupversion.go",
+        "installer.go",
+    ],
+    importpath = "k8s.io/apiserver/pkg/endpoints",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/github.com/emicklei/go-restful:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/discovery:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/handlers:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/handlers/negotiation:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/metrics:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/server/filters:go_default_library",
+    ],
 )
 
 go_test(
@@ -15,8 +38,8 @@ go_test(
         "proxy_test.go",
         "watch_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/apiserver/pkg/endpoints",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/emicklei/go-restful:go_default_library",
         "//vendor/golang.org/x/net/websocket:go_default_library",
@@ -57,35 +80,6 @@ go_test(
     ],
 )
 
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "apiserver.go",
-        "doc.go",
-        "groupversion.go",
-        "installer.go",
-    ],
-    importpath = "k8s.io/apiserver/pkg/endpoints",
-    deps = [
-        "//vendor/github.com/emicklei/go-restful:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/discovery:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/handlers:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/handlers/negotiation:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/metrics:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/server/filters:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -103,7 +97,7 @@ filegroup(
         "//vendor/k8s.io/apiserver/pkg/endpoints/metrics:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/endpoints/openapi:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:all-srcs",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/testing:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

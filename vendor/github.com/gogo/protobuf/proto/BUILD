@@ -37,8 +37,8 @@ go_test(
         "message_set_test.go",
         "size2_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/gogo/protobuf/proto",
-    library = ":go_default_library",
 )
 
 go_test(
@@ -75,11 +75,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/gogo/protobuf/proto/proto3_proto:all-srcs",
-        "//vendor/github.com/gogo/protobuf/proto/testdata:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -4,6 +4,7 @@ go_library(
     name = "go_default_library",
     srcs = [
         "header_rules.go",
+        "options.go",
         "uri_path.go",
         "v4.go",
     ],
@@ -23,8 +24,8 @@ go_test(
         "header_rules_test.go",
         "v4_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/aws/aws-sdk-go/aws/signer/v4",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/credentials:go_default_library",

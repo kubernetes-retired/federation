@@ -25,8 +25,8 @@ go_test(
         "server_test.go",
         "util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/gorilla/websocket",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -38,12 +38,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/gorilla/websocket/examples/autobahn:all-srcs",
-        "//vendor/github.com/gorilla/websocket/examples/chat:all-srcs",
-        "//vendor/github.com/gorilla/websocket/examples/filewatch:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

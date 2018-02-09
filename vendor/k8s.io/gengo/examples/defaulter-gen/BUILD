@@ -15,8 +15,8 @@ go_library(
 
 go_binary(
     name = "defaulter-gen",
+    embed = [":go_default_library"],
     importpath = "k8s.io/gengo/examples/defaulter-gen",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 

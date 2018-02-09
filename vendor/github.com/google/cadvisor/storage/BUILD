@@ -20,17 +20,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/google/cadvisor/storage/bigquery:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/elasticsearch:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/influxdb:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/kafka:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/redis:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/statsd:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/stdout:all-srcs",
-        "//vendor/github.com/google/cadvisor/storage/test:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

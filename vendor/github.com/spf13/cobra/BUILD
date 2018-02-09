@@ -3,12 +3,43 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "go_default_library",
     srcs = [
+        "args.go",
         "bash_completions.go",
         "cobra.go",
         "command.go",
-        "command_notwin.go",
+        "zsh_completions.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "command_notwin.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "command_win.go",
         ],
         "//conditions:default": [],
@@ -18,7 +49,7 @@ go_library(
     deps = [
         "//vendor/github.com/spf13/pflag:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "//vendor/github.com/inconshreveable/mousetrap:go_default_library",
         ],
         "//conditions:default": [],
@@ -28,12 +59,14 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
+        "args_test.go",
         "bash_completions_test.go",
         "cobra_test.go",
         "command_test.go",
+        "zsh_completions_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/spf13/cobra",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/spf13/pflag:go_default_library"],
 )
 
@@ -48,7 +81,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/spf13/cobra/cobra:all-srcs",
         "//vendor/github.com/spf13/cobra/doc:all-srcs",
     ],
     tags = ["automanaged"],

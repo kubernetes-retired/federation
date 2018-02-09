@@ -13,6 +13,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/internal/shareddefaults:go_default_library",
         "//vendor/github.com/go-ini/ini:go_default_library",
     ],
 )
@@ -26,10 +27,11 @@ go_test(
         "shared_credentials_provider_test.go",
         "static_provider_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/aws/aws-sdk-go/aws/credentials",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/internal/shareddefaults:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
     ],
 )

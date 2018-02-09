@@ -1,21 +1,10 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "rollback",
-    importpath = "k8s.io/kubernetes/cluster/images/etcd/rollback",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["rollback.go"],
     importpath = "k8s.io/kubernetes/cluster/images/etcd/rollback",
+    visibility = ["//visibility:private"],
     deps = [
         "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/etcdserverpb:go_default_library",
@@ -35,6 +24,13 @@ go_library(
     ],
 )
 
+go_binary(
+    name = "rollback",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/cluster/images/etcd/rollback",
+    visibility = ["//visibility:public"],
+)
+
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -46,4 +42,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

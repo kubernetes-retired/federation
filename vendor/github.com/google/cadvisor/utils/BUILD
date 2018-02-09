@@ -14,8 +14,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["timed_store_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor/utils",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
@@ -31,14 +31,11 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/google/cadvisor/utils/cloudinfo:all-srcs",
-        "//vendor/github.com/google/cadvisor/utils/container:all-srcs",
         "//vendor/github.com/google/cadvisor/utils/cpuload:all-srcs",
         "//vendor/github.com/google/cadvisor/utils/docker:all-srcs",
         "//vendor/github.com/google/cadvisor/utils/oomparser:all-srcs",
-        "//vendor/github.com/google/cadvisor/utils/procfs:all-srcs",
         "//vendor/github.com/google/cadvisor/utils/sysfs:all-srcs",
         "//vendor/github.com/google/cadvisor/utils/sysinfo:all-srcs",
-        "//vendor/github.com/google/cadvisor/utils/tail:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

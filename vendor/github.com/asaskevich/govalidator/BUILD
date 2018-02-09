@@ -26,8 +26,8 @@ go_test(
         "utils_test.go",
         "validator_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/asaskevich/govalidator",
-    library = ":go_default_library",
 )
 
 filegroup(

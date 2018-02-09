@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -12,6 +7,7 @@ go_library(
         "doc.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/client-go/discovery:go_default_library",
@@ -25,6 +21,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/batch/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/certificates/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/events/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/extensions/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/networking/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/policy/internalversion:go_default_library",
@@ -56,6 +53,7 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/batch/internalversion:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/certificates/internalversion:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/events/internalversion:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/extensions/internalversion:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/networking/internalversion:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/policy/internalversion:all-srcs",
@@ -65,4 +63,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/storage/internalversion:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -24,10 +18,9 @@ go_library(
         "security_context.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/kuberuntime",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/armon/circbuf:go_default_library",
-        "//vendor/github.com/docker/docker/pkg/jsonlog:go_default_library",
-        "//vendor/github.com/fsnotify/fsnotify:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/google.golang.org/grpc:go_default_library",
@@ -37,18 +30,22 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/tools/reference:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/v1/helper:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/secrets:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/cri:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/events:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/images:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/kuberuntime/logs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/lifecycle:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/metrics:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/prober/results:go_default_library",
@@ -73,15 +70,14 @@ go_test(
         "kuberuntime_container_test.go",
         "kuberuntime_gc_test.go",
         "kuberuntime_image_test.go",
-        "kuberuntime_logs_test.go",
         "kuberuntime_manager_test.go",
         "kuberuntime_sandbox_test.go",
         "labels_test.go",
         "legacy_test.go",
         "security_context_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/kubelet/kuberuntime",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/golang/mock/gomock:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
@@ -93,6 +89,7 @@ go_test(
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/cri/testing:go_default_library",
@@ -113,6 +110,10 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [":package-srcs"],
+    srcs = [
+        ":package-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/kuberuntime/logs:all-srcs",
+    ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

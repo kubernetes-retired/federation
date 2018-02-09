@@ -16,8 +16,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["error_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/mistifyio/go-zfs",
-    library = ":go_default_library",
 )
 
 go_test(

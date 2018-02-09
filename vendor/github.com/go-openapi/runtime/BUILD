@@ -41,8 +41,8 @@ go_test(
         "text_test.go",
         "xml_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/go-openapi/runtime",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/go-openapi/errors:go_default_library",
         "//vendor/github.com/go-openapi/strfmt:go_default_library",
@@ -59,14 +59,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/go-openapi/runtime/client:all-srcs",
-        "//vendor/github.com/go-openapi/runtime/internal/testing:all-srcs",
-        "//vendor/github.com/go-openapi/runtime/middleware:all-srcs",
-        "//vendor/github.com/go-openapi/runtime/security:all-srcs",
-        "//vendor/github.com/go-openapi/runtime/yamlpc:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -1,31 +1,16 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["config_test.go"],
-    data = [
-        "//pkg/auth/authorizer/abac:example_policy",
-    ],
-    importpath = "k8s.io/kubernetes/pkg/kubeapiserver/authorizer",
-    library = ":go_default_library",
-    deps = ["//vendor/k8s.io/kubernetes/pkg/kubeapiserver/authorizer/modes:go_default_library"],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
     srcs = ["config.go"],
     importpath = "k8s.io/kubernetes/pkg/kubeapiserver/authorizer",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizerfactory:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/union:go_default_library",
         "//vendor/k8s.io/apiserver/plugin/pkg/authorizer/webhook:go_default_library",
+        "//vendor/k8s.io/client-go/informers:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/auth/authorizer/abac:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/auth/nodeidentifier:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion:go_default_library",
@@ -34,6 +19,14 @@ go_library(
         "//vendor/k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac:go_default_library",
         "//vendor/k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac/bootstrappolicy:go_default_library",
     ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["config_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/pkg/kubeapiserver/authorizer",
+    deps = ["//vendor/k8s.io/kubernetes/pkg/kubeapiserver/authorizer/modes:go_default_library"],
 )
 
 filegroup(
@@ -50,4 +43,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubeapiserver/authorizer/modes:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

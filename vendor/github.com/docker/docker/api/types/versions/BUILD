@@ -10,8 +10,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["compare_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/docker/docker/api/types/versions",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -23,11 +23,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/docker/docker/api/types/versions/v1p19:all-srcs",
-        "//vendor/github.com/docker/docker/api/types/versions/v1p20:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

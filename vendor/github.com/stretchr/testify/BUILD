@@ -15,8 +15,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["package_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/stretchr/testify",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
@@ -32,10 +32,8 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/stretchr/testify/assert:all-srcs",
-        "//vendor/github.com/stretchr/testify/http:all-srcs",
         "//vendor/github.com/stretchr/testify/mock:all-srcs",
         "//vendor/github.com/stretchr/testify/require:all-srcs",
-        "//vendor/github.com/stretchr/testify/suite:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

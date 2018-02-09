@@ -25,7 +25,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metav1alpha1 "k8s.io/apimachinery/pkg/apis/meta/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/kubernetes/pkg/api"
+	api "k8s.io/kubernetes/pkg/apis/core"
 )
 
 var testNamespaceColumnDefinitions = []metav1alpha1.TableColumnDefinition{
@@ -45,17 +45,6 @@ func testPrintNamespace(obj *api.Namespace, options PrintOptions) ([]metav1alpha
 	return []metav1alpha1.TableRow{row}, nil
 }
 
-func testPrintNamespaceList(list *api.NamespaceList, options PrintOptions) ([]metav1alpha1.TableRow, error) {
-	rows := make([]metav1alpha1.TableRow, 0, len(list.Items))
-	for i := range list.Items {
-		r, err := testPrintNamespace(&list.Items[i], options)
-		if err != nil {
-			return nil, err
-		}
-		rows = append(rows, r...)
-	}
-	return rows, nil
-}
 func TestPrintRowsForHandlerEntry(t *testing.T) {
 	printFunc := reflect.ValueOf(testPrintNamespace)
 

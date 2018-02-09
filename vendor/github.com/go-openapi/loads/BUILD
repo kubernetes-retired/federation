@@ -18,8 +18,8 @@ go_test(
         "json_test.go",
         "spec_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/go-openapi/loads",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
@@ -32,10 +32,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/go-openapi/loads/fmts:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

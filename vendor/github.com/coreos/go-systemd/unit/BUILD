@@ -21,8 +21,8 @@ go_test(
         "option_test.go",
         "serialize_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/go-systemd/unit",
-    library = ":go_default_library",
 )
 
 filegroup(

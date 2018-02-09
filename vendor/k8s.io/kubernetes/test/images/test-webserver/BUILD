@@ -1,21 +1,17 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "test-webserver",
-    importpath = "k8s.io/kubernetes/test/images/test-webserver",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["test-webserver.go"],
     importpath = "k8s.io/kubernetes/test/images/test-webserver",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "test-webserver",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/test/images/test-webserver",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -29,4 +25,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

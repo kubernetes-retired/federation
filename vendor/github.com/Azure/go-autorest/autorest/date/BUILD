@@ -21,8 +21,8 @@ go_test(
         "timerfc1123_test.go",
         "unixtime_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/Azure/go-autorest/autorest/date",
-    library = ":go_default_library",
 )
 
 filegroup(

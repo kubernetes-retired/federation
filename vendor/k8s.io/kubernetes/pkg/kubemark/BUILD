@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,6 +8,7 @@ go_library(
         "hollow_proxy.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubemark",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -30,7 +26,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/cmd/kube-proxy/app:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kubelet/app:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kubelet/app/options:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet:go_default_library",
@@ -38,7 +34,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/cadvisor:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container/testing:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy/config:go_default_library",
@@ -68,4 +64,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )
