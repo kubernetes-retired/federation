@@ -33,7 +33,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/k8s.io/kubernetes/hack/boilerplate/test:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/boilerplate:all-srcs",
         "//vendor/k8s.io/kubernetes/hack/cmd/teststale:all-srcs",
     ],
     tags = ["automanaged"],

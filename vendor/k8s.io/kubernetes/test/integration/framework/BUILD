@@ -9,6 +9,9 @@ go_library(
         "serializer.go",
         "util.go",
     ],
+    data = [
+        "@com_coreos_etcd//:etcd",
+    ],
     importpath = "k8s.io/kubernetes/test/integration/framework",
     visibility = ["//visibility:public"],
     deps = [
