@@ -72,4 +72,4 @@ git diff-index --name-only HEAD | grep -F \
   | xargs -r git checkout -f
 
 # now cleanup what's dangling
-git clean -x  -f -d
+#git clean -x  -f -d
