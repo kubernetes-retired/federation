@@ -30,6 +30,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	appsapiv1beta1 "k8s.io/api/apps/v1beta1"
 	appsv1beta2 "k8s.io/api/apps/v1beta2"
 	apiv1 "k8s.io/api/core/v1"
 	extensionsapiv1beta1 "k8s.io/api/extensions/v1beta1"
@@ -151,6 +152,13 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	if err != nil {
 		return fmt.Errorf("error in initializing storage factory: %s", err)
 	}
+
+	// Prefer deployments api version apps/v1beta1 to store in registry.
+	// If we don't do this and use the extensions/v1beta1/deployment with the
+	// vendored version of k8s client, we run into a problem of unmatched defaults
+	// for RevisionHistoryLimit and ProgressDeadlineSeconds.
+	// TODO:@irfanurrehman: figure out a progression for API versions used to talk to k8s.
+	storageFactory.AddCohabitatingResources(appsapiv1beta1.Resource("deployments"), extensionsapiv1beta1.Resource("deployments"))
 
 	for _, override := range s.Etcd.EtcdServersOverrides {
 		tokens := strings.Split(override, "#")
