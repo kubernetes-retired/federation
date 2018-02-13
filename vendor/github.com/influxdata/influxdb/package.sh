@@ -246,7 +246,7 @@ do_build() {
     if [ -n "$WORKING_DIR" ]; then
         STASH=`git stash create -a`
         if [ $? -ne 0 ]; then
-            echo "WARNING: failed to stash uncommited local changes"
+            echo "WARNING: failed to stash uncommitted local changes"
         fi
         git reset --hard
     fi
@@ -260,8 +260,8 @@ do_build() {
 
     if [ -n "$WORKING_DIR" ]; then
         git stash apply $STASH
-        if [ $? -ne 0 ]; then #and apply previous uncommited local changes
-            echo "WARNING: failed to restore uncommited local changes"
+        if [ $? -ne 0 ]; then #and apply previous uncommitted local changes
+            echo "WARNING: failed to restore uncommitted local changes"
         fi
     fi
 
@@ -288,13 +288,13 @@ while :
 do
   case $1 in
     -h | --help)
-	    usage 0
-	    ;;
+            usage 0
+            ;;
 
     -p | --packages-only)
-	    PACKAGES_ONLY="PACKAGES_ONLY"
-	    shift
-	    ;;
+            PACKAGES_ONLY="PACKAGES_ONLY"
+            shift
+            ;;
 
     -t | --target)
         case "$2" in
@@ -326,10 +326,10 @@ do
         ;;
 
     -w | --working-directory)
-	PACKAGES_ONLY="PACKAGES_ONLY"
+        PACKAGES_ONLY="PACKAGES_ONLY"
         WORKING_DIR="WORKING_DIR"
-	    shift
-	    ;;
+            shift
+            ;;
 
     -*)
         echo "Unknown option $1"
