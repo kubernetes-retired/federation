@@ -24,7 +24,7 @@ RELEASE_VERSION=${1:-}
 RELEASE_TAG=${RELEASE_VERSION:-}
 GCP_PROJECT=${GCP_PROJECT:-k8s-jkns-e2e-gce-federation}
 GCS_BUCKET=${GCS_BUCKET:-kubernetes-federation-release}
-GCR_REPO_PATH=${GCR_REPO_PATH:-"google_containers/fcp-amd64"}
+GCR_REPO_PATH=${GCR_REPO_PATH:-"k8s-jkns-e2e-gce-federation/fcp-amd64"}
 TMPDIR="$(mktemp -d /tmp/k8s-fed-relXXXXXXXX)"
 KUBE_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
