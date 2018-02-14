@@ -1,22 +1,10 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["transformer_test.go"],
-    importpath = "k8s.io/apiserver/pkg/storage/value",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["transformer.go"],
     importpath = "k8s.io/apiserver/pkg/storage/value",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -28,12 +16,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/aes:all-srcs",
-        "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/envelope:all-srcs",
-        "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/identity:all-srcs",
-        "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/secretbox:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

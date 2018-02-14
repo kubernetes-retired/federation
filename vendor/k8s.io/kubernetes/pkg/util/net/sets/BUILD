@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,13 +7,7 @@ go_library(
         "ipnet.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/util/net/sets",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["ipnet_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/util/net/sets",
-    library = ":go_default_library",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -33,4 +21,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,14 +7,7 @@ go_library(
         "interfaces.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/auth/nodeidentifier",
-    deps = ["//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["default_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/auth/nodeidentifier",
-    library = ":go_default_library",
+    visibility = ["//visibility:public"],
     deps = ["//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library"],
 )
 
@@ -35,4 +22,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

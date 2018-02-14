@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -18,24 +18,6 @@ go_library(
     ],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "any_test.go",
-        "duration_test.go",
-        "timestamp_test.go",
-    ],
-    importpath = "github.com/golang/protobuf/ptypes",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/golang/protobuf/proto:go_default_library",
-        "//vendor/github.com/golang/protobuf/protoc-gen-go/descriptor:go_default_library",
-        "//vendor/github.com/golang/protobuf/ptypes/any:go_default_library",
-        "//vendor/github.com/golang/protobuf/ptypes/duration:go_default_library",
-        "//vendor/github.com/golang/protobuf/ptypes/timestamp:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -49,10 +31,8 @@ filegroup(
         ":package-srcs",
         "//vendor/github.com/golang/protobuf/ptypes/any:all-srcs",
         "//vendor/github.com/golang/protobuf/ptypes/duration:all-srcs",
-        "//vendor/github.com/golang/protobuf/ptypes/empty:all-srcs",
         "//vendor/github.com/golang/protobuf/ptypes/struct:all-srcs",
         "//vendor/github.com/golang/protobuf/ptypes/timestamp:all-srcs",
-        "//vendor/github.com/golang/protobuf/ptypes/wrappers:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

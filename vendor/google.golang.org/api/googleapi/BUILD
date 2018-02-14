@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,16 +9,6 @@ go_library(
     importpath = "google.golang.org/api/googleapi",
     visibility = ["//visibility:public"],
     deps = ["//vendor/google.golang.org/api/googleapi/internal/uritemplates:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "googleapi_test.go",
-        "types_test.go",
-    ],
-    importpath = "google.golang.org/api/googleapi",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -33,7 +23,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/google.golang.org/api/googleapi/internal/uritemplates:all-srcs",
-        "//vendor/google.golang.org/api/googleapi/transport:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

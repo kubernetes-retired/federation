@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,6 +8,7 @@ go_library(
         "register.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/fake",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -22,7 +18,6 @@ go_library(
         "//vendor/k8s.io/client-go/discovery:go_default_library",
         "//vendor/k8s.io/client-go/discovery/fake:go_default_library",
         "//vendor/k8s.io/client-go/testing:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/apps:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/authentication:go_default_library",
@@ -30,6 +25,8 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/apis/autoscaling:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/batch:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/certificates:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/events:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/networking:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/policy:go_default_library",
@@ -54,6 +51,8 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/certificates/internalversion/fake:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion/fake:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/events/internalversion:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/events/internalversion/fake:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/extensions/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/extensions/internalversion/fake:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/networking/internalversion:go_default_library",
@@ -82,4 +81,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

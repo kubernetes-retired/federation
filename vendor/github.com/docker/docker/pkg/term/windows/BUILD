@@ -1,11 +1,11 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
         "windows.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "ansi_reader.go",
             "ansi_writer.go",
             "console.go",
@@ -18,18 +18,11 @@ go_library(
         "//vendor/github.com/Azure/go-ansiterm:go_default_library",
         "//vendor/github.com/sirupsen/logrus:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "//vendor/github.com/Azure/go-ansiterm/winterm:go_default_library",
         ],
         "//conditions:default": [],
     }),
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["windows_test.go"],
-    importpath = "github.com/docker/docker/pkg/term/windows",
-    library = ":go_default_library",
 )
 
 filegroup(

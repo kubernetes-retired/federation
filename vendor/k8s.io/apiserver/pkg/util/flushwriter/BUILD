@@ -1,17 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["writer_test.go"],
-    importpath = "k8s.io/apiserver/pkg/util/flushwriter",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -20,6 +7,7 @@ go_library(
         "writer.go",
     ],
     importpath = "k8s.io/apiserver/pkg/util/flushwriter",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -33,4 +21,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,9 +1,11 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
         "api.go",
+        "doc.go",
+        "errors.go",
         "service.go",
     ],
     importpath = "github.com/aws/aws-sdk-go/service/kms",
@@ -20,17 +22,6 @@ go_library(
     ],
 )
 
-go_test(
-    name = "go_default_xtest",
-    srcs = ["examples_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/service/kms_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws/session:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -40,10 +31,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/service/kms/kmsiface:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

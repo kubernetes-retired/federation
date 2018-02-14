@@ -1,19 +1,50 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = [
-        "fsnotify.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+    srcs = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "fsnotify.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "fsnotify.go",
             "kqueue.go",
             "open_mode_darwin.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "fsnotify.go",
+            "kqueue.go",
+            "open_mode_bsd.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "fsnotify.go",
+            "kqueue.go",
+            "open_mode_bsd.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "fsnotify.go",
             "inotify.go",
             "inotify_poller.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "fsnotify.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "fsnotify.go",
+            "kqueue.go",
+            "open_mode_bsd.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "fsnotify.go",
+            "kqueue.go",
+            "open_mode_bsd.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "fen.go",
+            "fsnotify.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "fsnotify.go",
             "windows.go",
         ],
         "//conditions:default": [],
@@ -21,48 +52,26 @@ go_library(
     importpath = "github.com/fsnotify/fsnotify",
     visibility = ["//visibility:public"],
     deps = select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:darwin": [
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
-        "//conditions:default": [],
-    }),
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "integration_test.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
-            "integration_darwin_test.go",
-        ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "inotify_poller_test.go",
-            "inotify_test.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "github.com/fsnotify/fsnotify",
-    library = ":go_default_library",
-    deps = select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:freebsd": [
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
         "//conditions:default": [],
     }),
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["example_test.go"],
-    importpath = "github.com/fsnotify/fsnotify_test",
-    deps = [":go_default_library"],
 )
 
 filegroup(

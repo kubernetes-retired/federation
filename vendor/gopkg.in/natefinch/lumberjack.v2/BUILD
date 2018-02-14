@@ -1,58 +1,47 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
-        "chown.go",
         "lumberjack.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "chown_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "chown.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "chown.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "gopkg.in/natefinch/lumberjack.v2",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "lumberjack_test.go",
-        "testing_test.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "linux_test.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "gopkg.in/natefinch/lumberjack.v2",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/BurntSushi/toml:go_default_library",
-        "//vendor/gopkg.in/yaml.v1:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = [
-        "example_test.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "rotate_test.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "gopkg.in/natefinch/lumberjack.v2_test",
-    deps = [
-        ":go_default_library",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "//vendor/github.com/natefinch/lumberjack:go_default_library",
-        ],
-        "//conditions:default": [],
-    }),
 )
 
 filegroup(

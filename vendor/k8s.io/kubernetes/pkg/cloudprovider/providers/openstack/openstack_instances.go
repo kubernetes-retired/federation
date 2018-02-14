@@ -43,7 +43,7 @@ func (os *OpenStack) Instances() (cloudprovider.Instances, bool) {
 		return nil, false
 	}
 
-	glog.V(1).Info("Claiming to support Instances")
+	glog.V(4).Info("Claiming to support Instances")
 
 	return &Instances{
 		compute: compute,
@@ -58,7 +58,7 @@ func (i *Instances) CurrentNodeName(hostname string) (types.NodeName, error) {
 	if err != nil {
 		return "", err
 	}
-	return types.NodeName(md.Name), nil
+	return types.NodeName(md.Hostname), nil
 }
 
 func (i *Instances) AddSSHKeyToAllInstances(user string, keyData []byte) error {
@@ -103,7 +103,7 @@ func (i *Instances) NodeAddressesByProviderID(providerID string) ([]v1.NodeAddre
 
 // ExternalID returns the cloud provider ID of the specified instance (deprecated).
 func (i *Instances) ExternalID(name types.NodeName) (string, error) {
-	srv, err := getServerByName(i.compute, name)
+	srv, err := getServerByName(i.compute, name, true)
 	if err != nil {
 		if err == ErrNotFound {
 			return "", cloudprovider.InstanceNotFound
@@ -116,7 +116,25 @@ func (i *Instances) ExternalID(name types.NodeName) (string, error) {
 // InstanceExistsByProviderID returns true if the instance with the given provider id still exists and is running.
 // If false is returned with no error, the instance will be immediately deleted by the cloud controller manager.
 func (i *Instances) InstanceExistsByProviderID(providerID string) (bool, error) {
-	return false, cloudprovider.NotImplemented
+	instanceID, err := instanceIDFromProviderID(providerID)
+	if err != nil {
+		return false, err
+	}
+
+	server, err := servers.Get(i.compute, instanceID).Extract()
+	if err != nil {
+		if isNotFound(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	if server.Status != "ACTIVE" {
+		glog.Warningf("the instance %s is not active", instanceID)
+		return false, nil
+	}
+
+	return true, nil
 }
 
 // InstanceID returns the kubelet's cloud provider ID.
@@ -133,7 +151,7 @@ func (os *OpenStack) InstanceID() (string, error) {
 
 // InstanceID returns the cloud provider ID of the specified instance.
 func (i *Instances) InstanceID(name types.NodeName) (string, error) {
-	srv, err := getServerByName(i.compute, name)
+	srv, err := getServerByName(i.compute, name, true)
 	if err != nil {
 		if err == ErrNotFound {
 			return "", cloudprovider.InstanceNotFound
@@ -166,7 +184,7 @@ func (i *Instances) InstanceTypeByProviderID(providerID string) (string, error) 
 
 // InstanceType returns the type of the specified instance.
 func (i *Instances) InstanceType(name types.NodeName) (string, error) {
-	srv, err := getServerByName(i.compute, name)
+	srv, err := getServerByName(i.compute, name, true)
 
 	if err != nil {
 		return "", err

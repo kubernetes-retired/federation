@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,20 +9,6 @@ go_library(
     ],
     importpath = "golang.org/x/tools/go/ast/astutil",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["imports_test.go"],
-    importpath = "golang.org/x/tools/go/ast/astutil",
-    library = ":go_default_library",
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["enclosing_test.go"],
-    importpath = "golang.org/x/tools/go/ast/astutil_test",
-    deps = [":go_default_library"],
 )
 
 filegroup(

@@ -1,34 +1,17 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["taints.go"],
     importpath = "k8s.io/kubernetes/pkg/util/taints",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/helper:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["taints_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/util/taints",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/spf13/pflag:go_default_library",
-        "//vendor/k8s.io/api/core/v1:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/helper:go_default_library",
     ],
 )
 
@@ -43,4 +26,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

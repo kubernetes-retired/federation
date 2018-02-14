@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -39,33 +39,6 @@ go_library(
     ],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "ciphers_test.go",
-        "databuffer_test.go",
-        "errors_test.go",
-        "flow_test.go",
-        "frame_test.go",
-        "go18_test.go",
-        "go19_test.go",
-        "gotrack_test.go",
-        "http2_test.go",
-        "pipe_test.go",
-        "server_push_test.go",
-        "server_test.go",
-        "transport_test.go",
-        "writesched_priority_test.go",
-        "writesched_random_test.go",
-        "writesched_test.go",
-        "z_spec_test.go",
-    ],
-    data = glob(["testdata/**"]),
-    importpath = "golang.org/x/net/http2",
-    library = ":go_default_library",
-    deps = ["//vendor/golang.org/x/net/http2/hpack:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -77,7 +50,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/golang.org/x/net/http2/h2i:all-srcs",
         "//vendor/golang.org/x/net/http2/hpack:all-srcs",
     ],
     tags = ["automanaged"],

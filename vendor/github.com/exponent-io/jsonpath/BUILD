@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,22 +9,6 @@ go_library(
     ],
     importpath = "github.com/exponent-io/jsonpath",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "decoder_test.go",
-        "example_test.go",
-        "path_test.go",
-        "pathaction_test.go",
-    ],
-    importpath = "github.com/exponent-io/jsonpath",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
-        "//vendor/github.com/stretchr/testify/require:go_default_library",
-    ],
 )
 
 filegroup(

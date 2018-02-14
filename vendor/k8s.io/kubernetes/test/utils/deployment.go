@@ -51,7 +51,7 @@ func LogReplicaSetsOfDeployment(deployment *extensions.Deployment, allOldRSs []*
 func LogPodsOfDeployment(c clientset.Interface, deployment *extensions.Deployment, rsList []*extensions.ReplicaSet, logf LogfFn) {
 	minReadySeconds := deployment.Spec.MinReadySeconds
 	podListFunc := func(namespace string, options metav1.ListOptions) (*v1.PodList, error) {
-		return c.Core().Pods(namespace).List(options)
+		return c.CoreV1().Pods(namespace).List(options)
 	}
 
 	podList, err := deploymentutil.ListPods(deployment, rsList, podListFunc)
@@ -259,12 +259,12 @@ func UpdateDeploymentWithRetries(c clientset.Interface, namespace, name string, 
 	var updateErr error
 	pollErr := wait.PollImmediate(pollInterval, pollTimeout, func() (bool, error) {
 		var err error
-		if deployment, err = c.Extensions().Deployments(namespace).Get(name, metav1.GetOptions{}); err != nil {
+		if deployment, err = c.ExtensionsV1beta1().Deployments(namespace).Get(name, metav1.GetOptions{}); err != nil {
 			return false, err
 		}
 		// Apply the update, then attempt to push it to the apiserver.
 		applyUpdate(deployment)
-		if deployment, err = c.Extensions().Deployments(namespace).Update(deployment); err == nil {
+		if deployment, err = c.ExtensionsV1beta1().Deployments(namespace).Update(deployment); err == nil {
 			logf("Updating deployment %s", name)
 			return true, nil
 		}
@@ -279,7 +279,7 @@ func UpdateDeploymentWithRetries(c clientset.Interface, namespace, name string, 
 
 func WaitForObservedDeployment(c clientset.Interface, ns, deploymentName string, desiredGeneration int64) error {
 	return deploymentutil.WaitForObservedDeployment(func() (*extensions.Deployment, error) {
-		return c.Extensions().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
+		return c.ExtensionsV1beta1().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
 	}, desiredGeneration, 2*time.Second, 1*time.Minute)
 }
 
@@ -300,4 +300,43 @@ func WaitForDeploymentRollbackCleared(c clientset.Interface, ns, deploymentName 
 		return fmt.Errorf("error waiting for deployment %s rollbackTo to be cleared: %v", deploymentName, err)
 	}
 	return nil
+}
+
+// WaitForDeploymentUpdatedReplicasLTE waits for given deployment to be observed by the controller and has at least a number of updatedReplicas
+func WaitForDeploymentUpdatedReplicasLTE(c clientset.Interface, ns, deploymentName string, minUpdatedReplicas int32, desiredGeneration int64, pollInterval, pollTimeout time.Duration) error {
+	var deployment *extensions.Deployment
+	err := wait.PollImmediate(pollInterval, pollTimeout, func() (bool, error) {
+		d, err := c.ExtensionsV1beta1().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
+		if err != nil {
+			return false, err
+		}
+		deployment = d
+		return deployment.Status.ObservedGeneration >= desiredGeneration && deployment.Status.UpdatedReplicas >= minUpdatedReplicas, nil
+	})
+	if err != nil {
+		return fmt.Errorf("error waiting for deployment %q to have at least %d updatedReplicas: %v; latest .status.updatedReplicas: %d", deploymentName, minUpdatedReplicas, err, deployment.Status.UpdatedReplicas)
+	}
+	return nil
+}
+
+func WaitForDeploymentWithCondition(c clientset.Interface, ns, deploymentName, reason string, condType extensions.DeploymentConditionType, logf LogfFn, pollInterval, pollTimeout time.Duration) error {
+	var deployment *extensions.Deployment
+	pollErr := wait.PollImmediate(pollInterval, pollTimeout, func() (bool, error) {
+		d, err := c.ExtensionsV1beta1().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
+		if err != nil {
+			return false, err
+		}
+		deployment = d
+		cond := deploymentutil.GetDeploymentCondition(deployment.Status, condType)
+		return cond != nil && cond.Reason == reason, nil
+	})
+	if pollErr == wait.ErrWaitTimeout {
+		pollErr = fmt.Errorf("deployment %q never updated with the desired condition and reason, latest deployment conditions: %+v", deployment.Name, deployment.Status.Conditions)
+		_, allOldRSs, newRS, err := deploymentutil.GetAllReplicaSets(deployment, c.ExtensionsV1beta1())
+		if err == nil {
+			LogReplicaSetsOfDeployment(deployment, allOldRSs, newRS, logf)
+			LogPodsOfDeployment(c, deployment, append(allOldRSs, newRS), logf)
+		}
+	}
+	return pollErr
 }

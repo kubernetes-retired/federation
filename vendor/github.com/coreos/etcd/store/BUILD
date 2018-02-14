@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -23,28 +23,6 @@ go_library(
         "//vendor/github.com/coreos/etcd/pkg/types:go_default_library",
         "//vendor/github.com/jonboulle/clockwork:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "event_test.go",
-        "heap_test.go",
-        "node_extern_test.go",
-        "node_test.go",
-        "stats_test.go",
-        "store_bench_test.go",
-        "store_test.go",
-        "watcher_hub_test.go",
-        "watcher_test.go",
-    ],
-    importpath = "github.com/coreos/etcd/store",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/coreos/etcd/error:go_default_library",
-        "//vendor/github.com/jonboulle/clockwork:go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
     ],
 )
 

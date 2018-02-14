@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -12,8 +7,10 @@ go_library(
         "register.go",
     ],
     importpath = "k8s.io/client-go/kubernetes/scheme",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/api/admissionregistration/v1alpha1:go_default_library",
+        "//vendor/k8s.io/api/admissionregistration/v1beta1:go_default_library",
         "//vendor/k8s.io/api/apps/v1:go_default_library",
         "//vendor/k8s.io/api/apps/v1beta1:go_default_library",
         "//vendor/k8s.io/api/apps/v1beta2:go_default_library",
@@ -28,6 +25,7 @@ go_library(
         "//vendor/k8s.io/api/batch/v2alpha1:go_default_library",
         "//vendor/k8s.io/api/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/api/events/v1beta1:go_default_library",
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
         "//vendor/k8s.io/api/networking/v1:go_default_library",
         "//vendor/k8s.io/api/policy/v1beta1:go_default_library",
@@ -37,6 +35,7 @@ go_library(
         "//vendor/k8s.io/api/scheduling/v1alpha1:go_default_library",
         "//vendor/k8s.io/api/settings/v1alpha1:go_default_library",
         "//vendor/k8s.io/api/storage/v1:go_default_library",
+        "//vendor/k8s.io/api/storage/v1alpha1:go_default_library",
         "//vendor/k8s.io/api/storage/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -56,4 +55,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

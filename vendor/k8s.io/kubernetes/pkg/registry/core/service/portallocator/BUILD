@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,23 +7,12 @@ go_library(
         "operation.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/service/portallocator",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/registry/core/service/allocator:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["allocator_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/registry/core/service/portallocator",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
     ],
 )
 
@@ -47,4 +30,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/registry/core/service/portallocator/controller:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

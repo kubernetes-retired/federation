@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,23 +9,75 @@ go_library(
         "packet.go",
         "release.go",
         "server.go",
-        "server_statvfs_stubs.go",
         "sftp.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "attrs_stubs.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "attrs_stubs.go",
             "attrs_unix.go",
             "server_statvfs_darwin.go",
             "server_statvfs_impl.go",
+            "server_stubs.go",
             "server_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "attrs_stubs.go",
             "attrs_unix.go",
             "server_statvfs_impl.go",
             "server_statvfs_linux.go",
+            "server_stubs.go",
             "server_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:nacl": [
             "attrs_stubs.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "server_statvfs_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "attrs_stubs.go",
+            "server_statvfs_stubs.go",
             "server_stubs.go",
         ],
         "//conditions:default": [],
@@ -39,43 +91,6 @@ go_library(
     ],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "attrs_test.go",
-        "client_integration_test.go",
-        "client_test.go",
-        "other_test.go",
-        "packet_test.go",
-        "server_integration_test.go",
-        "server_test.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
-            "client_integration_darwin_test.go",
-        ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "client_integration_linux_test.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "github.com/pkg/sftp",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/kr/fs:go_default_library",
-        "//vendor/golang.org/x/crypto/ssh:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["example_test.go"],
-    importpath = "github.com/pkg/sftp_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/golang.org/x/crypto/ssh:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -85,15 +100,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/pkg/sftp/examples/buffered-read-benchmark:all-srcs",
-        "//vendor/github.com/pkg/sftp/examples/buffered-write-benchmark:all-srcs",
-        "//vendor/github.com/pkg/sftp/examples/sftp-server:all-srcs",
-        "//vendor/github.com/pkg/sftp/examples/streaming-read-benchmark:all-srcs",
-        "//vendor/github.com/pkg/sftp/examples/streaming-write-benchmark:all-srcs",
-        "//vendor/github.com/pkg/sftp/server_standalone:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

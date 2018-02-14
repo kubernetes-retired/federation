@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,14 +13,6 @@ go_library(
         "//vendor/k8s.io/gengo/namer:go_default_library",
         "//vendor/k8s.io/gengo/types:go_default_library",
     ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["deepcopy_test.go"],
-    importpath = "k8s.io/gengo/examples/deepcopy-gen/generators",
-    library = ":go_default_library",
-    deps = ["//vendor/k8s.io/gengo/types:go_default_library"],
 )
 
 filegroup(

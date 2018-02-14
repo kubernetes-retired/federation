@@ -1,38 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "namer_test.go",
-        "rest_test.go",
-    ],
-    importpath = "k8s.io/apiserver/pkg/endpoints/handlers",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/evanphx/json-patch:go_default_library",
-        "//vendor/k8s.io/api/core/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/equality:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/strategicpatch:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/apis/example:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/apis/example/v1:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
-    ],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -50,6 +16,7 @@ go_library(
         "watch.go",
     ],
     importpath = "k8s.io/apiserver/pkg/endpoints/handlers",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/evanphx/json-patch:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
@@ -59,7 +26,6 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/internalversion:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1alpha1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/conversion/unstructured:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
@@ -71,6 +37,7 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/proxy:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/strategicpatch:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",
@@ -101,4 +68,5 @@ filegroup(
         "//vendor/k8s.io/apiserver/pkg/endpoints/handlers/responsewriters:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,9 +13,15 @@ go_library(
     deps = [
         "//vendor/github.com/coreos/etcd/client:go_default_library",
         "//vendor/github.com/coreos/etcd/clientv3:go_default_library",
+        "//vendor/github.com/coreos/etcd/embed:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",
-        "//vendor/github.com/coreos/etcd/etcdserver/api:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/etcdhttp:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/api/v2http:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/v3client:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/v3election:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/v3election/v3electionpb:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/v3lock:go_default_library",
+        "//vendor/github.com/coreos/etcd/etcdserver/api/v3lock/v3lockpb:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/api/v3rpc:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/etcdserverpb:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library",
@@ -25,50 +31,7 @@ go_library(
         "//vendor/github.com/coreos/pkg/capnslog:go_default_library",
         "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/google.golang.org/grpc:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "cluster_test.go",
-        "embed_test.go",
-        "logger_test.go",
-        "main_test.go",
-        "member_test.go",
-        "network_partition_test.go",
-        "v2_http_kv_test.go",
-        "v3_auth_test.go",
-        "v3_barrier_test.go",
-        "v3_double_barrier_test.go",
-        "v3_election_test.go",
-        "v3_grpc_test.go",
-        "v3_lease_test.go",
-        "v3_lock_test.go",
-        "v3_maintenance_test.go",
-        "v3_queue_test.go",
-        "v3_stm_test.go",
-        "v3_watch_test.go",
-    ],
-    importpath = "github.com/coreos/etcd/integration",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/coreos/etcd/client:go_default_library",
-        "//vendor/github.com/coreos/etcd/clientv3:go_default_library",
-        "//vendor/github.com/coreos/etcd/clientv3/concurrency:go_default_library",
-        "//vendor/github.com/coreos/etcd/contrib/recipes:go_default_library",
-        "//vendor/github.com/coreos/etcd/embed:go_default_library",
-        "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",
-        "//vendor/github.com/coreos/etcd/etcdserver/api/v3rpc:go_default_library",
-        "//vendor/github.com/coreos/etcd/etcdserver/api/v3rpc/rpctypes:go_default_library",
-        "//vendor/github.com/coreos/etcd/etcdserver/etcdserverpb:go_default_library",
-        "//vendor/github.com/coreos/etcd/mvcc/mvccpb:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/transport:go_default_library",
-        "//vendor/github.com/coreos/pkg/capnslog:go_default_library",
-        "//vendor/golang.org/x/net/context:go_default_library",
-        "//vendor/google.golang.org/grpc:go_default_library",
-        "//vendor/google.golang.org/grpc/metadata:go_default_library",
+        "//vendor/google.golang.org/grpc/keepalive:go_default_library",
     ],
 )
 

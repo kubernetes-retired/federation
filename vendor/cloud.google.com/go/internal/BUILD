@@ -16,11 +16,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/cloud.google.com/go/internal/bundler:all-srcs",
-        "//vendor/cloud.google.com/go/internal/testutil:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

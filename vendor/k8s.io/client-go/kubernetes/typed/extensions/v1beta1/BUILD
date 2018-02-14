@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -19,9 +14,9 @@ go_library(
         "replicaset.go",
         "scale.go",
         "scale_expansion.go",
-        "thirdpartyresource.go",
     ],
     importpath = "k8s.io/client-go/kubernetes/typed/extensions/v1beta1",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/api/extensions/v1beta1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
@@ -49,4 +44,5 @@ filegroup(
         "//vendor/k8s.io/client-go/kubernetes/typed/extensions/v1beta1/fake:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

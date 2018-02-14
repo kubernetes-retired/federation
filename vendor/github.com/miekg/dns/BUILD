@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -32,60 +32,58 @@ go_library(
         "tlsa.go",
         "tsig.go",
         "types.go",
-        "udp.go",
-        "udp_other.go",
         "update.go",
         "xfr.go",
         "zmsg.go",
         "ztypes.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "udp.go",
             "udp_linux.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "udp_plan9.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "udp.go",
+            "udp_other.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "udp_other.go",
             "udp_windows.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "github.com/miekg/dns",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "client_test.go",
-        "clientconfig_test.go",
-        "dns_bench_test.go",
-        "dns_test.go",
-        "dnssec_test.go",
-        "dyn_test.go",
-        "edns_test.go",
-        "fuzz_test.go",
-        "issue_test.go",
-        "labels_test.go",
-        "nsecx_test.go",
-        "parse_test.go",
-        "remote_test.go",
-        "sanitize_test.go",
-        "server_test.go",
-        "sig0_test.go",
-        "tsig_test.go",
-        "types_test.go",
-        "update_test.go",
-    ],
-    importpath = "github.com/miekg/dns",
-    library = ":go_default_library",
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = [
-        "example_test.go",
-        "privaterr_test.go",
-    ],
-    importpath = "github.com/miekg/dns_test",
-    deps = [":go_default_library"],
 )
 
 filegroup(
@@ -97,11 +95,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/miekg/dns/dnsutil:all-srcs",
-        "//vendor/github.com/miekg/dns/idn:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

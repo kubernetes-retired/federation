@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -14,20 +14,6 @@ go_library(
     ],
     importpath = "github.com/vmware/govmomi/vim25/progress",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "aggregator_test.go",
-        "common_test.go",
-        "prefix_test.go",
-        "reader_test.go",
-        "scale_test.go",
-        "tee_test.go",
-    ],
-    importpath = "github.com/vmware/govmomi/vim25/progress",
-    library = ":go_default_library",
 )
 
 filegroup(

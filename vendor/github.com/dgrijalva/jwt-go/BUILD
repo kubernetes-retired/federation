@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -22,27 +22,6 @@ go_library(
     visibility = ["//visibility:public"],
 )
 
-go_test(
-    name = "go_default_xtest",
-    srcs = [
-        "ecdsa_test.go",
-        "example_test.go",
-        "hmac_example_test.go",
-        "hmac_test.go",
-        "http_example_test.go",
-        "none_test.go",
-        "parser_test.go",
-        "rsa_pss_test.go",
-        "rsa_test.go",
-    ],
-    importpath = "github.com/dgrijalva/jwt-go_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/dgrijalva/jwt-go/request:go_default_library",
-        "//vendor/github.com/dgrijalva/jwt-go/test:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -52,12 +31,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/cmd/jwt:all-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/request:all-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/test:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

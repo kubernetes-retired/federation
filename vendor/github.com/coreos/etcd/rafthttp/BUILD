@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -37,40 +37,6 @@ go_library(
         "//vendor/github.com/coreos/go-semver/semver:go_default_library",
         "//vendor/github.com/coreos/pkg/capnslog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
-        "//vendor/github.com/xiang90/probing:go_default_library",
-        "//vendor/golang.org/x/net/context:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "fake_roundtripper_test.go",
-        "functional_test.go",
-        "http_test.go",
-        "msg_codec_test.go",
-        "msgappv2_codec_test.go",
-        "peer_test.go",
-        "pipeline_test.go",
-        "snapshot_test.go",
-        "stream_test.go",
-        "transport_bench_test.go",
-        "transport_test.go",
-        "urlpick_test.go",
-        "util_test.go",
-    ],
-    importpath = "github.com/coreos/etcd/rafthttp",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/coreos/etcd/etcdserver/stats:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/pbutil:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/types:go_default_library",
-        "//vendor/github.com/coreos/etcd/raft:go_default_library",
-        "//vendor/github.com/coreos/etcd/raft/raftpb:go_default_library",
-        "//vendor/github.com/coreos/etcd/snap:go_default_library",
-        "//vendor/github.com/coreos/etcd/version:go_default_library",
-        "//vendor/github.com/coreos/go-semver/semver:go_default_library",
         "//vendor/github.com/xiang90/probing:go_default_library",
         "//vendor/golang.org/x/net/context:go_default_library",
     ],

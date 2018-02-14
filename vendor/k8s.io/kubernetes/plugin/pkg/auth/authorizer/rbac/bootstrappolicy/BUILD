@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -14,6 +8,7 @@ go_library(
         "policy.go",
     ],
     importpath = "k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac/bootstrappolicy",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
@@ -23,43 +18,6 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/rbac:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["policy_test.go"],
-    data = glob([
-        "testdata/*",
-    ]),
-    importpath = "k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac/bootstrappolicy_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/ghodss/yaml:go_default_library",
-        "//vendor/k8s.io/api/core/v1:go_default_library",
-        "//vendor/k8s.io/api/rbac/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/install:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/apis/rbac:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/apis/rbac/install:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/registry/rbac/validation:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["controller_policy_test.go"],
-    data = glob(["testdata/**"]),
-    importpath = "k8s.io/kubernetes/plugin/pkg/auth/authorizer/rbac/bootstrappolicy",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
     ],
 )
 
@@ -74,4 +32,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )
