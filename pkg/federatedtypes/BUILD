@@ -12,8 +12,7 @@ go_test(
         "hpa_test.go",
         "scheduling_test.go",
     ],
-    importpath = "k8s.io/federation/pkg/federatedtypes",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//pkg/federation-controller/util/test:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
@@ -65,7 +64,7 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller/namespace/deletion:go_default_library",
     ],

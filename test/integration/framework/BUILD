@@ -27,14 +27,13 @@ go_library(
         "//pkg/federation-controller/cluster:go_default_library",
         "//pkg/federation-controller/sync:go_default_library",
         "//test/common/crudtester:go_default_library",
+        "//test/k8s/integration/framework:go_default_library",
         "//vendor/github.com/pborman/uuid:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/master:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e_node/services:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/integration/framework:go_default_library",
     ],
 )
 

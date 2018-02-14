@@ -13,10 +13,6 @@ go_library(
     deps = [
         "//client/clientset_generated/federation_clientset:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/conversion:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
     ],
@@ -25,8 +21,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["eventsink_test.go"],
-    importpath = "k8s.io/federation/pkg/federation-controller/util/eventsink",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//client/clientset_generated/federation_clientset/fake:go_default_library",
         "//pkg/federation-controller/util/test:go_default_library",

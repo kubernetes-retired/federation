@@ -21,12 +21,13 @@ limitations under the License.
 package v1beta1
 
 import (
+	unsafe "unsafe"
+
 	v1 "k8s.io/api/core/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	federation "k8s.io/federation/apis/federation"
-	api "k8s.io/kubernetes/pkg/api"
-	unsafe "unsafe"
+	core "k8s.io/kubernetes/pkg/apis/core"
 )
 
 func init() {
@@ -86,7 +87,7 @@ func Convert_federation_Cluster_To_v1beta1_Cluster(in *federation.Cluster, out *
 
 func autoConvert_v1beta1_ClusterCondition_To_federation_ClusterCondition(in *ClusterCondition, out *federation.ClusterCondition, s conversion.Scope) error {
 	out.Type = federation.ClusterConditionType(in.Type)
-	out.Status = api.ConditionStatus(in.Status)
+	out.Status = core.ConditionStatus(in.Status)
 	out.LastProbeTime = in.LastProbeTime
 	out.LastTransitionTime = in.LastTransitionTime
 	out.Reason = in.Reason
@@ -138,7 +139,7 @@ func Convert_federation_ClusterList_To_v1beta1_ClusterList(in *federation.Cluste
 
 func autoConvert_v1beta1_ClusterSpec_To_federation_ClusterSpec(in *ClusterSpec, out *federation.ClusterSpec, s conversion.Scope) error {
 	out.ServerAddressByClientCIDRs = *(*[]federation.ServerAddressByClientCIDR)(unsafe.Pointer(&in.ServerAddressByClientCIDRs))
-	out.SecretRef = (*api.LocalObjectReference)(unsafe.Pointer(in.SecretRef))
+	out.SecretRef = (*core.LocalObjectReference)(unsafe.Pointer(in.SecretRef))
 	return nil
 }
 

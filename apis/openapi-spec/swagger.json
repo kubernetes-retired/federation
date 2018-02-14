@@ -852,7 +852,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -1358,7 +1358,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -1864,7 +1864,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -2370,7 +2370,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -2772,7 +2772,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -5671,7 +5671,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -6337,7 +6337,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -7247,7 +7247,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -7913,7 +7913,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -10245,7 +10245,7 @@
       {
        "uniqueItems": true,
        "type": "string",
-       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+       "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
        "name": "propagationPolicy",
        "in": "query"
       }
@@ -10883,8 +10883,16 @@
       "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
       "type": "string"
      },
+     "binaryData": {
+      "description": "BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet.",
+      "type": "object",
+      "additionalProperties": {
+       "type": "string",
+       "format": "byte"
+      }
+     },
      "data": {
-      "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'.",
+      "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
       "type": "object",
       "additionalProperties": {
        "type": "string"
@@ -11116,6 +11124,15 @@
       "description": "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.",
       "type": "boolean"
      },
+     "volumeDevices": {
+      "description": "volumeDevices is the list of block devices to be used by the container. This is an alpha feature and may change in the future.",
+      "type": "array",
+      "items": {
+       "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
+      },
+      "x-kubernetes-patch-merge-key": "devicePath",
+      "x-kubernetes-patch-strategy": "merge"
+     },
      "volumeMounts": {
       "description": "Pod volumes to mount into the container's filesystem. Cannot be updated.",
       "type": "array",
@@ -11293,6 +11310,10 @@
      "involvedObject"
     ],
     "properties": {
+     "action": {
+      "description": "What action was taken/failed regarding to the Regarding object.",
+      "type": "string"
+     },
      "apiVersion": {
       "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
       "type": "string"
@@ -11301,6 +11322,10 @@
       "description": "The number of times this event has occurred.",
       "type": "integer",
       "format": "int32"
+     },
+     "eventTime": {
+      "description": "Time when this Event was first observed.",
+      "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.MicroTime"
      },
      "firstTimestamp": {
       "description": "The time at which the event was first recorded. (Time of server receipt is in TypeMeta.)",
@@ -11329,6 +11354,22 @@
      "reason": {
       "description": "This should be a short, machine understandable string that gives the reason for the transition into the object's current status.",
       "type": "string"
+     },
+     "related": {
+      "description": "Optional secondary object for more complex actions.",
+      "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
+     },
+     "reportingComponent": {
+      "description": "Name of the controller that emitted this Event, e.g. `kubernetes.io/kubelet`.",
+      "type": "string"
+     },
+     "reportingInstance": {
+      "description": "ID of the controller instance, e.g. `kubelet-xyzf`.",
+      "type": "string"
+     },
+     "series": {
+      "description": "Data about the Event series this event represents or nil if it's a singleton Event.",
+      "$ref": "#/definitions/io.k8s.api.core.v1.EventSeries"
      },
      "source": {
       "description": "The component reporting this event. Should be a short machine understandable string.",
@@ -11380,6 +11421,24 @@
       "kind": "EventList"
      }
     ]
+   },
+   "io.k8s.api.core.v1.EventSeries": {
+    "description": "EventSeries contain information on series of events, i.e. thing that was/is happening continously for some time.",
+    "properties": {
+     "count": {
+      "description": "Number of occurrences in this series up to the last heartbeat time",
+      "type": "integer",
+      "format": "int32"
+     },
+     "lastObservedTime": {
+      "description": "Time of the last occurence observed",
+      "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.MicroTime"
+     },
+     "state": {
+      "description": "State of this Series: Ongoing or Finished",
+      "type": "string"
+     }
+    }
    },
    "io.k8s.api.core.v1.EventSource": {
     "description": "EventSource contains information for an event.",
@@ -11439,7 +11498,7 @@
     }
    },
    "io.k8s.api.core.v1.FlexVolumeSource": {
-    "description": "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin. This is an alpha feature and may change in future.",
+    "description": "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin.",
     "required": [
      "driver"
     ],
@@ -11666,7 +11725,7 @@
       "type": "string"
      },
      "initiatorName": {
-      "description": "Custom iSCSI initiator name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface \u003ctarget portal\u003e:\u003cvolume name\u003e will be created for the connection.",
+      "description": "Custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface \u003ctarget portal\u003e:\u003cvolume name\u003e will be created for the connection.",
       "type": "string"
      },
      "iqn": {
@@ -11674,16 +11733,16 @@
       "type": "string"
      },
      "iscsiInterface": {
-      "description": "Optional: Defaults to 'default' (tcp). iSCSI interface name that uses an iSCSI transport.",
+      "description": "iSCSI Interface Name that uses an iSCSI transport. Defaults to 'default' (tcp).",
       "type": "string"
      },
      "lun": {
-      "description": "iSCSI target lun number.",
+      "description": "iSCSI Target Lun number.",
       "type": "integer",
       "format": "int32"
      },
      "portals": {
-      "description": "iSCSI target portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).",
+      "description": "iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).",
       "type": "array",
       "items": {
        "type": "string"
@@ -11694,11 +11753,11 @@
       "type": "boolean"
      },
      "secretRef": {
-      "description": "CHAP secret for iSCSI target and initiator authentication",
+      "description": "CHAP Secret for iSCSI target and initiator authentication",
       "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
      },
      "targetPortal": {
-      "description": "iSCSI target portal. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).",
+      "description": "iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).",
       "type": "string"
      }
     }
@@ -12052,6 +12111,9 @@
    },
    "io.k8s.api.core.v1.PodAffinityTerm": {
     "description": "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key \u003ctopologyKey\u003e matches that of any node on which a pod of the set of pods is running",
+    "required": [
+     "topologyKey"
+    ],
     "properties": {
      "labelSelector": {
       "description": "A label query over a set of resources, in this case pods.",
@@ -12065,7 +12127,7 @@
       }
      },
      "topologyKey": {
-      "description": "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. For PreferredDuringScheduling pod anti-affinity, empty topologyKey is interpreted as \"all topologies\" (\"all topologies\" here means all the topologyKeys indicated by scheduler command-line argument --failure-domains); for affinity and for RequiredDuringScheduling pod anti-affinity, empty topologyKey is not allowed.",
+      "description": "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed.",
       "type": "string"
      }
     }
@@ -12086,6 +12148,44 @@
       "items": {
        "$ref": "#/definitions/io.k8s.api.core.v1.PodAffinityTerm"
       }
+     }
+    }
+   },
+   "io.k8s.api.core.v1.PodDNSConfig": {
+    "description": "PodDNSConfig defines the DNS parameters of a pod in addition to those generated from DNSPolicy.",
+    "properties": {
+     "nameservers": {
+      "description": "A list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy. Duplicated nameservers will be removed.",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "options": {
+      "description": "A list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Duplicated entries will be removed. Resolution options given in Options will override those that appear in the base DNSPolicy.",
+      "type": "array",
+      "items": {
+       "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfigOption"
+      }
+     },
+     "searches": {
+      "description": "A list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy. Duplicated search paths will be removed.",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "io.k8s.api.core.v1.PodDNSConfigOption": {
+    "description": "PodDNSConfigOption defines DNS resolver options of a pod.",
+    "properties": {
+     "name": {
+      "description": "Required.",
+      "type": "string"
+     },
+     "value": {
+      "type": "string"
      }
     }
    },
@@ -12148,8 +12248,12 @@
       "x-kubernetes-patch-merge-key": "name",
       "x-kubernetes-patch-strategy": "merge"
      },
+     "dnsConfig": {
+      "description": "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy. This is an alpha feature introduced in v1.9 and CustomPodDNS feature gate must be enabled to use it.",
+      "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig"
+     },
      "dnsPolicy": {
-      "description": "Set DNS policy for containers within the pod. One of 'ClusterFirstWithHostNet', 'ClusterFirst' or 'Default'. Defaults to \"ClusterFirst\". To have DNS options set along with hostNetwork, you have to specify DNS policy explicitly to 'ClusterFirstWithHostNet'.",
+      "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirstWithHostNet', 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy. To have DNS options set along with hostNetwork, you have to specify DNS policy explicitly to 'ClusterFirstWithHostNet'. Note that 'None' policy is an alpha feature introduced in v1.9 and CustomPodDNS feature gate must be enabled to use it.",
       "type": "string"
      },
      "hostAliases": {
@@ -12858,7 +12962,7 @@
       }
      },
      "externalName": {
-      "description": "externalName is the external reference that kubedns or equivalent will return as a CNAME record for this service. No proxying will be involved. Must be a valid DNS name and requires Type to be ExternalName.",
+      "description": "externalName is the external reference that kubedns or equivalent will return as a CNAME record for this service. No proxying will be involved. Must be a valid RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) and requires Type to be ExternalName.",
       "type": "string"
      },
      "externalTrafficPolicy": {
@@ -13043,7 +13147,7 @@
       "$ref": "#/definitions/io.k8s.api.core.v1.FCVolumeSource"
      },
      "flexVolume": {
-      "description": "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin. This is an alpha feature and may change in future.",
+      "description": "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin.",
       "$ref": "#/definitions/io.k8s.api.core.v1.FlexVolumeSource"
      },
      "flocker": {
@@ -13117,6 +13221,23 @@
      "vsphereVolume": {
       "description": "VsphereVolume represents a vSphere volume attached and mounted on kubelets host machine",
       "$ref": "#/definitions/io.k8s.api.core.v1.VsphereVirtualDiskVolumeSource"
+     }
+    }
+   },
+   "io.k8s.api.core.v1.VolumeDevice": {
+    "description": "volumeDevice describes a mapping of a raw block device within a container.",
+    "required": [
+     "name",
+     "devicePath"
+    ],
+    "properties": {
+     "devicePath": {
+      "description": "devicePath is the path inside of the container that the device will be mapped to.",
+      "type": "string"
+     },
+     "name": {
+      "description": "name must match the name of a persistentVolumeClaim in the pod",
+      "type": "string"
      }
     }
    },
@@ -13240,6 +13361,35 @@
      }
     ]
    },
+   "io.k8s.api.extensions.v1beta1.DaemonSetCondition": {
+    "description": "DaemonSetCondition describes the state of a DaemonSet at a certain point.",
+    "required": [
+     "type",
+     "status"
+    ],
+    "properties": {
+     "lastTransitionTime": {
+      "description": "Last time the condition transitioned from one status to another.",
+      "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+     },
+     "message": {
+      "description": "A human readable message indicating details about the transition.",
+      "type": "string"
+     },
+     "reason": {
+      "description": "The reason for the condition's last transition.",
+      "type": "string"
+     },
+     "status": {
+      "description": "Status of the condition, one of True, False, Unknown.",
+      "type": "string"
+     },
+     "type": {
+      "description": "Type of DaemonSet condition.",
+      "type": "string"
+     }
+    }
+   },
    "io.k8s.api.extensions.v1beta1.DaemonSetList": {
     "description": "DaemonSetList is a collection of daemon sets.",
     "required": [
@@ -13322,6 +13472,15 @@
       "description": "Count of hash collisions for the DaemonSet. The DaemonSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.",
       "type": "integer",
       "format": "int32"
+     },
+     "conditions": {
+      "description": "Represents the latest available observations of a DaemonSet's current state.",
+      "type": "array",
+      "items": {
+       "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.DaemonSetCondition"
+      },
+      "x-kubernetes-patch-merge-key": "type",
+      "x-kubernetes-patch-strategy": "merge"
      },
      "currentNumberScheduled": {
       "description": "The number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod. More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
@@ -14293,7 +14452,7 @@
       "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Preconditions"
      },
      "propagationPolicy": {
-      "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.",
+      "description": "Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.",
       "type": "string"
      }
     },
@@ -14306,6 +14465,11 @@
      {
       "group": "admissionregistration.k8s.io",
       "version": "v1alpha1",
+      "kind": "DeleteOptions"
+     },
+     {
+      "group": "admissionregistration.k8s.io",
+      "version": "v1beta1",
       "kind": "DeleteOptions"
      },
      {
@@ -14374,6 +14538,11 @@
       "kind": "DeleteOptions"
      },
      {
+      "group": "events.k8s.io",
+      "version": "v1beta1",
+      "kind": "DeleteOptions"
+     },
+     {
       "group": "extensions",
       "version": "v1beta1",
       "kind": "DeleteOptions"
@@ -14381,6 +14550,11 @@
      {
       "group": "federation",
       "version": "v1beta1",
+      "kind": "DeleteOptions"
+     },
+     {
+      "group": "imagepolicy.k8s.io",
+      "version": "v1alpha1",
       "kind": "DeleteOptions"
      },
      {
@@ -14421,6 +14595,11 @@
      {
       "group": "storage.k8s.io",
       "version": "v1",
+      "kind": "DeleteOptions"
+     },
+     {
+      "group": "storage.k8s.io",
+      "version": "v1alpha1",
       "kind": "DeleteOptions"
      },
      {
@@ -14542,6 +14721,10 @@
      }
     }
    },
+   "io.k8s.apimachinery.pkg.apis.meta.v1.MicroTime": {
+    "type": "string",
+    "format": "date-time"
+   },
    "io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta": {
     "description": "ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.",
     "properties": {
@@ -14566,7 +14749,7 @@
       "format": "int64"
      },
      "deletionTimestamp": {
-      "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This field is set by the server when a graceful deletion is requested by the user, and is not directly settable by a client. The resource is expected to be deleted (no longer visible from resource lists, and not reachable by name) after the time in this field. Once set, this value may not be unset or be set further into the future, although it may be shortened or the resource may be deleted prior to this time. For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react by sending a graceful termination signal to the containers in the pod. After that 30 seconds, the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup, remove the pod from the API. In the presence of network partitions, this object may still exist after this timestamp, until an administrator or automated process can determine the resource is fully terminated. If not set, graceful deletion of the object has not been requested.\n\nPopulated by the system when a graceful deletion is requested. Read-only. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata",
+      "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This field is set by the server when a graceful deletion is requested by the user, and is not directly settable by a client. The resource is expected to be deleted (no longer visible from resource lists, and not reachable by name) after the time in this field, once the finalizers list is empty. As long as the finalizers list contains items, deletion is blocked. Once the deletionTimestamp is set, this value may not be unset or be set further into the future, although it may be shortened or the resource may be deleted prior to this time. For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react by sending a graceful termination signal to the containers in the pod. After that 30 seconds, the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup, remove the pod from the API. In the presence of network partitions, this object may still exist after this timestamp, until an administrator or automated process can determine the resource is fully terminated. If not set, graceful deletion of the object has not been requested.\n\nPopulated by the system when a graceful deletion is requested. Read-only. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata",
       "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
      },
      "finalizers": {
@@ -14818,6 +15001,11 @@
       "kind": "WatchEvent"
      },
      {
+      "group": "admissionregistration.k8s.io",
+      "version": "v1beta1",
+      "kind": "WatchEvent"
+     },
+     {
       "group": "apps",
       "version": "v1",
       "kind": "WatchEvent"
@@ -14883,6 +15071,11 @@
       "kind": "WatchEvent"
      },
      {
+      "group": "events.k8s.io",
+      "version": "v1beta1",
+      "kind": "WatchEvent"
+     },
+     {
       "group": "extensions",
       "version": "v1beta1",
       "kind": "WatchEvent"
@@ -14890,6 +15083,11 @@
      {
       "group": "federation",
       "version": "v1beta1",
+      "kind": "WatchEvent"
+     },
+     {
+      "group": "imagepolicy.k8s.io",
+      "version": "v1alpha1",
       "kind": "WatchEvent"
      },
      {
@@ -14930,6 +15128,11 @@
      {
       "group": "storage.k8s.io",
       "version": "v1",
+      "kind": "WatchEvent"
+     },
+     {
+      "group": "storage.k8s.io",
+      "version": "v1alpha1",
       "kind": "WatchEvent"
      },
      {

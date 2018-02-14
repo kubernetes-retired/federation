@@ -13,7 +13,6 @@ go_test(
         "crud_test.go",
         "main_test.go",
     ],
-    importpath = "k8s.io/federation/test/integration",
     tags = ["integration"],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
@@ -21,6 +20,7 @@ go_test(
         "//test/common:go_default_library",
         "//test/common/crudtester:go_default_library",
         "//test/integration/framework:go_default_library",
+        "//test/k8s/integration/framework:go_default_library",
         "//vendor/github.com/pborman/uuid:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/autoscaling/v1:go_default_library",
@@ -31,7 +31,6 @@ go_test(
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/names:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/integration/framework:go_default_library",
     ],
 )
 

@@ -40,7 +40,7 @@ go_library(
         "//vendor/k8s.io/client-go/tools/clientcmd/api:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller/deployment/util:go_default_library",
     ],
@@ -56,8 +56,7 @@ go_test(
         "handlers_test.go",
         "meta_test.go",
     ],
-    importpath = "k8s.io/federation/pkg/federation-controller/util",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset/fake:go_default_library",
