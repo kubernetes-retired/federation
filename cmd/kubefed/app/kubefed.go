@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	hyperkubeImageName = "gcr.io/google_containers/hyperkube-amd64"
+	hyperkubeImageName = "gcr.io/k8s-jkns-e2e-gce-federation/fcp-amd64"
 	DefaultEtcdImage   = "gcr.io/google_containers/etcd:3.1.10"
 )
 
