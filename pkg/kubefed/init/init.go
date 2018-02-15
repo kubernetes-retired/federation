@@ -159,6 +159,7 @@ type initFederationOptions struct {
 	apiServerEnableTokenAuth         bool
 	nodeSelector                     map[string]string
 	nodeSelectorString               string
+	timeout                          int
 }
 
 func (o *initFederationOptions) Bind(flags *pflag.FlagSet, defaultServerImage, defaultEtcdImage string) {
@@ -182,6 +183,7 @@ func (o *initFederationOptions) Bind(flags *pflag.FlagSet, defaultServerImage, d
 	flags.BoolVar(&o.apiServerEnableHTTPBasicAuth, "apiserver-enable-basic-auth", false, "Enables HTTP Basic authentication for the federation-apiserver. Defaults to false.")
 	flags.BoolVar(&o.apiServerEnableTokenAuth, "apiserver-enable-token-auth", false, "Enables token authentication for the federation-apiserver. Defaults to false.")
 	flags.StringVar(&o.nodeSelectorString, "node-selector", "", "comma separated list of nodeSelector arguments: Example \"arg1=value1,arg2=value2...\"")
+	flags.IntVar(&o.timeout, "timeout", 5, "Maximum time to wait for federation control plane init.")
 }
 
 // NewCmdInit defines the `init` command that bootstraps a federation
@@ -320,6 +322,18 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 	if err != nil {
 		return err
 	}
+
+	// Display a progress indicator, and exit if the overall init timeout is reached.
+	go func() {
+		err := wait.PollImmediate(2*time.Second, time.Duration(i.options.timeout)*time.Minute, func() (bool, error) {
+			fmt.Fprint(cmdOut, ".")
+			return false, nil
+		})
+		if err != nil {
+			fmt.Fprintf(cmdOut, "\nError initializing federation control plane: %v\n", err)
+			glog.Fatalf("Error initializing federation control plane: %v", err)
+		}
+	}()
 
 	fmt.Fprintln(cmdOut, " done")
 
