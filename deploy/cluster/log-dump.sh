@@ -45,18 +45,18 @@ function dump_federation_pod_logs() {
     fi
 
     ${REAL_KUBE_ROOT}/cluster/kubectl.sh logs "${pod_name}" --namespace="${FEDERATION_NAMESPACE}" \
-        >"${OUTPUT_DIR}/${pod_name#pods/}.log"
+        >"${OUTPUT_DIR}/$(basename ${pod_name}).log"
   done
 }
 
 # Dumps logs from all containers in an API server pod.
 # Arguments:
-# - the name of the API server pod, with a pods/ prefix.
+# - the name of the API server pod, with a pod/ prefix.
 function dump_apiserver_pod_logs() {
   local -r apiserver_pod_containers=(apiserver etcd)
   for container in ${apiserver_pod_containers[@]}; do
     ${REAL_KUBE_ROOT}/cluster/kubectl.sh logs "${1}" -c "${container}" --namespace="${FEDERATION_NAMESPACE}" \
-        >"${OUTPUT_DIR}/${1#pods/}-${container}.log"
+        >"${OUTPUT_DIR}/$(basename $1)-${container}.log"
   done
 }
 
@@ -77,7 +77,7 @@ function dump_dns_pod_logs() {
     # it has three containers.
     for container in ${dns_pod_containers[@]}; do
       ${REAL_KUBE_ROOT}/cluster/kubectl.sh logs "${pod_name}" -c "${container}" --namespace=kube-system \
-          >"${OUTPUT_DIR}/${pod_name#pods/}-${container}.log"
+          >"${OUTPUT_DIR}/$(basename ${pod_name})-${container}.log"
     done
   done
 }
