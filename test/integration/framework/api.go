@@ -30,7 +30,7 @@ import (
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/cmd/federation-apiserver/app"
 	"k8s.io/federation/cmd/federation-apiserver/app/options"
-	"k8s.io/kubernetes/test/integration/framework"
+	"k8s.io/federation/test/k8s/integration/framework"
 )
 
 const apiNoun = "federation apiserver"

@@ -14,6 +14,9 @@ go_library(
         "federation.go",
         "util.go",
     ],
+    data = [
+        "@com_coreos_etcd//:etcd",
+    ],
     importpath = "k8s.io/federation/test/integration/framework",
     deps = [
         "//apis/federation/v1beta1:go_default_library",
