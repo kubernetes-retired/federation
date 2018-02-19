@@ -1,0 +1,82 @@
+
+required = [
+  # Needed for build
+  "k8s.io/kubernetes/hack/cmd/teststale",
+
+  # Needed for server testing
+  "github.com/onsi/ginkgo/ginkgo",
+
+  # Needed for apimachinery generation
+  "k8s.io/code-generator/cmd/client-gen",
+  "k8s.io/code-generator/cmd/conversion-gen",
+  "k8s.io/code-generator/cmd/deepcopy-gen",
+  "k8s.io/code-generator/cmd/defaulter-gen",
+  "k8s.io/code-generator/cmd/openapi-gen",
+]
+
+[prune]
+  go-tests = true
+  unused-packages = true
+
+# Note that the older version specified in k8s.io/kubernetes Godeps breaks go dep
+[[override]]
+  name = "github.com/chai2010/gettext-go"
+  revision = "bf70f2a70fb1b1f36d90d671a72795984eab0fcb"
+
+# These come from godeps.json in kubernetes
+[[override]]
+  name = "github.com/Azure/go-autorest"
+  revision = "e14a70c556c8e0db173358d1a903dca345a8e75e"
+
+[[override]]
+  name = "github.com/jmespath/go-jmespath"
+  revision = "0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74"
+
+[[override]]
+  name = "github.com/onsi/gomega"
+  revision = "d59fa0ac68bb5dd932ee8d24eed631cdd519efc3"
+
+# Needed for apimachinery generation
+[[override]]
+  name = "k8s.io/code-generator"
+  version = "kubernetes-1.10.0-alpha.3"
+
+[[override]]
+  name = "k8s.io/gengo"
+  revision = "b6c426f7730e6d66e6e476a85d1c3eb7633880e0"
+
+[[constraint]]
+  name = "k8s.io/kubernetes"
+  version = "1.10.0-alpha.3"
+
+[[constraint]]
+  name = "k8s.io/api"
+  version = "kubernetes-1.10.0-alpha.3"
+
+[[constraint]]
+  name = "k8s.io/apimachinery"
+  version = "kubernetes-1.10.0-alpha.3"
+
+[[constraint]]
+  name = "k8s.io/apiserver"
+  version = "kubernetes-1.10.0-alpha.3"
+
+[[constraint]]
+  name = "k8s.io/client-go"
+  version = "kubernetes-1.10.0-alpha.3"
+
+[[constraint]]
+  name = "github.com/aws/aws-sdk-go"
+  version = "1.12.7"
+
+[[constraint]]
+  name = "github.com/coredns/coredns"
+  version = "v1.0.5"
+
+[[constraint]]
+  name = "github.com/coreos/etcd"
+  version = "3.2.13"
+
+[[constraint]]
+  name = "gopkg.in/gcfg.v1"
+  version = "1.2.0"
