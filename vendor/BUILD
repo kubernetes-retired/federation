@@ -446,6 +446,7 @@ filegroup(
         "//vendor/k8s.io/kube-openapi/pkg/util:all-srcs",
         "//vendor/k8s.io/kubernetes/cmd/genutils:all-srcs",
         "//vendor/k8s.io/kubernetes/cmd/kubeadm/app/util/kubeconfig:all-srcs",
+        "//vendor/k8s.io/kubernetes/hack/boilerplate:all-srcs",
         "//vendor/k8s.io/kubernetes/hack/cmd/teststale:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/api/endpoints:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/api/events:all-srcs",
