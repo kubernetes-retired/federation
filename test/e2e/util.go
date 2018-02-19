@@ -30,9 +30,8 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	fedclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	fedframework "k8s.io/federation/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 	"k8s.io/kubernetes/pkg/cloudprovider"
-	"k8s.io/kubernetes/test/e2e/common"
-	"k8s.io/kubernetes/test/e2e/framework"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -50,8 +49,6 @@ const (
 	FederatedSvcNodePortFirst = 30000
 	FederatedSvcNodePortLast  = 32767
 )
-
-var FederationSuite common.Suite
 
 func createClusterObjectOrFail(f *fedframework.Framework, context *fedframework.E2EContext, clusterNamePrefix string) {
 	clusterName := clusterNamePrefix + context.Name

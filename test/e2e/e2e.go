@@ -18,12 +18,10 @@ package e2e
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/golang/glog"
 	"github.com/onsi/ginkgo"
@@ -34,16 +32,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtimeutils "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apiserver/pkg/util/logs"
-	clientset "k8s.io/client-go/kubernetes"
 	fedframework "k8s.io/federation/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework/ginkgowrapper"
 	"k8s.io/kubernetes/pkg/cloudprovider/providers/azure"
 	gcecloud "k8s.io/kubernetes/pkg/cloudprovider/providers/gce"
 	"k8s.io/kubernetes/pkg/version"
-	"k8s.io/kubernetes/test/e2e/framework"
-	"k8s.io/kubernetes/test/e2e/framework/ginkgowrapper"
-	"k8s.io/kubernetes/test/e2e/framework/metrics"
-	"k8s.io/kubernetes/test/e2e/manifest"
-	testutils "k8s.io/kubernetes/test/utils"
 )
 
 var (
@@ -142,11 +136,6 @@ var _ = ginkgo.SynchronizedBeforeSuite(func() []byte {
 		framework.Failf("Failed to setup provider config: %v", err)
 	}
 
-	switch framework.TestContext.Provider {
-	case "gce", "gke":
-		framework.LogClusterImageSources()
-	}
-
 	c, err := framework.LoadClientset()
 	if err != nil {
 		glog.Fatal("Error loading client: ", err)
@@ -188,7 +177,6 @@ var _ = ginkgo.SynchronizedBeforeSuite(func() []byte {
 	if err := framework.WaitForPodsRunningReady(c, metav1.NamespaceSystem, int32(framework.TestContext.MinStartupPods), int32(framework.TestContext.AllowedNotReadyNodes), podStartupTimeout, framework.ImagePullerLabels); err != nil {
 		framework.DumpAllNamespaceInfo(c, metav1.NamespaceSystem)
 		framework.LogFailedContainers(c, metav1.NamespaceSystem, framework.Logf)
-		runKubernetesServiceTestContainer(c, metav1.NamespaceDefault)
 		framework.Failf("Error waiting for all pods to be running and ready: %v", err)
 	}
 
@@ -302,44 +290,7 @@ var _ = ginkgo.SynchronizedAfterSuite(func() {
 	if framework.TestContext.ReportDir != "" {
 		framework.CoreDump(framework.TestContext.ReportDir)
 	}
-	if framework.TestContext.GatherSuiteMetricsAfterTest {
-		if err := gatherTestSuiteMetrics(); err != nil {
-			framework.Logf("Error gathering metrics: %v", err)
-		}
-	}
 })
-
-func gatherTestSuiteMetrics() error {
-	framework.Logf("Gathering metrics")
-	c, err := framework.LoadClientset()
-	if err != nil {
-		return fmt.Errorf("error loading client: %v", err)
-	}
-
-	// Grab metrics for apiserver, scheduler, controller-manager, kubelet (for non-kubemark case) and cluster autoscaler (optionally).
-	grabber, err := metrics.NewMetricsGrabber(c, nil, !framework.ProviderIs("kubemark"), true, true, true, framework.TestContext.IncludeClusterAutoscalerMetrics)
-	if err != nil {
-		return fmt.Errorf("failed to create MetricsGrabber: %v", err)
-	}
-
-	received, err := grabber.Grab()
-	if err != nil {
-		return fmt.Errorf("failed to grab metrics: %v", err)
-	}
-
-	metricsForE2E := (*framework.MetricsForE2E)(&received)
-	metricsJson := metricsForE2E.PrintJSON()
-	if framework.TestContext.ReportDir != "" {
-		filePath := path.Join(framework.TestContext.ReportDir, "MetricsForE2ESuite_"+time.Now().Format(time.RFC3339)+".json")
-		if err := ioutil.WriteFile(filePath, []byte(metricsJson), 0644); err != nil {
-			return fmt.Errorf("error writing to %q: %v", filePath, err)
-		}
-	} else {
-		framework.Logf("\n\nTest Suite Metrics:\n%s\n\n", metricsJson)
-	}
-
-	return nil
-}
 
 // TestE2E checks configuration parameters (specified through flags) and then runs
 // E2E tests using the Ginkgo runner.
@@ -371,37 +322,4 @@ func RunE2ETests(t *testing.T) {
 	glog.Infof("Starting e2e run %q on Ginkgo node %d", framework.RunId, config.GinkgoConfig.ParallelNode)
 
 	ginkgo.RunSpecsWithDefaultAndCustomReporters(t, "Kubernetes e2e suite", r)
-}
-
-// Run a test container to try and contact the Kubernetes api-server from a pod, wait for it
-// to flip to Ready, log its output and delete it.
-func runKubernetesServiceTestContainer(c clientset.Interface, ns string) {
-	path := "test/images/clusterapi-tester/pod.yaml"
-	framework.Logf("Parsing pod from %v", path)
-	p, err := manifest.PodFromManifest(path)
-	if err != nil {
-		framework.Logf("Failed to parse clusterapi-tester from manifest %v: %v", path, err)
-		return
-	}
-	p.Namespace = ns
-	if _, err := c.Core().Pods(ns).Create(p); err != nil {
-		framework.Logf("Failed to create %v: %v", p.Name, err)
-		return
-	}
-	defer func() {
-		if err := c.Core().Pods(ns).Delete(p.Name, nil); err != nil {
-			framework.Logf("Failed to delete pod %v: %v", p.Name, err)
-		}
-	}()
-	timeout := 5 * time.Minute
-	if err := framework.WaitForPodCondition(c, ns, p.Name, "clusterapi-tester", timeout, testutils.PodRunningReady); err != nil {
-		framework.Logf("Pod %v took longer than %v to enter running/ready: %v", p.Name, timeout, err)
-		return
-	}
-	logs, err := framework.GetPodLogs(c, ns, p.Name, p.Spec.Containers[0].Name)
-	if err != nil {
-		framework.Logf("Failed to retrieve logs from %v: %v", p.Name, err)
-	} else {
-		framework.Logf("Output of clusterapi-tester:\n%v", logs)
-	}
 }

@@ -21,7 +21,7 @@ import (
 	kubeclientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
 	"k8s.io/federation/test/common/crudtester"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 )
 
 // Adapt the methods to log/fail in e2e to the interface expected by CRUDHelper

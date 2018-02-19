@@ -24,7 +24,7 @@ import (
 	kubeclientset "k8s.io/client-go/kubernetes"
 	"k8s.io/federation/pkg/federatedtypes"
 	fedframework "k8s.io/federation/test/e2e/framework"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 )
 
 var _ = framework.KubeDescribe("Federated types [Feature:Federation][Experimental] ", func() {

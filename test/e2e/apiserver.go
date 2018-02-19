@@ -24,7 +24,7 @@ import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	fedframework "k8s.io/federation/test/e2e/framework"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 )
 
 // Create/delete cluster api objects

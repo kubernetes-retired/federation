@@ -31,7 +31,7 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/pkg/kubefed/util"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

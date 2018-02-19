@@ -21,7 +21,7 @@ import (
 
 	"k8s.io/federation/test/common"
 	fedframework "k8s.io/federation/test/e2e/framework"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 
 	. "github.com/onsi/ginkgo"
 )
