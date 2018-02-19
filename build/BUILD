@@ -104,6 +104,5 @@ filegroup(
         "//hack:ginkgo-e2e.sh",
         "//hack/e2e-internal:all-srcs",
         "//hack/lib:all-srcs",
-        "//vendor/k8s.io/kubernetes/test/e2e/testing-manifests:all-srcs",
     ],
 )
