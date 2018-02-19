@@ -30,7 +30,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/pkg/federation-controller/util"
-	"k8s.io/kubernetes/pkg/api"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/controller/namespace/deletion"
 
 	"github.com/golang/glog"

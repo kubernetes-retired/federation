@@ -34,7 +34,7 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	"k8s.io/kubernetes/pkg/api/validation"
+	"k8s.io/kubernetes/pkg/apis/core/validation"
 	"k8s.io/kubernetes/test/e2e/framework"
 )
 

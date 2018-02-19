@@ -36,8 +36,8 @@ import (
 	kubefedtesting "k8s.io/federation/pkg/kubefed/testing"
 	"k8s.io/federation/pkg/kubefed/util"
 	"k8s.io/federation/test/testapi"
-	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	cmdtesting "k8s.io/kubernetes/pkg/kubectl/cmd/testing"
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 )
