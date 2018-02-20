@@ -25,8 +25,8 @@ go_test(
         "seq_test.go",
         "uuid_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/pborman/uuid",
-    library = ":go_default_library",
 )
 
 filegroup(

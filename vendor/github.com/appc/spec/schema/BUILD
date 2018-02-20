@@ -23,8 +23,8 @@ go_test(
         "image_test.go",
         "pod_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/appc/spec/schema",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/appc/spec/schema/types:go_default_library"],
 )
 
@@ -40,7 +40,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/appc/spec/schema/common:all-srcs",
-        "//vendor/github.com/appc/spec/schema/lastditch:all-srcs",
         "//vendor/github.com/appc/spec/schema/types:all-srcs",
     ],
     tags = ["automanaged"],

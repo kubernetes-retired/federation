@@ -1,18 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["server_test.go"],
-    importpath = "k8s.io/kubernetes/cmd/kubelet/app",
-    library = ":go_default_library",
-    deps = ["//vendor/k8s.io/kubernetes/pkg/kubelet/apis/kubeletconfig:go_default_library"],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -20,14 +6,44 @@ go_library(
         "auth.go",
         "plugins.go",
         "server.go",
-        "server_unsupported.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "server_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "server_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "server_unsupported.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "k8s.io/kubernetes/cmd/kubelet/app",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/cobra:go_default_library",
@@ -57,6 +73,7 @@ go_library(
         "//vendor/k8s.io/client-go/util/certificate:go_default_library",
         "//vendor/k8s.io/kubernetes/cmd/kubelet/app/options:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/capabilities:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/chaosclient:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
@@ -78,11 +95,11 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/config:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/remote:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/eviction:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/eviction/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/kubeletconfig/configfiles:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/cni:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/network/kubenet:go_default_library",
@@ -90,6 +107,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/server/streaming:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/configz:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/util/filesystem:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/flock:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/io:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/mount:go_default_library",
@@ -97,6 +115,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/util/oom:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/rlimit:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/version/verflag:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/aws_ebs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/azure_dd:go_default_library",
@@ -104,6 +123,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/volume/cephfs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/cinder:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/configmap:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume/csi:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/downwardapi:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/empty_dir:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/fc:go_default_library",
@@ -126,11 +146,18 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/volume/storageos:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/vsphere_volume:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/golang.org/x/exp/inotify:go_default_library",
         ],
         "//conditions:default": [],
     }),
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["server_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/cmd/kubelet/app",
 )
 
 filegroup(
@@ -147,4 +174,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/cmd/kubelet/app/options:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

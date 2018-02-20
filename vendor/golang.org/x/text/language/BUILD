@@ -30,9 +30,8 @@ go_test(
         "match_test.go",
         "parse_test.go",
     ],
-    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
     importpath = "golang.org/x/text/language",
-    library = ":go_default_library",
     deps = [
         "//vendor/golang.org/x/text/internal/tag:go_default_library",
         "//vendor/golang.org/x/text/internal/testtext:go_default_library",
@@ -46,7 +45,6 @@ go_test(
         "examples_test.go",
         "httpexample_test.go",
     ],
-    data = glob(["testdata/**"]),
     importpath = "golang.org/x/text/language_test",
     deps = [":go_default_library"],
 )
@@ -60,10 +58,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/golang.org/x/text/language/display:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

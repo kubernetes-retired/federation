@@ -1,0 +1,33 @@
+ignored = [
+    "github.com/mholt/caddy",
+    "github.com/mholt/caddy/caddyfile",
+    "github.com/mholt/caddy/startupshutdown",
+    "github.com/miekg/dns",
+    "github.com/prometheus/client_golang/prometheus",
+    "github.com/prometheus/client_golang/prometheus/promhttp",
+    "golang.org/x/net/context",
+    "golang.org/x/net/context/ctxhttp",
+    "golang.org/x/net/http2",
+    "golang.org/x/net/http2/hpack",
+    "golang.org/x/net/idna",
+    "golang.org/x/net/internal/timeseries",
+    "golang.org/x/net/lex/httplex",
+    "golang.org/x/net/trace",
+]
+
+[[override]]
+    name = "github.com/ugorji/go"
+    revision = "8c0409fcbb70099c748d71f714529204975f6c3f"
+
+# client-go 6.0.0 uses apimachinery 180eddb345a5be3a157cea1c624700ad5bd27b8f
+# and api 11147472b7c934c474a2c484af3c0c5210b7a3af (see Godep.json). go dep
+# is unable to match Godep.json automatically so have to specify here.
+[[constraint]]
+    name = "k8s.io/client-go"
+    version = "v6.0.0"
+[[override]]
+    name = "k8s.io/apimachinery"
+    revision = "180eddb345a5be3a157cea1c624700ad5bd27b8f"
+[[override]]
+    name = "k8s.io/api"
+    revision = "11147472b7c934c474a2c484af3c0c5210b7a3af"

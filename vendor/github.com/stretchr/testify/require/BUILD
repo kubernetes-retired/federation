@@ -20,8 +20,8 @@ go_test(
         "forward_requirements_test.go",
         "requirements_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/stretchr/testify/require",
-    library = ":go_default_library",
 )
 
 filegroup(

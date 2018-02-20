@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -15,6 +9,7 @@ go_library(
         "openapi_getter.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/go-openapi/spec:go_default_library",
         "//vendor/github.com/googleapis/gnostic/OpenAPIv2:go_default_library",
@@ -26,13 +21,11 @@ go_library(
 
 go_test(
     name = "go_default_xtest",
-    size = "small",
     srcs = [
         "openapi_getter_test.go",
         "openapi_suite_test.go",
         "openapi_test.go",
     ],
-    data = ["//api/openapi-spec:swagger-spec"],
     importpath = "k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi_test",
     deps = [
         ":go_default_library",
@@ -61,9 +54,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi/validation:all-srcs",
     ],
     tags = ["automanaged"],
-)
-
-filegroup(
-    name = "testdata",
-    srcs = glob(["testdata/*"]),
+    visibility = ["//visibility:public"],
 )

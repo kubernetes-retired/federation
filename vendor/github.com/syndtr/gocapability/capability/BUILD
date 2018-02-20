@@ -4,13 +4,42 @@ go_library(
     name = "go_default_library",
     srcs = [
         "capability.go",
-        "capability_noop.go",
         "enum.go",
         "enum_gen.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "capability_linux.go",
             "syscall_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "capability_noop.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "capability_noop.go",
         ],
         "//conditions:default": [],
     }),
@@ -21,8 +50,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["capability_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/syndtr/gocapability/capability",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -34,10 +63,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/syndtr/gocapability/capability/enumgen:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -31,8 +31,8 @@ go_test(
         "parser_test_utilities_test.go",
         "test_event_handler_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/Azure/go-ansiterm",
-    library = ":go_default_library",
 )
 
 filegroup(

@@ -11,8 +11,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["pbutil_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/etcd/pkg/pbutil",
-    library = ":go_default_library",
 )
 
 filegroup(

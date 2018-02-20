@@ -17,8 +17,8 @@ go_test(
         "position_test.go",
         "serialize_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "gopkg.in/gcfg.v1/token",
-    library = ":go_default_library",
 )
 
 filegroup(

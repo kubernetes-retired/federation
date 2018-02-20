@@ -31,6 +31,7 @@ filegroup(
         "//vendor/k8s.io/kubernetes/test/images/resource-consumer:all-srcs",
         "//vendor/k8s.io/kubernetes/test/images/serve-hostname:all-srcs",
         "//vendor/k8s.io/kubernetes/test/images/test-webserver:all-srcs",
+        "//vendor/k8s.io/kubernetes/test/images/webhook:all-srcs",
     ],
     tags = ["automanaged"],
 )

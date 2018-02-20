@@ -22,8 +22,8 @@ go_test(
         "speed_test.go",
         "stream_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/peterbourgon/diskv",
-    library = ":go_default_library",
 )
 
 go_test(
@@ -45,11 +45,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/peterbourgon/diskv/examples/content-addressable-store:all-srcs",
-        "//vendor/github.com/peterbourgon/diskv/examples/super-simple-store:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

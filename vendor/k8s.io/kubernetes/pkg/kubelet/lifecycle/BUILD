@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -17,6 +11,7 @@ go_library(
         "predicate.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/lifecycle",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -25,22 +20,23 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/algorithm:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/algorithm/predicates:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/schedulercache:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/security/apparmor:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache:go_default_library",
     ],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["handlers_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/kubelet/lifecycle",
-    library = ":go_default_library",
     deps = [
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/intstr:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
     ],
 )
 
@@ -55,4 +51,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

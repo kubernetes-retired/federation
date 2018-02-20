@@ -25,9 +25,11 @@ import (
 	"k8s.io/api/core/v1"
 	extensions "k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/apimachinery/pkg/watch"
 	clientset "k8s.io/client-go/kubernetes"
+	scaleclient "k8s.io/client-go/scale"
 	extensionsinternal "k8s.io/kubernetes/pkg/apis/extensions"
 	"k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset"
 	deploymentutil "k8s.io/kubernetes/pkg/controller/deployment/util"
@@ -44,7 +46,7 @@ func WaitForDeploymentOldRSsNum(c clientset.Interface, ns, deploymentName string
 	var d *extensions.Deployment
 
 	pollErr := wait.PollImmediate(Poll, 5*time.Minute, func() (bool, error) {
-		deployment, err := c.Extensions().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
+		deployment, err := c.ExtensionsV1beta1().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -72,25 +74,7 @@ func WaitForObservedDeployment(c clientset.Interface, ns, deploymentName string,
 }
 
 func WaitForDeploymentWithCondition(c clientset.Interface, ns, deploymentName, reason string, condType extensions.DeploymentConditionType) error {
-	var deployment *extensions.Deployment
-	pollErr := wait.PollImmediate(time.Second, 5*time.Minute, func() (bool, error) {
-		d, err := c.Extensions().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
-		if err != nil {
-			return false, err
-		}
-		deployment = d
-		cond := deploymentutil.GetDeploymentCondition(deployment.Status, condType)
-		return cond != nil && cond.Reason == reason, nil
-	})
-	if pollErr == wait.ErrWaitTimeout {
-		pollErr = fmt.Errorf("deployment %q never updated with the desired condition and reason: %v", deployment.Name, deployment.Status.Conditions)
-		_, allOldRSs, newRS, err := deploymentutil.GetAllReplicaSets(deployment, c.ExtensionsV1beta1())
-		if err == nil {
-			logReplicaSetsOfDeployment(deployment, allOldRSs, newRS)
-			logPodsOfDeployment(c, deployment, append(allOldRSs, newRS))
-		}
-	}
-	return pollErr
+	return testutils.WaitForDeploymentWithCondition(c, ns, deploymentName, reason, condType, Logf, Poll, pollLongTimeout)
 }
 
 // WaitForDeploymentRevisionAndImage waits for the deployment's and its new RS's revision and container image to match the given revision and image.
@@ -145,20 +129,7 @@ func WaitForDeploymentCompleteAndCheckRolling(c clientset.Interface, d *extensio
 
 // WaitForDeploymentUpdatedReplicasLTE waits for given deployment to be observed by the controller and has at least a number of updatedReplicas
 func WaitForDeploymentUpdatedReplicasLTE(c clientset.Interface, ns, deploymentName string, minUpdatedReplicas int32, desiredGeneration int64) error {
-	err := wait.Poll(Poll, 5*time.Minute, func() (bool, error) {
-		deployment, err := c.Extensions().Deployments(ns).Get(deploymentName, metav1.GetOptions{})
-		if err != nil {
-			return false, err
-		}
-		if deployment.Status.ObservedGeneration >= desiredGeneration && deployment.Status.UpdatedReplicas >= minUpdatedReplicas {
-			return true, nil
-		}
-		return false, nil
-	})
-	if err != nil {
-		return fmt.Errorf("error waiting for deployment %s to have at least %d updpatedReplicas: %v", deploymentName, minUpdatedReplicas, err)
-	}
-	return nil
+	return testutils.WaitForDeploymentUpdatedReplicasLTE(c, ns, deploymentName, minUpdatedReplicas, desiredGeneration, Poll, pollLongTimeout)
 }
 
 // WaitForDeploymentRollbackCleared waits for given deployment either started rolling back or doesn't need to rollback.
@@ -174,7 +145,7 @@ func WatchRecreateDeployment(c clientset.Interface, d *extensions.Deployment) er
 		return fmt.Errorf("deployment %q does not use a Recreate strategy: %s", d.Name, d.Spec.Strategy.Type)
 	}
 
-	w, err := c.Extensions().Deployments(d.Namespace).Watch(metav1.SingleObject(metav1.ObjectMeta{Name: d.Name, ResourceVersion: d.ResourceVersion}))
+	w, err := c.ExtensionsV1beta1().Deployments(d.Namespace).Watch(metav1.SingleObject(metav1.ObjectMeta{Name: d.Name, ResourceVersion: d.ResourceVersion}))
 	if err != nil {
 		return err
 	}
@@ -208,8 +179,8 @@ func WatchRecreateDeployment(c clientset.Interface, d *extensions.Deployment) er
 	return err
 }
 
-func ScaleDeployment(clientset clientset.Interface, internalClientset internalclientset.Interface, ns, name string, size uint, wait bool) error {
-	return ScaleResource(clientset, internalClientset, ns, name, size, wait, extensionsinternal.Kind("Deployment"))
+func ScaleDeployment(clientset clientset.Interface, internalClientset internalclientset.Interface, scalesGetter scaleclient.ScalesGetter, ns, name string, size uint, wait bool) error {
+	return ScaleResource(clientset, internalClientset, scalesGetter, ns, name, size, wait, extensionsinternal.Kind("Deployment"), extensionsinternal.Resource("deployments"))
 }
 
 func RunDeployment(config testutils.DeploymentConfig) error {
@@ -241,4 +212,87 @@ func WaitForDeploymentRevision(c clientset.Interface, d *extensions.Deployment, 
 // CheckDeploymentRevisionAndImage checks if the input deployment's and its new replica set's revision and image are as expected.
 func CheckDeploymentRevisionAndImage(c clientset.Interface, ns, deploymentName, revision, image string) error {
 	return testutils.CheckDeploymentRevisionAndImage(c, ns, deploymentName, revision, image)
+}
+
+func CreateDeployment(client clientset.Interface, replicas int32, podLabels map[string]string, namespace string, pvclaims []*v1.PersistentVolumeClaim, command string) (*extensions.Deployment, error) {
+	deploymentSpec := MakeDeployment(replicas, podLabels, namespace, pvclaims, false, command)
+	deployment, err := client.ExtensionsV1beta1().Deployments(namespace).Create(deploymentSpec)
+	if err != nil {
+		return nil, fmt.Errorf("deployment %q Create API error: %v", deploymentSpec.Name, err)
+	}
+	Logf("Waiting deployment %q to complete", deploymentSpec.Name)
+	err = WaitForDeploymentComplete(client, deployment)
+	if err != nil {
+		return nil, fmt.Errorf("deployment %q failed to complete: %v", deploymentSpec.Name, err)
+	}
+	return deployment, nil
+}
+
+// MakeDeployment creates a deployment definition based on the namespace. The deployment references the PVC's
+// name.  A slice of BASH commands can be supplied as args to be run by the pod
+func MakeDeployment(replicas int32, podLabels map[string]string, namespace string, pvclaims []*v1.PersistentVolumeClaim, isPrivileged bool, command string) *extensions.Deployment {
+	if len(command) == 0 {
+		command = "while true; do sleep 1; done"
+	}
+	zero := int64(0)
+	deploymentName := "deployment-" + string(uuid.NewUUID())
+	deploymentSpec := &extensions.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      deploymentName,
+			Namespace: namespace,
+		},
+		Spec: extensions.DeploymentSpec{
+			Replicas: &replicas,
+			Template: v1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabels,
+				},
+				Spec: v1.PodSpec{
+					TerminationGracePeriodSeconds: &zero,
+					Containers: []v1.Container{
+						{
+							Name:    "write-pod",
+							Image:   "busybox",
+							Command: []string{"/bin/sh"},
+							Args:    []string{"-c", command},
+							SecurityContext: &v1.SecurityContext{
+								Privileged: &isPrivileged,
+							},
+						},
+					},
+					RestartPolicy: v1.RestartPolicyAlways,
+				},
+			},
+		},
+	}
+	var volumeMounts = make([]v1.VolumeMount, len(pvclaims))
+	var volumes = make([]v1.Volume, len(pvclaims))
+	for index, pvclaim := range pvclaims {
+		volumename := fmt.Sprintf("volume%v", index+1)
+		volumeMounts[index] = v1.VolumeMount{Name: volumename, MountPath: "/mnt/" + volumename}
+		volumes[index] = v1.Volume{Name: volumename, VolumeSource: v1.VolumeSource{PersistentVolumeClaim: &v1.PersistentVolumeClaimVolumeSource{ClaimName: pvclaim.Name, ReadOnly: false}}}
+	}
+	deploymentSpec.Spec.Template.Spec.Containers[0].VolumeMounts = volumeMounts
+	deploymentSpec.Spec.Template.Spec.Volumes = volumes
+	return deploymentSpec
+}
+
+// GetPodsForDeployment gets pods for the given deployment
+func GetPodsForDeployment(client clientset.Interface, deployment *extensions.Deployment) (*v1.PodList, error) {
+	replicaSet, err := deploymentutil.GetNewReplicaSet(deployment, client.ExtensionsV1beta1())
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get new replica set for deployment %q: %v", deployment.Name, err)
+	}
+	if replicaSet == nil {
+		return nil, fmt.Errorf("expected a new replica set for deployment %q, found none", deployment.Name)
+	}
+	podListFunc := func(namespace string, options metav1.ListOptions) (*v1.PodList, error) {
+		return client.CoreV1().Pods(namespace).List(options)
+	}
+	rsList := []*extensions.ReplicaSet{replicaSet}
+	podList, err := deploymentutil.ListPods(deployment, rsList, podListFunc)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to list Pods of Deployment %q: %v", deployment.Name, err)
+	}
+	return podList, nil
 }

@@ -38,7 +38,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that secret can be mounted without mapping to a
 			pod volume.
 	*/
-	It("should be consumable from pods in volume [Conformance]", func() {
+	framework.ConformanceIt("should be consumable from pods in volume ", func() {
 		doSecretE2EWithoutMapping(f, nil /* default mode */, "secret-test-"+string(uuid.NewUUID()), nil, nil)
 	})
 
@@ -47,7 +47,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that secret can be mounted without mapping to a
 			pod volume in default mode.
 	*/
-	It("should be consumable from pods in volume with defaultMode set [Conformance]", func() {
+	framework.ConformanceIt("should be consumable from pods in volume with defaultMode set ", func() {
 		defaultMode := int32(0400)
 		doSecretE2EWithoutMapping(f, &defaultMode, "secret-test-"+string(uuid.NewUUID()), nil, nil)
 	})
@@ -57,7 +57,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that secret can be mounted without mapping to a pod
 			volume as non-root in default mode with fsGroup set.
 	*/
-	It("should be consumable from pods in volume as non-root with defaultMode and fsGroup set [Conformance]", func() {
+	framework.ConformanceIt("should be consumable from pods in volume as non-root with defaultMode and fsGroup set ", func() {
 		defaultMode := int32(0440) /* setting fsGroup sets mode to at least 440 */
 		fsGroup := int64(1001)
 		uid := int64(1000)
@@ -69,7 +69,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that secret can be mounted with mapping to a pod
 			volume.
 	*/
-	It("should be consumable from pods in volume with mappings [Conformance]", func() {
+	framework.ConformanceIt("should be consumable from pods in volume with mappings ", func() {
 		doSecretE2EWithMapping(f, nil)
 	})
 
@@ -78,7 +78,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that secret can be mounted with mapping to a pod
 			volume in item mode.
 	*/
-	It("should be consumable from pods in volume with mappings and Item Mode set [Conformance]", func() {
+	framework.ConformanceIt("should be consumable from pods in volume with mappings and Item Mode set ", func() {
 		mode := int32(0400)
 		doSecretE2EWithMapping(f, &mode)
 	})
@@ -98,7 +98,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		secret2.Data = map[string][]byte{
 			"this_should_not_match_content_of_other_secret": []byte("similarly_this_should_not_match_content_of_other_secret\n"),
 		}
-		if secret2, err = f.ClientSet.Core().Secrets(namespace2.Name).Create(secret2); err != nil {
+		if secret2, err = f.ClientSet.CoreV1().Secrets(namespace2.Name).Create(secret2); err != nil {
 			framework.Failf("unable to create test secret %s: %v", secret2.Name, err)
 		}
 		doSecretE2EWithoutMapping(f, nil /* default mode */, secret2.Name, nil, nil)
@@ -108,7 +108,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 	   Testname: secret-multiple-volume-mounts
 	   Description: Ensure that secret can be mounted to multiple pod volumes.
 	*/
-	It("should be consumable in multiple volumes in a pod [Conformance]", func() {
+	framework.ConformanceIt("should be consumable in multiple volumes in a pod ", func() {
 		// This test ensures that the same secret can be mounted in multiple
 		// volumes in the same pod.  This test case exists to prevent
 		// regressions that break this use-case.
@@ -123,7 +123,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 
 		By(fmt.Sprintf("Creating secret with name %s", secret.Name))
 		var err error
-		if secret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(secret); err != nil {
+		if secret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(secret); err != nil {
 			framework.Failf("unable to create test secret %s: %v", secret.Name, err)
 		}
 
@@ -186,7 +186,7 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		    Description: Ensure that optional update change to secret can be
 			reflected on a mounted volume.
 	*/
-	It("optional updates should be reflected in volume [Conformance]", func() {
+	framework.ConformanceIt("optional updates should be reflected in volume ", func() {
 		podLogTimeout := framework.GetPodSecretUpdateTimeout(f.ClientSet)
 		containerTimeoutArg := fmt.Sprintf("--retry_time=%v", int(podLogTimeout.Seconds()))
 		trueVal := true
@@ -233,12 +233,12 @@ var _ = Describe("[sig-storage] Secrets", func() {
 
 		By(fmt.Sprintf("Creating secret with name %s", deleteSecret.Name))
 		var err error
-		if deleteSecret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(deleteSecret); err != nil {
+		if deleteSecret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(deleteSecret); err != nil {
 			framework.Failf("unable to create test secret %s: %v", deleteSecret.Name, err)
 		}
 
 		By(fmt.Sprintf("Creating secret with name %s", updateSecret.Name))
-		if updateSecret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(updateSecret); err != nil {
+		if updateSecret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(updateSecret); err != nil {
 			framework.Failf("unable to create test secret %s: %v", updateSecret.Name, err)
 		}
 
@@ -336,18 +336,18 @@ var _ = Describe("[sig-storage] Secrets", func() {
 		Eventually(pollDeleteLogs, podLogTimeout, framework.Poll).Should(ContainSubstring("value-1"))
 
 		By(fmt.Sprintf("Deleting secret %v", deleteSecret.Name))
-		err = f.ClientSet.Core().Secrets(f.Namespace.Name).Delete(deleteSecret.Name, &metav1.DeleteOptions{})
+		err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Delete(deleteSecret.Name, &metav1.DeleteOptions{})
 		Expect(err).NotTo(HaveOccurred(), "Failed to delete secret %q in namespace %q", deleteSecret.Name, f.Namespace.Name)
 
 		By(fmt.Sprintf("Updating secret %v", updateSecret.Name))
 		updateSecret.ResourceVersion = "" // to force update
 		delete(updateSecret.Data, "data-1")
 		updateSecret.Data["data-3"] = []byte("value-3")
-		_, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Update(updateSecret)
+		_, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Update(updateSecret)
 		Expect(err).NotTo(HaveOccurred(), "Failed to update secret %q in namespace %q", updateSecret.Name, f.Namespace.Name)
 
 		By(fmt.Sprintf("Creating secret with name %s", createSecret.Name))
-		if createSecret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(createSecret); err != nil {
+		if createSecret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(createSecret); err != nil {
 			framework.Failf("unable to create test secret %s: %v", createSecret.Name, err)
 		}
 
@@ -383,7 +383,7 @@ func doSecretE2EWithoutMapping(f *framework.Framework, defaultMode *int32, secre
 
 	By(fmt.Sprintf("Creating secret with name %s", secret.Name))
 	var err error
-	if secret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(secret); err != nil {
+	if secret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(secret); err != nil {
 		framework.Failf("unable to create test secret %s: %v", secret.Name, err)
 	}
 
@@ -455,7 +455,7 @@ func doSecretE2EWithMapping(f *framework.Framework, mode *int32) {
 
 	By(fmt.Sprintf("Creating secret with name %s", secret.Name))
 	var err error
-	if secret, err = f.ClientSet.Core().Secrets(f.Namespace.Name).Create(secret); err != nil {
+	if secret, err = f.ClientSet.CoreV1().Secrets(f.Namespace.Name).Create(secret); err != nil {
 		framework.Failf("unable to create test secret %s: %v", secret.Name, err)
 	}
 

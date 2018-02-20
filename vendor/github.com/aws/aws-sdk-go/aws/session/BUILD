@@ -27,17 +27,19 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
+        "custom_ca_bundle_test.go",
         "env_config_test.go",
         "session_test.go",
         "shared_config_test.go",
     ],
-    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
     importpath = "github.com/aws/aws-sdk-go/aws/session",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/credentials:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/defaults:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/awstesting:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/service/s3:go_default_library",
         "//vendor/github.com/go-ini/ini:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

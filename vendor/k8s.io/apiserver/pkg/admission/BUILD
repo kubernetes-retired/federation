@@ -1,26 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "chain_test.go",
-        "config_test.go",
-        "errors_test.go",
-    ],
-    importpath = "k8s.io/apiserver/pkg/admission",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/apis/apiserver:go_default_library",
-    ],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -34,22 +12,40 @@ go_library(
         "plugins.go",
     ],
     importpath = "k8s.io/apiserver/pkg/admission",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/ghodss/yaml:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apimachinery/registered:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/apis/apiserver:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/apis/apiserver/install:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/apis/apiserver/v1alpha1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "chain_test.go",
+        "config_test.go",
+        "errors_test.go",
+        "handler_test.go",
+    ],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/apiserver/pkg/admission",
+    deps = [
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/util/json:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/apis/apiserver:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/apis/apiserver/v1alpha1:go_default_library",
     ],
 )
 
@@ -66,9 +62,19 @@ filegroup(
         ":package-srcs",
         "//vendor/k8s.io/apiserver/pkg/admission/configuration:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/admission/initializer:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/metrics:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/admission/plugin/initialization:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/admission/plugin/namespace/lifecycle:all-srcs",
-        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/webhook:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/config:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/errors:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/initializer:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/mutating:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/namespace:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/request:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/rules:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/validating:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/admission/plugin/webhook/versioned:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

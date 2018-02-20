@@ -13,6 +13,17 @@ go_library(
 )
 
 go_test(
+    name = "go_default_test",
+    srcs = ["unmarshal_test.go"],
+    embed = [":go_default_library"],
+    importpath = "github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil",
+    deps = [
+        "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/aws/awsutil:go_default_library",
+    ],
+)
+
+go_test(
     name = "go_default_xtest",
     srcs = ["xml_to_struct_test.go"],
     importpath = "github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil_test",

@@ -27,8 +27,8 @@ go_test(
         "groupcache_test.go",
         "http_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/golang/groupcache",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/golang/groupcache/groupcachepb:go_default_library",
         "//vendor/github.com/golang/groupcache/testpb:go_default_library",
@@ -47,11 +47,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/golang/groupcache/consistenthash:all-srcs",
-        "//vendor/github.com/golang/groupcache/groupcachepb:all-srcs",
         "//vendor/github.com/golang/groupcache/lru:all-srcs",
-        "//vendor/github.com/golang/groupcache/singleflight:all-srcs",
-        "//vendor/github.com/golang/groupcache/testpb:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

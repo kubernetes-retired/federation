@@ -10,8 +10,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["urlesc_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/PuerkitoBio/urlesc",
-    library = ":go_default_library",
 )
 
 filegroup(

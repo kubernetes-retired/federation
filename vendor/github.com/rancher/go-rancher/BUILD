@@ -10,8 +10,8 @@ go_library(
 
 go_binary(
     name = "go-rancher",
+    embed = [":go_default_library"],
     importpath = "github.com/rancher/go-rancher",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 
@@ -26,13 +26,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/rancher/go-rancher/api:all-srcs",
-        "//vendor/github.com/rancher/go-rancher/catalog:all-srcs",
         "//vendor/github.com/rancher/go-rancher/client:all-srcs",
-        "//vendor/github.com/rancher/go-rancher/docs:all-srcs",
-        "//vendor/github.com/rancher/go-rancher/generator:all-srcs",
-        "//vendor/github.com/rancher/go-rancher/hostaccess:all-srcs",
-        "//vendor/github.com/rancher/go-rancher/v2:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

@@ -31,8 +31,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["client_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor/container/rkt",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/blang/semver:go_default_library"],
 )
 

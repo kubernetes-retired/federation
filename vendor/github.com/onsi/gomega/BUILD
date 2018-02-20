@@ -29,13 +29,8 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/onsi/gomega/format:all-srcs",
-        "//vendor/github.com/onsi/gomega/gbytes:all-srcs",
-        "//vendor/github.com/onsi/gomega/gexec:all-srcs",
-        "//vendor/github.com/onsi/gomega/ghttp:all-srcs",
-        "//vendor/github.com/onsi/gomega/gstruct:all-srcs",
         "//vendor/github.com/onsi/gomega/internal/assertion:all-srcs",
         "//vendor/github.com/onsi/gomega/internal/asyncassertion:all-srcs",
-        "//vendor/github.com/onsi/gomega/internal/fakematcher:all-srcs",
         "//vendor/github.com/onsi/gomega/internal/oraclematcher:all-srcs",
         "//vendor/github.com/onsi/gomega/internal/testingtsupport:all-srcs",
         "//vendor/github.com/onsi/gomega/matchers:all-srcs",

@@ -29,16 +29,14 @@ go_test(
         "render_test.go",
         "token_test.go",
     ],
-    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/html",
-    library = ":go_default_library",
     deps = ["//vendor/golang.org/x/net/html/atom:go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    data = glob(["testdata/**"]),
     importpath = "golang.org/x/net/html_test",
     deps = [":go_default_library"],
 )
@@ -55,7 +53,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/golang.org/x/net/html/atom:all-srcs",
-        "//vendor/golang.org/x/net/html/charset:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

@@ -1,44 +1,73 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["util_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/util",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
     srcs = [
         "doc.go",
         "util.go",
-        "util_unsupported.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
             "util_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "util_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "util_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "util_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "util_windows.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "k8s.io/kubernetes/pkg/kubelet/util",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/github.com/golang/glog:go_default_library",
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/github.com/golang/glog:go_default_library",
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/golang/glog:go_default_library",
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
         "//conditions:default": [],
     }),
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["util_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/pkg/kubelet/util",
+    deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
 filegroup(
@@ -57,6 +86,8 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/util/ioutils:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/util/queue:all-srcs",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/util/sliceutils:all-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/util/store:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

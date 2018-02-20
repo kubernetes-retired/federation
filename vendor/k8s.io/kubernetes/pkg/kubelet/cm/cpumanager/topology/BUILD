@@ -15,6 +15,14 @@ go_library(
     ],
 )
 
+go_test(
+    name = "go_default_test",
+    srcs = ["topology_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/topology",
+    deps = ["//vendor/github.com/google/cadvisor/info/v1:go_default_library"],
+)
+
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -27,12 +35,4 @@ filegroup(
     srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["topology_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/topology",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/google/cadvisor/info/v1:go_default_library"],
 )

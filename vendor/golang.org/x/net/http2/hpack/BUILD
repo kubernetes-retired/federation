@@ -19,8 +19,8 @@ go_test(
         "hpack_test.go",
         "tables_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/http2/hpack",
-    library = ":go_default_library",
 )
 
 filegroup(

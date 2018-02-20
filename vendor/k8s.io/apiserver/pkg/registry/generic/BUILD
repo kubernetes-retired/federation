@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -14,6 +9,7 @@ go_library(
         "storage_decorator.go",
     ],
     importpath = "k8s.io/apiserver/pkg/registry/generic",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -39,6 +35,8 @@ filegroup(
         ":package-srcs",
         "//vendor/k8s.io/apiserver/pkg/registry/generic/registry:all-srcs",
         "//vendor/k8s.io/apiserver/pkg/registry/generic/rest:all-srcs",
+        "//vendor/k8s.io/apiserver/pkg/registry/generic/testing:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

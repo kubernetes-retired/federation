@@ -17,8 +17,8 @@ go_test(
         "capture_test.go",
         "frame_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/opencontainers/runc/libcontainer/stacktrace",
-    library = ":go_default_library",
 )
 
 filegroup(

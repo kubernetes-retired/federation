@@ -1,8 +1,4 @@
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -11,9 +7,7 @@ go_library(
         "editor.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubectl/cmd/util/editor",
-    visibility = [
-        "//build/visible_to:pkg_kubectl_cmd_util_editor_CONSUMERS",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/evanphx/json-patch:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
@@ -28,11 +22,11 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/strategicpatch:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/yaml:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/legacyscheme:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/resource:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubectl/scheme:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/util/crlf:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/util/term:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/printers:go_default_library",
@@ -42,21 +36,20 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["editor_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/kubectl/cmd/util/editor",
-    library = ":go_default_library",
 )
 
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
     tags = ["automanaged"],
+    visibility = ["//visibility:private"],
 )
 
 filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
-    visibility = [
-        "//build/visible_to:pkg_kubectl_cmd_util_editor_CONSUMERS",
-    ],
+    visibility = ["//visibility:public"],
 )

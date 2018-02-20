@@ -34,11 +34,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/libopenstorage/openstorage/api/client:all-srcs",
-        "//vendor/github.com/libopenstorage/openstorage/api/errors:all-srcs",
-        "//vendor/github.com/libopenstorage/openstorage/api/flexvolume:all-srcs",
-        "//vendor/github.com/libopenstorage/openstorage/api/server:all-srcs",
         "//vendor/github.com/libopenstorage/openstorage/api/spec:all-srcs",
-        "//vendor/github.com/libopenstorage/openstorage/api/testing:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

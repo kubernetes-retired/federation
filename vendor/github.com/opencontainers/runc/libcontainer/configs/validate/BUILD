@@ -10,6 +10,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library",
+        "//vendor/github.com/opencontainers/runc/libcontainer/intelrdt:go_default_library",
         "//vendor/github.com/opencontainers/selinux/go-selinux:go_default_library",
     ],
 )
@@ -17,8 +18,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["rootless_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/opencontainers/runc/libcontainer/configs/validate",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library"],
 )
 

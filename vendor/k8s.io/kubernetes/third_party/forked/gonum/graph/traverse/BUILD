@@ -1,11 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-licenses(["notice"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -14,6 +7,7 @@ go_library(
         "visit_depth_first.go",
     ],
     importpath = "k8s.io/kubernetes/third_party/forked/gonum/graph/traverse",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/golang.org/x/tools/container/intsets:go_default_library",
         "//vendor/k8s.io/kubernetes/third_party/forked/gonum/graph:go_default_library",
@@ -32,4 +26,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

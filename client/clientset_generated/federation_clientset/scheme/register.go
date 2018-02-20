@@ -57,5 +57,4 @@ func AddToScheme(scheme *runtime.Scheme) {
 	corev1.AddToScheme(scheme)
 	extensionsv1beta1.AddToScheme(scheme)
 	federationv1beta1.AddToScheme(scheme)
-
 }

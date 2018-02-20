@@ -16,8 +16,8 @@ go_test(
         "merge_test.go",
         "patch_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/evanphx/json-patch",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -29,10 +29,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/evanphx/json-patch/cmd/json-patch:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -2,10 +2,20 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
-    srcs = [
-        "fs_unsupported.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+    srcs = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "apply_raw.go",
             "blkio.go",
             "cpu.go",
@@ -22,12 +32,30 @@ go_library(
             "pids.go",
             "utils.go",
         ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "fs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "fs_unsupported.go",
+        ],
         "//conditions:default": [],
     }),
     importpath = "github.com/opencontainers/runc/libcontainer/cgroups/fs",
     visibility = ["//visibility:public"],
     deps = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/opencontainers/runc/libcontainer/cgroups:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/system:go_default_library",
@@ -41,7 +69,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "apply_raw_test.go",
             "blkio_test.go",
             "cpu_test.go",
@@ -59,10 +87,10 @@ go_test(
         ],
         "//conditions:default": [],
     }),
+    embed = [":go_default_library"],
     importpath = "github.com/opencontainers/runc/libcontainer/cgroups/fs",
-    library = ":go_default_library",
     deps = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/opencontainers/runc/libcontainer/cgroups:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library",
             "//vendor/github.com/sirupsen/logrus:go_default_library",

@@ -5,6 +5,8 @@ go_library(
     srcs = [
         "api.go",
         "customizations.go",
+        "doc.go",
+        "errors.go",
         "service.go",
         "waiters.go",
     ],
@@ -20,7 +22,6 @@ go_library(
         "//vendor/github.com/aws/aws-sdk-go/aws/signer/v4:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/ec2query:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/private/waiter:go_default_library",
     ],
 )
 
@@ -34,9 +35,9 @@ go_test(
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/session:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/awstesting/unit:go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
     ],
 )
 
@@ -49,10 +50,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/service/ec2/ec2iface:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

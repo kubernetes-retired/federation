@@ -16,15 +16,15 @@ go_library(
         "//vendor/github.com/google/cadvisor/utils/cloudinfo:go_default_library",
         "//vendor/github.com/google/cadvisor/utils/sysfs:go_default_library",
         "//vendor/github.com/google/cadvisor/utils/sysinfo:go_default_library",
+        "//vendor/golang.org/x/sys/unix:go_default_library",
     ],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["topology_test.go"],
-    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor/machine",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/google/cadvisor/utils/sysfs:go_default_library",

@@ -16,8 +16,8 @@ go_test(
         "cookie_test.go",
         "json_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/pkg/httputil",
-    library = ":go_default_library",
 )
 
 filegroup(

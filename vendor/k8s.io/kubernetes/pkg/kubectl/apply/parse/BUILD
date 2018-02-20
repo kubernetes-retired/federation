@@ -26,9 +26,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["suite_test.go"],
-    data = [
-        "//api/openapi-spec:swagger-spec",
-    ],
     importpath = "k8s.io/kubernetes/pkg/kubectl/apply/parse_test",
     deps = [
         "//vendor/github.com/onsi/ginkgo:go_default_library",

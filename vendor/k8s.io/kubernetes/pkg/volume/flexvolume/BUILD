@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -26,6 +20,7 @@ go_library(
         "volume.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/volume/flexvolume",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/fsnotify/fsnotify:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
@@ -54,8 +49,8 @@ go_test(
         "probe_test.go",
         "unmounter_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/volume/flexvolume",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/fsnotify/fsnotify:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
@@ -83,4 +78,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

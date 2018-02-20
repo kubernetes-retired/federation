@@ -10,8 +10,8 @@ go_library(
 
 go_binary(
     name = "go-semver",
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/go-semver",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 

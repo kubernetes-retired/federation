@@ -1,26 +1,22 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "genswaggertypedocs",
-    importpath = "k8s.io/kubernetes/cmd/genswaggertypedocs",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["swagger_type_docs.go"],
     importpath = "k8s.io/kubernetes/cmd/genswaggertypedocs",
+    visibility = ["//visibility:private"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
     ],
+)
+
+go_binary(
+    name = "genswaggertypedocs",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/cmd/genswaggertypedocs",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -34,4 +30,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

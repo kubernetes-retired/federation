@@ -21,7 +21,6 @@ package app
 
 import (
 	"fmt"
-	"io/ioutil"
 	"strings"
 	"time"
 
@@ -91,7 +90,7 @@ func Run(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 // stop with the given channel.
 func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	// register all admission plugins
-	RegisterAllAdmissionPlugins(s.Admission.Plugins)
+	RegisterAllAdmissionPlugins(s.Admission)
 
 	// set defaults
 	if err := s.GenericServerRunOptions.DefaultAdvertiseAddress(s.SecureServing); err != nil {
@@ -102,9 +101,6 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	}
 	if err := s.SecureServing.MaybeDefaultWithSelfSignedCerts(s.GenericServerRunOptions.AdvertiseAddress.String(), nil, nil); err != nil {
 		return fmt.Errorf("error creating self-signed certificates: %v", err)
-	}
-	if err := s.CloudProvider.DefaultExternalHost(s.GenericServerRunOptions); err != nil {
-		return fmt.Errorf("error setting the external host value: %v", err)
 	}
 
 	s.Authentication.ApplyAuthorization(s.Authorization)
@@ -134,8 +130,10 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	if err := s.Features.ApplyTo(genericConfig); err != nil {
 		return err
 	}
-
 	resourceConfig := defaultResourceConfig()
+	if err := s.APIEnablement.ApplyTo(genericConfig, resourceConfig, legacyscheme.Registry); err != nil {
+		return err
+	}
 
 	if s.Etcd.StorageConfig.DeserializationCacheSize == 0 {
 		// When size of cache is not explicitly set, set it to 50000
@@ -148,7 +146,7 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	storageFactory, err := kubeapiserver.NewStorageFactory(
 		s.Etcd.StorageConfig, s.Etcd.DefaultStorageMediaType, legacyscheme.Codecs,
 		serverstorage.NewDefaultResourceEncodingConfig(legacyscheme.Registry), storageGroupsToEncodingVersion,
-		[]schema.GroupVersionResource{}, resourceConfig, s.APIEnablement.RuntimeConfig)
+		[]schema.GroupVersionResource{}, resourceConfig)
 	if err != nil {
 		return fmt.Errorf("error in initializing storage factory: %s", err)
 	}
@@ -201,35 +199,15 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	}
 	versionedInformers := clientgoinformers.NewSharedInformerFactory(clientgoExternalClient, 10*time.Minute)
 
-	authorizationConfig := s.Authorization.ToAuthorizationConfig(sharedInformers)
+	authorizationConfig := s.Authorization.ToAuthorizationConfig(sharedInformers, versionedInformers)
 	apiAuthorizer, _, err := authorizationConfig.New()
 	if err != nil {
 		return fmt.Errorf("invalid Authorization Config: %v", err)
 	}
 
-	var cloudConfig []byte
-	if s.CloudProvider.CloudConfigFile != "" {
-		cloudConfig, err = ioutil.ReadFile(s.CloudProvider.CloudConfigFile)
-		if err != nil {
-			glog.Fatalf("Error reading from cloud configuration file %s: %#v", s.CloudProvider.CloudConfigFile, err)
-		}
-	}
-
-	// NOTE: we do not provide informers to the quota registry because admission level decisions
-	// do not require us to open watches for all items tracked by quota.
-	quotaRegistry := quotainstall.NewRegistry(nil, nil)
-	pluginInitializer := kubeapiserveradmission.NewPluginInitializer(client, sharedInformers, cloudConfig, nil, quotaRegistry, nil, nil)
-
-	err = s.Admission.ApplyTo(
-		genericConfig,
-		versionedInformers,
-		kubeClientConfig,
-		legacyscheme.Scheme,
-		pluginInitializer,
-	)
-	if err != nil {
-		return fmt.Errorf("failed to initialize plugins: %v", err)
-	}
+	restMapper := legacyscheme.Registry.RESTMapper()
+	quotaConfiguration := quotainstall.NewQuotaConfigurationForAdmission()
+	pluginInitializer := kubeapiserveradmission.NewPluginInitializer(client, sharedInformers, nil, restMapper, quotaConfiguration)
 
 	kubeVersion := version.Get()
 	genericConfig.Version = &kubeVersion
@@ -243,6 +221,17 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 		sets.NewString("watch", "proxy"),
 		sets.NewString("attach", "exec", "proxy", "log", "portforward"),
 	)
+
+	err = s.Admission.ApplyTo(
+		genericConfig,
+		versionedInformers,
+		kubeClientConfig,
+		legacyscheme.Scheme,
+		pluginInitializer,
+	)
+	if err != nil {
+		return fmt.Errorf("failed to initialize plugins: %v", err)
+	}
 
 	// TODO: Move this to generic api server (Need to move the command line flag).
 	if s.Etcd.EnableWatchCache {
@@ -277,7 +266,7 @@ func NonBlockingRun(s *options.ServerRunOptions, stopCh <-chan struct{}) error {
 	// run the insecure server now
 	if insecureServingOptions != nil {
 		insecureHandlerChain := kubeserver.BuildInsecureHandlerChain(m.UnprotectedHandler(), genericConfig)
-		if err := kubeserver.NonBlockingRun(insecureServingOptions, insecureHandlerChain, stopCh); err != nil {
+		if err := kubeserver.NonBlockingRun(insecureServingOptions, insecureHandlerChain, genericConfig.RequestTimeout, stopCh); err != nil {
 			return err
 		}
 	}
@@ -297,25 +286,25 @@ func defaultResourceConfig() *serverstorage.ResourceConfig {
 	)
 
 	// All core resources except these are disabled by default.
-	rc.EnableResources(
-		apiv1.SchemeGroupVersion.WithResource("secrets"),
-		apiv1.SchemeGroupVersion.WithResource("services"),
-		apiv1.SchemeGroupVersion.WithResource("namespaces"),
-		apiv1.SchemeGroupVersion.WithResource("events"),
-		apiv1.SchemeGroupVersion.WithResource("configmaps"),
+	rc.EnableVersions(
+		apiv1.SchemeGroupVersion.WithResource("secrets").GroupVersion(),
+		apiv1.SchemeGroupVersion.WithResource("services").GroupVersion(),
+		apiv1.SchemeGroupVersion.WithResource("namespaces").GroupVersion(),
+		apiv1.SchemeGroupVersion.WithResource("events").GroupVersion(),
+		apiv1.SchemeGroupVersion.WithResource("configmaps").GroupVersion(),
 	)
 	// All extension resources except these are disabled by default.
-	rc.EnableResources(
-		extensionsapiv1beta1.SchemeGroupVersion.WithResource("daemonsets"),
-		extensionsapiv1beta1.SchemeGroupVersion.WithResource("deployments"),
-		extensionsapiv1beta1.SchemeGroupVersion.WithResource("ingresses"),
-		extensionsapiv1beta1.SchemeGroupVersion.WithResource("replicasets"),
+	rc.EnableVersions(
+		extensionsapiv1beta1.SchemeGroupVersion.WithResource("daemonsets").GroupVersion(),
+		extensionsapiv1beta1.SchemeGroupVersion.WithResource("deployments").GroupVersion(),
+		extensionsapiv1beta1.SchemeGroupVersion.WithResource("ingresses").GroupVersion(),
+		extensionsapiv1beta1.SchemeGroupVersion.WithResource("replicasets").GroupVersion(),
 	)
 	// All apps resources except these are disabled by default.
-	rc.EnableResources(
-		appsv1beta2.SchemeGroupVersion.WithResource("daemonsets"),
-		appsv1beta2.SchemeGroupVersion.WithResource("deployments"),
-		appsv1beta2.SchemeGroupVersion.WithResource("replicasets"),
+	rc.EnableVersions(
+		appsv1beta2.SchemeGroupVersion.WithResource("daemonsets").GroupVersion(),
+		appsv1beta2.SchemeGroupVersion.WithResource("deployments").GroupVersion(),
+		appsv1beta2.SchemeGroupVersion.WithResource("replicasets").GroupVersion(),
 	)
 	return rc
 }

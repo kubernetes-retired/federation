@@ -24,17 +24,30 @@ import (
 	_ "k8s.io/kubernetes/pkg/cloudprovider/providers"
 
 	// Admission policies
-	"k8s.io/apiserver/pkg/admission"
+	"k8s.io/apiserver/pkg/admission/plugin/initialization"
+	"k8s.io/apiserver/pkg/admission/plugin/namespace/lifecycle"
+	mutatingwebhook "k8s.io/apiserver/pkg/admission/plugin/webhook/mutating"
+	validatingwebhook "k8s.io/apiserver/pkg/admission/plugin/webhook/validating"
+	genericoptions "k8s.io/apiserver/pkg/server/options"
 	"k8s.io/federation/plugin/pkg/admission/schedulingpolicy"
-	"k8s.io/kubernetes/plugin/pkg/admission/admit"
-	"k8s.io/kubernetes/plugin/pkg/admission/deny"
 	"k8s.io/kubernetes/plugin/pkg/admission/gc"
 )
 
+// AllOrderedPlugins is the list of all the plugins in order.
+var AllOrderedPlugins = []string{
+	lifecycle.PluginName,         // NamespaceLifecycle
+	gc.PluginName,                // OwnerReferencesPermissionEnforcement
+	mutatingwebhook.PluginName,   // MutatingAdmissionWebhook
+	initialization.PluginName,    // Initializers
+	validatingwebhook.PluginName, // ValidatingAdmissionWebhook
+	schedulingpolicy.PluginName,  // SchedulingPolicy
+}
+
 // RegisterAllAdmissionPlugins registers all admission plugins
-func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
-	admit.Register(plugins)
-	deny.Register(plugins)
-	gc.Register(plugins)
-	schedulingpolicy.Register(plugins)
+func RegisterAllAdmissionPlugins(admission *genericoptions.AdmissionOptions) {
+	gc.Register(admission.Plugins)
+	schedulingpolicy.Register(admission.Plugins)
+
+	admission.RecommendedPluginOrder = AllOrderedPlugins
+	admission.DefaultOffPlugins.Insert(lifecycle.PluginName, schedulingpolicy.PluginName)
 }

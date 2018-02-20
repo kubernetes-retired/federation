@@ -4,10 +4,17 @@ go_library(
     name = "go_default_library",
     srcs = [
         "config.go",
+        "context.go",
+        "context_1_6.go",
+        "context_1_7.go",
         "convert_types.go",
+        "doc.go",
         "errors.go",
+        "jsonvalue.go",
         "logger.go",
         "types.go",
+        "url.go",
+        "url_1_7.go",
         "version.go",
     ],
     importpath = "github.com/aws/aws-sdk-go/aws",
@@ -26,11 +33,21 @@ go_test(
         "convert_types_test.go",
         "types_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/aws/aws-sdk-go/aws",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws/credentials:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_xtest",
+    srcs = ["context_test.go"],
+    importpath = "github.com/aws/aws-sdk-go/aws_test",
+    deps = [
+        ":go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/awstesting:go_default_library",
     ],
 )
 

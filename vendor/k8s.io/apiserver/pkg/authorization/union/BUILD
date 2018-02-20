@@ -1,28 +1,23 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["union_test.go"],
-    importpath = "k8s.io/apiserver/pkg/authorization/union",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
-    ],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
     srcs = ["union.go"],
     importpath = "k8s.io/apiserver/pkg/authorization/union",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["union_test.go"],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/apiserver/pkg/authorization/union",
+    deps = [
         "//vendor/k8s.io/apiserver/pkg/authentication/user:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/authorization/authorizer:go_default_library",
     ],
@@ -39,4 +34,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

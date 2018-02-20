@@ -1,9 +1,85 @@
-package(default_visibility = ["//visibility:public"])
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "ipvs.go",
+    ] + select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "ipvs_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "ipvs_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "ipvs_unsupported.go",
+        ],
+        "//conditions:default": [],
+    }),
+    importpath = "k8s.io/kubernetes/pkg/util/ipvs",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/github.com/docker/libnetwork/ipvs:go_default_library",
+            "//vendor/github.com/golang/glog:go_default_library",
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "//vendor/k8s.io/utils/exec:go_default_library",
+        ],
+        "//conditions:default": [],
+    }),
 )
 
 go_test(
@@ -11,39 +87,16 @@ go_test(
     srcs = [
         "ipvs_test.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "ipvs_linux_test.go",
         ],
         "//conditions:default": [],
     }),
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/util/ipvs",
-    library = ":go_default_library",
     deps = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/docker/libnetwork/ipvs:go_default_library",
-        ],
-        "//conditions:default": [],
-    }),
-)
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "ipvs.go",
-        "ipvs_unsupported.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "ipvs_linux.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "k8s.io/kubernetes/pkg/util/ipvs",
-    deps = [
-        "//vendor/k8s.io/utils/exec:go_default_library",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "//vendor/github.com/docker/libnetwork/ipvs:go_default_library",
-            "//vendor/github.com/golang/glog:go_default_library",
         ],
         "//conditions:default": [],
     }),
@@ -58,9 +111,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/k8s.io/kubernetes/pkg/util/ipvs/testing:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

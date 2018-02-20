@@ -23,8 +23,8 @@ go_test(
         "misc_test.go",
         "users_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/abbot/go-http-auth",
-    library = ":go_default_library",
 )
 
 filegroup(

@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -15,10 +9,12 @@ go_library(
         "hostport_syncer.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/network/hostport",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/errors:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy/iptables:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/iptables:go_default_library",
     ],
@@ -27,12 +23,13 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
+        "fake_iptables_test.go",
         "hostport_manager_test.go",
         "hostport_syncer_test.go",
         "hostport_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/kubelet/network/hostport",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
@@ -49,9 +46,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/network/hostport/testing:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

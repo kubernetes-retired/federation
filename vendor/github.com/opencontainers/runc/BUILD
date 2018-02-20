@@ -4,14 +4,26 @@ go_library(
     name = "go_default_library",
     srcs = [
         "create.go",
-        "delete.go",
         "init.go",
         "main.go",
         "start.go",
         "utils.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "checkpoint.go",
+            "delete.go",
             "events.go",
             "exec.go",
             "kill.go",
@@ -29,6 +41,56 @@ go_library(
             "update.go",
             "utils_linux.go",
         ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "delete.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "delete.go",
+        ],
+        "//conditions:default": [],
+    }) + select({
+        "@io_bazel_rules_go//go/platform:linux_386": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_amd64": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_arm": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_arm64": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_mips": [
+            "signalmap_mipsx.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_mips64": [
+            "signalmap_mipsx.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_mips64le": [
+            "signalmap_mipsx.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_mipsle": [
+            "signalmap_mipsx.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_ppc64": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_ppc64le": [
+            "signalmap.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux_s390x": [
+            "signalmap.go",
+        ],
         "//conditions:default": [],
     }),
     importpath = "github.com/opencontainers/runc",
@@ -39,19 +101,47 @@ go_library(
         "//vendor/github.com/opencontainers/runtime-spec/specs-go:go_default_library",
         "//vendor/github.com/sirupsen/logrus:go_default_library",
         "//vendor/github.com/urfave/cli:go_default_library",
-        "//vendor/golang.org/x/sys/unix:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/github.com/containerd/console:go_default_library",
             "//vendor/github.com/coreos/go-systemd/activation:go_default_library",
-            "//vendor/github.com/docker/docker/pkg/term:go_default_library",
             "//vendor/github.com/docker/go-units:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/cgroups:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/cgroups/systemd:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library",
+            "//vendor/github.com/opencontainers/runc/libcontainer/intelrdt:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/specconv:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/system:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/user:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/utils:go_default_library",
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
         "//conditions:default": [],
     }),
@@ -59,8 +149,8 @@ go_library(
 
 go_binary(
     name = "runc",
+    embed = [":go_default_library"],
     importpath = "github.com/opencontainers/runc",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 
@@ -75,7 +165,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/opencontainers/runc/contrib/cmd/recvtty:all-srcs",
         "//vendor/github.com/opencontainers/runc/libcontainer:all-srcs",
     ],
     tags = ["automanaged"],

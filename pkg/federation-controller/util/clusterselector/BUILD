@@ -9,8 +9,8 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["clusterselector_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/pkg/federation-controller/util/clusterselector",
-    library = ":go_default_library",
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",

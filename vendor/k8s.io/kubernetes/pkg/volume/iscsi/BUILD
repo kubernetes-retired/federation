@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -16,14 +10,19 @@ go_library(
         "iscsi_util.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/volume/iscsi",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/mount:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/strings:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/volume/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/volume/util/volumehelper:go_default_library",
     ],
 )
 
@@ -33,8 +32,8 @@ go_test(
         "iscsi_test.go",
         "iscsi_util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/volume/iscsi",
-    library = ":go_default_library",
     deps = [
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -58,4 +57,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

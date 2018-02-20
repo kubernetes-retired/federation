@@ -16,8 +16,8 @@ go_test(
         "atom_test.go",
         "table_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/html/atom",
-    library = ":go_default_library",
 )
 
 filegroup(

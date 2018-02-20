@@ -18,8 +18,8 @@ go_test(
         "helpers_test.go",
         "packet_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/d2g/dhcp4",
-    library = ":go_default_library",
 )
 
 filegroup(

@@ -44,6 +44,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/k8s.io/kube-openapi/pkg/util/proto/testing:all-srcs",
+        "//vendor/k8s.io/kube-openapi/pkg/util/proto/validation:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

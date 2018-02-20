@@ -22,8 +22,8 @@ go_test(
         "sort_test.go",
         "sql_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/blang/semver",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -35,10 +35,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/blang/semver/examples:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

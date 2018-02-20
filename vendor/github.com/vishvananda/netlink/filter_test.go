@@ -4,8 +4,9 @@ package netlink
 
 import (
 	"reflect"
-	"syscall"
 	"testing"
+
+	"golang.org/x/sys/unix"
 )
 
 func TestFilterAddDel(t *testing.T) {
@@ -41,7 +42,7 @@ func TestFilterAddDel(t *testing.T) {
 	if err := QdiscAdd(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err := QdiscList(link)
+	qdiscs, err := SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +59,7 @@ func TestFilterAddDel(t *testing.T) {
 			LinkIndex: link.Attrs().Index,
 			Parent:    MakeHandle(0xffff, 0),
 			Priority:  1,
-			Protocol:  syscall.ETH_P_IP,
+			Protocol:  unix.ETH_P_IP,
 		},
 		RedirIndex: redir.Attrs().Index,
 		ClassId:    classId,
@@ -93,7 +94,7 @@ func TestFilterAddDel(t *testing.T) {
 	if err := QdiscDel(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err = QdiscList(link)
+	qdiscs, err = SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +129,7 @@ func TestAdvancedFilterAddDel(t *testing.T) {
 	if err := QdiscAdd(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err := QdiscList(link)
+	qdiscs, err := SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -185,7 +186,7 @@ func TestAdvancedFilterAddDel(t *testing.T) {
 			LinkIndex: index,
 			Parent:    qdiscHandle,
 			Priority:  1,
-			Protocol:  syscall.ETH_P_ALL,
+			Protocol:  unix.ETH_P_ALL,
 		},
 		Sel: &TcU32Sel{
 			Keys:  u32SelKeys,
@@ -257,7 +258,7 @@ func TestAdvancedFilterAddDel(t *testing.T) {
 	if err := QdiscDel(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err = QdiscList(link)
+	qdiscs, err = SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -298,7 +299,7 @@ func TestFilterFwAddDel(t *testing.T) {
 	if err := QdiscAdd(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err := QdiscList(link)
+	qdiscs, err := SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -337,7 +338,7 @@ func TestFilterFwAddDel(t *testing.T) {
 		Parent:    MakeHandle(0xffff, 0),
 		Handle:    MakeHandle(0, 0x6),
 		Priority:  1,
-		Protocol:  syscall.ETH_P_IP,
+		Protocol:  unix.ETH_P_IP,
 	}
 	fwattrs := FilterFwAttrs{
 		Buffer:   12345,
@@ -369,14 +370,6 @@ func TestFilterFwAddDel(t *testing.T) {
 	}
 	if fw.Police.Rate.Rate != filter.Police.Rate.Rate {
 		t.Fatal("Police Rate doesn't match")
-	}
-	for i := range fw.Rtab {
-		if fw.Rtab[i] != filter.Rtab[i] {
-			t.Fatal("Rtab doesn't match")
-		}
-		if fw.Ptab[i] != filter.Ptab[i] {
-			t.Fatal("Ptab doesn't match")
-		}
 	}
 	if fw.ClassId != filter.ClassId {
 		t.Fatal("ClassId doesn't match")
@@ -412,7 +405,7 @@ func TestFilterFwAddDel(t *testing.T) {
 	if err := QdiscDel(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err = QdiscList(link)
+	qdiscs, err = SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -454,7 +447,7 @@ func TestFilterU32BpfAddDel(t *testing.T) {
 	if err := QdiscAdd(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err := QdiscList(link)
+	qdiscs, err := SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -476,7 +469,7 @@ func TestFilterU32BpfAddDel(t *testing.T) {
 			LinkIndex: link.Attrs().Index,
 			Parent:    MakeHandle(0xffff, 0),
 			Priority:  1,
-			Protocol:  syscall.ETH_P_ALL,
+			Protocol:  unix.ETH_P_ALL,
 		},
 		ClassId: classId,
 		Actions: []Action{
@@ -513,15 +506,21 @@ func TestFilterU32BpfAddDel(t *testing.T) {
 	if u32.ClassId != classId {
 		t.Fatalf("ClassId of the filter is the wrong value")
 	}
+	// actions can be returned in reverse order
 	bpfAction, ok := u32.Actions[0].(*BpfAction)
 	if !ok {
-		t.Fatal("Action[0] is the wrong type")
+		bpfAction, ok = u32.Actions[1].(*BpfAction)
+		if !ok {
+			t.Fatal("Action is the wrong type")
+		}
 	}
 	if bpfAction.Fd != fd {
 		t.Fatal("Action Fd does not match")
 	}
-	if _, ok := u32.Actions[1].(*MirredAction); !ok {
-		t.Fatal("Action[1] is the wrong type")
+	if _, ok := u32.Actions[0].(*MirredAction); !ok {
+		if _, ok := u32.Actions[1].(*MirredAction); !ok {
+			t.Fatal("Action is the wrong type")
+		}
 	}
 
 	if err := FilterDel(filter); err != nil {
@@ -538,7 +537,7 @@ func TestFilterU32BpfAddDel(t *testing.T) {
 	if err := QdiscDel(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err = QdiscList(link)
+	qdiscs, err = SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -570,15 +569,17 @@ func TestFilterClsActBpfAddDel(t *testing.T) {
 		QdiscType:  "clsact",
 	}
 	// This feature was added in kernel 4.5
+	minKernelRequired(t, 4, 5)
+
 	if err := QdiscAdd(qdisc); err != nil {
-		t.Skipf("Failed adding clsact qdisc, unsupported kernel")
+		t.Fatal(err)
 	}
-	qdiscs, err := QdiscList(link)
+	qdiscs, err := SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(qdiscs) != 1 {
-		t.Fatal("Failed to add qdisc")
+		t.Fatal("Failed to add qdisc", len(qdiscs))
 	}
 	if q, ok := qdiscs[0].(*GenericQdisc); !ok || q.Type() != "clsact" {
 		t.Fatal("qdisc is the wrong type")
@@ -588,7 +589,7 @@ func TestFilterClsActBpfAddDel(t *testing.T) {
 		LinkIndex: link.Attrs().Index,
 		Parent:    HANDLE_MIN_EGRESS,
 		Handle:    MakeHandle(0, 1),
-		Protocol:  syscall.ETH_P_ALL,
+		Protocol:  unix.ETH_P_ALL,
 		Priority:  1,
 	}
 	fd, err := loadSimpleBpf(BPF_PROG_TYPE_SCHED_CLS, 1)
@@ -642,7 +643,7 @@ func TestFilterClsActBpfAddDel(t *testing.T) {
 	if err := QdiscDel(qdisc); err != nil {
 		t.Fatal(err)
 	}
-	qdiscs, err = QdiscList(link)
+	qdiscs, err = SafeQdiscList(link)
 	if err != nil {
 		t.Fatal(err)
 	}

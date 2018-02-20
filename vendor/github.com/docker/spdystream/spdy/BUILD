@@ -15,8 +15,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["spdy_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/docker/spdystream/spdy",
-    library = ":go_default_library",
 )
 
 filegroup(

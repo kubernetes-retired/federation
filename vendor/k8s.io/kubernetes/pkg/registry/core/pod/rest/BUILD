@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -13,6 +7,7 @@ go_library(
         "subresources.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/registry/core/pod/rest",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -24,8 +19,8 @@ go_library(
         "//vendor/k8s.io/apiserver/pkg/registry/generic/rest:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/validation:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/validation:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/capabilities:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/client:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/registry/core/pod:go_default_library",
@@ -35,14 +30,14 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["log_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/registry/core/pod/rest",
-    library = ":go_default_library",
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/api/errors:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/generic:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/registry/generic/registry:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/registry/registrytest:go_default_library",
     ],
 )
@@ -58,4 +53,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

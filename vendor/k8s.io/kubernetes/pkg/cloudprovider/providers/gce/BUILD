@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -40,18 +34,18 @@ go_library(
         "gce_urlmap.go",
         "gce_util.go",
         "gce_zones.go",
-        "kms.go",
         "metrics.go",
+        "support.go",
         "token_source.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/gce",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/cloud.google.com/go/compute/metadata:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
         "//vendor/golang.org/x/oauth2:go_default_library",
         "//vendor/golang.org/x/oauth2/google:go_default_library",
-        "//vendor/google.golang.org/api/cloudkms/v1:go_default_library",
         "//vendor/google.golang.org/api/compute/v0.alpha:go_default_library",
         "//vendor/google.golang.org/api/compute/v0.beta:go_default_library",
         "//vendor/google.golang.org/api/compute/v1:go_default_library",
@@ -59,6 +53,7 @@ go_library(
         "//vendor/google.golang.org/api/googleapi:go_default_library",
         "//vendor/gopkg.in/gcfg.v1:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -67,8 +62,7 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/server/options/encryptionconfig:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/envelope:go_default_library",
+        "//vendor/k8s.io/client-go/informers:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/scheme:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:go_default_library",
@@ -77,6 +71,9 @@ go_library(
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/v1/service:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce/cloud:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce/cloud/filter:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce/cloud/meta:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/master/ports:go_default_library",
@@ -97,10 +94,11 @@ go_test(
         "gce_healthchecks_test.go",
         "gce_loadbalancer_external_test.go",
         "gce_test.go",
+        "gce_util_test.go",
         "metrics_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/gce",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",
@@ -126,6 +124,10 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [":package-srcs"],
+    srcs = [
+        ":package-srcs",
+        "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce/cloud:all-srcs",
+    ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,37 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "eviction_manager_test.go",
-        "helpers_test.go",
-    ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/eviction",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/api/core/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/clock:go_default_library",
-        "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
-        "//vendor/k8s.io/client-go/tools/record:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/eviction/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/lifecycle:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/quota:go_default_library",
-    ],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -39,27 +6,56 @@ go_library(
         "doc.go",
         "eviction_manager.go",
         "helpers.go",
-        "threshold_notifier_unsupported.go",
         "types.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "threshold_notifier_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "threshold_notifier_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "threshold_notifier_unsupported.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "k8s.io/kubernetes/pkg/kubelet/eviction",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/clock:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/util/sets:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
         "//vendor/k8s.io/client-go/tools/record:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper/qos:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/v1/resource:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/v1/helper/qos:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
@@ -70,13 +66,39 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/server/stats:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/util/format:go_default_library",
-        "//vendor/k8s.io/kubernetes/plugin/pkg/scheduler/util:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/scheduler/util:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/golang.org/x/sys/unix:go_default_library",
         ],
         "//conditions:default": [],
     }),
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "eviction_manager_test.go",
+        "helpers_test.go",
+    ],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/pkg/kubelet/eviction",
+    deps = [
+        "//vendor/k8s.io/api/core/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/util/clock:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/feature:go_default_library",
+        "//vendor/k8s.io/client-go/tools/record:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/eviction/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/lifecycle:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/kubelet/types:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/quota:go_default_library",
+    ],
 )
 
 filegroup(
@@ -93,4 +115,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/kubelet/eviction/api:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -26,7 +26,6 @@ go_test(
     srcs = [
         "decode_test.go",
         "encode_test.go",
-        "example_embedded_test.go",
         "suite_test.go",
     ],
     importpath = "gopkg.in/yaml.v2_test",

@@ -40,8 +40,8 @@ go_test(
         "helper_test.go",
         "values_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/ugorji/go/codec",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -53,10 +53,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/ugorji/go/codec/codecgen:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -31,8 +31,8 @@ go_library(
 
 go_binary(
     name = "fcp",
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/cmd/fcp",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
     x_defs = version_x_defs(),
 )

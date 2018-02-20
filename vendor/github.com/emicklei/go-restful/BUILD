@@ -58,8 +58,8 @@ go_test(
         "tracer_test.go",
         "web_service_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/emicklei/go-restful",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -73,7 +73,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/emicklei/go-restful/examples:all-srcs",
         "//vendor/github.com/emicklei/go-restful/log:all-srcs",
     ],
     tags = ["automanaged"],

@@ -24,8 +24,8 @@ go_test(
         "client_test.go",
         "soap_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/vmware/govmomi/vim25/soap",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/vmware/govmomi/vim25/xml:go_default_library"],
 )
 

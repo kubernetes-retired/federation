@@ -31,8 +31,8 @@ go_test(
         "rsa_key_test.go",
         "util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/docker/libtrust",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/docker/libtrust/testutil:go_default_library"],
 )
 
@@ -45,12 +45,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/docker/libtrust/testutil:all-srcs",
-        "//vendor/github.com/docker/libtrust/tlsdemo:all-srcs",
-        "//vendor/github.com/docker/libtrust/trustgraph:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

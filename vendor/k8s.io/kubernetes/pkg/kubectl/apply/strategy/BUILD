@@ -25,12 +25,9 @@ go_test(
         "replace_map_list_test.go",
         "replace_map_test.go",
         "replace_primitive_list_test.go",
+        "retain_keys_test.go",
         "suite_test.go",
         "utils_test.go",
-    ],
-    data = [
-        ":swagger-spec",
-        "//api/openapi-spec:swagger-spec",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubectl/apply/strategy_test",
     deps = [
@@ -60,11 +57,4 @@ filegroup(
     srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "swagger-spec",
-    srcs = glob([
-        "**/*.json",
-    ]),
 )

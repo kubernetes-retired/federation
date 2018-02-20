@@ -19,8 +19,8 @@ go_test(
         "arc_test.go",
         "lru_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/hashicorp/golang-lru",
-    library = ":go_default_library",
 )
 
 filegroup(

@@ -18,8 +18,8 @@ go_test(
         "size_test.go",
         "ulimit_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/docker/go-units",
-    library = ":go_default_library",
 )
 
 filegroup(

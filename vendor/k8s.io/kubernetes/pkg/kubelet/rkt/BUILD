@@ -1,10 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -20,6 +14,7 @@ go_library(
         "version.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/kubelet/rkt",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/appc/spec/schema:go_default_library",
         "//vendor/github.com/appc/spec/schema/types:go_default_library",
@@ -40,6 +35,7 @@ go_library(
         "//vendor/k8s.io/client-go/tools/remotecommand:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/credentialprovider:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/credentialprovider/secrets:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/container:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/events:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/images:go_default_library",
@@ -66,8 +62,8 @@ go_test(
         "fake_rkt_interface_test.go",
         "rkt_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "k8s.io/kubernetes/pkg/kubelet/rkt",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/appc/spec/schema:go_default_library",
         "//vendor/github.com/appc/spec/schema/types:go_default_library",
@@ -107,4 +103,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

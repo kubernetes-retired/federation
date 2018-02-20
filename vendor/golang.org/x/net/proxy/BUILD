@@ -18,8 +18,8 @@ go_test(
         "per_host_test.go",
         "proxy_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/proxy",
-    library = ":go_default_library",
 )
 
 filegroup(

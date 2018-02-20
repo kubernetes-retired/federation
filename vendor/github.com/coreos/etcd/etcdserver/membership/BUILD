@@ -4,6 +4,7 @@ go_library(
     name = "go_default_library",
     srcs = [
         "cluster.go",
+        "doc.go",
         "errors.go",
         "member.go",
         "store.go",
@@ -31,8 +32,8 @@ go_test(
         "cluster_test.go",
         "member_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/etcd/etcdserver/membership",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/coreos/etcd/pkg/mock/mockstore:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library",

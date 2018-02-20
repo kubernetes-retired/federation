@@ -17,7 +17,6 @@ go_test(
         "encoding_test.go",
         "example_test.go",
     ],
-    data = glob(["testdata/**"]),
     importpath = "golang.org/x/text/encoding_test",
     deps = [
         ":go_default_library",
@@ -38,14 +37,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/golang.org/x/text/encoding/charmap:all-srcs",
-        "//vendor/golang.org/x/text/encoding/htmlindex:all-srcs",
-        "//vendor/golang.org/x/text/encoding/ianaindex:all-srcs",
         "//vendor/golang.org/x/text/encoding/internal:all-srcs",
-        "//vendor/golang.org/x/text/encoding/japanese:all-srcs",
-        "//vendor/golang.org/x/text/encoding/korean:all-srcs",
-        "//vendor/golang.org/x/text/encoding/simplifiedchinese:all-srcs",
-        "//vendor/golang.org/x/text/encoding/traditionalchinese:all-srcs",
         "//vendor/golang.org/x/text/encoding/unicode:all-srcs",
     ],
     tags = ["automanaged"],

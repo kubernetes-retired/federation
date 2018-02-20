@@ -10,8 +10,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["jws_test.go"],
+    embed = [":go_default_library"],
     importpath = "golang.org/x/oauth2/jws",
-    library = ":go_default_library",
 )
 
 filegroup(

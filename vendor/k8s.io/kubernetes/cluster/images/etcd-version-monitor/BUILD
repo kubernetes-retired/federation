@@ -1,27 +1,25 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_binary",
-    "go_library",
-)
-
-go_binary(
-    name = "etcd-version-monitor",
-    importpath = "k8s.io/kubernetes/cluster/images/etcd-version-monitor",
-    library = ":go_default_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["etcd-version-monitor.go"],
     importpath = "k8s.io/kubernetes/cluster/images/etcd-version-monitor",
+    visibility = ["//visibility:private"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
+        "//vendor/github.com/prometheus/client_golang/prometheus/promhttp:go_default_library",
+        "//vendor/github.com/prometheus/client_model/go:go_default_library",
         "//vendor/github.com/prometheus/common/expfmt:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
     ],
+)
+
+go_binary(
+    name = "etcd-version-monitor",
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/cluster/images/etcd-version-monitor",
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -35,4 +33,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -22,6 +17,7 @@ go_library(
         "vsphere_metrics.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/vsphere/vclib",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
@@ -40,6 +36,23 @@ go_library(
     ],
 )
 
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "datacenter_test.go",
+        "datastore_test.go",
+        "folder_test.go",
+        "virtualmachine_test.go",
+    ],
+    embed = [":go_default_library"],
+    importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/vsphere/vclib",
+    deps = [
+        "//vendor/github.com/vmware/govmomi:go_default_library",
+        "//vendor/github.com/vmware/govmomi/object:go_default_library",
+        "//vendor/github.com/vmware/govmomi/simulator:go_default_library",
+    ],
+)
+
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -54,4 +67,5 @@ filegroup(
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/vsphere/vclib/diskmanagers:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

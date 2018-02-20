@@ -8,7 +8,6 @@ go_library(
         "auth_sha1.go",
         "call.go",
         "conn.go",
-        "conn_other.go",
         "dbus.go",
         "decoder.go",
         "doc.go",
@@ -20,17 +19,55 @@ go_library(
         "object.go",
         "sig.go",
         "transport_generic.go",
-        "transport_unix.go",
         "variant.go",
         "variant_lexer.go",
         "variant_parser.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
             "conn_darwin.go",
             "transport_darwin.go",
+            "transport_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "conn_other.go",
+            "transport_unix.go",
+            "transport_unixcred_dragonfly.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "conn_other.go",
+            "transport_unix.go",
             "transport_unixcred_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "conn_other.go",
+            "transport_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "conn_other.go",
         ],
         "//conditions:default": [],
     }),
@@ -51,8 +88,8 @@ go_test(
         "transport_unix_test.go",
         "variant_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/godbus/dbus",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -64,11 +101,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/godbus/dbus/introspect:all-srcs",
-        "//vendor/github.com/godbus/dbus/prop:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

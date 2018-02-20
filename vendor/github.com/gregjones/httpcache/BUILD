@@ -10,8 +10,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["httpcache_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/gregjones/httpcache",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -26,9 +26,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/gregjones/httpcache/diskcache:all-srcs",
-        "//vendor/github.com/gregjones/httpcache/leveldbcache:all-srcs",
-        "//vendor/github.com/gregjones/httpcache/memcache:all-srcs",
-        "//vendor/github.com/gregjones/httpcache/redis:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

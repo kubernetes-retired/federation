@@ -25,8 +25,8 @@ go_test(
         "message_set_test.go",
         "size2_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/golang/protobuf/proto",
-    library = ":go_default_library",
 )
 
 go_test(
@@ -39,6 +39,7 @@ go_test(
         "encode_test.go",
         "equal_test.go",
         "extensions_test.go",
+        "map_test.go",
         "proto3_test.go",
         "size_test.go",
         "text_parser_test.go",
@@ -51,6 +52,7 @@ go_test(
         "//vendor/github.com/golang/protobuf/proto/testdata:go_default_library",
         "//vendor/github.com/golang/protobuf/ptypes:go_default_library",
         "//vendor/github.com/golang/protobuf/ptypes/any:go_default_library",
+        "//vendor/golang.org/x/sync/errgroup:go_default_library",
     ],
 )
 
@@ -63,11 +65,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/golang/protobuf/proto/proto3_proto:all-srcs",
-        "//vendor/github.com/golang/protobuf/proto/testdata:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

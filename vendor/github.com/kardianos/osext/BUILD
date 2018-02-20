@@ -5,13 +5,31 @@ go_library(
     srcs = [
         "osext.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:darwin": [
             "osext_sysctl.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
             "osext_procfs.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "osext_sysctl.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "osext_procfs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "osext_procfs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "osext_procfs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "osext_plan9.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "osext_procfs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "osext_windows.go",
         ],
         "//conditions:default": [],
@@ -23,19 +41,25 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:darwin": [
             "osext_test.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:freebsd": [
             "osext_test.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
+            "osext_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "osext_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "osext_test.go",
         ],
         "//conditions:default": [],
     }),
+    embed = [":go_default_library"],
     importpath = "github.com/kardianos/osext",
-    library = ":go_default_library",
 )
 
 filegroup(

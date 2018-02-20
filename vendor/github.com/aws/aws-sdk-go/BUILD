@@ -2,7 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = ["sdk.go"],
+    srcs = ["doc.go"],
     importpath = "github.com/aws/aws-sdk-go",
     visibility = ["//visibility:public"],
 )
@@ -19,15 +19,16 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/aws/aws-sdk-go/aws:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/awstesting:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/example/service/s3/putObjectAcl:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/example/service/sqs/mockingClientsForTests:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/models/endpoints:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/internal/shareddefaults:all-srcs",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/private/signer/v2:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/private/util:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/private/waiter:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/service:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/autoscaling:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/ec2:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/ecr:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/elb:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/elbv2:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/kms:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/route53:all-srcs",
+        "//vendor/github.com/aws/aws-sdk-go/service/sts:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

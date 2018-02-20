@@ -25,8 +25,8 @@ go_test(
         "statusgroup_test.go",
         "stringset_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/heketi/heketi/pkg/utils",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/heketi/tests:go_default_library"],
 )
 
@@ -39,10 +39,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/heketi/heketi/pkg/utils/ssh:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

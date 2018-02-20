@@ -48,12 +48,12 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/uuid:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/logs:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/tools/clientcmd:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/azure:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubectl/util/logs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
         "//vendor/k8s.io/kubernetes/test/e2e/chaosmonkey:go_default_library",
         "//vendor/k8s.io/kubernetes/test/e2e/common:go_default_library",
@@ -96,8 +96,8 @@ filegroup(
 go_test(
     name = "go_default_test",
     srcs = ["e2e_test.go"],
+    embed = [":go_default_library"],
     importpath = "k8s.io/federation/test/e2e",
-    library = ":go_default_library",
     tags = ["e2e"],
     deps = ["//test/e2e/framework:go_default_library"],
 )

@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,6 +8,7 @@ go_library(
         "register_custom.go",
     ],
     importpath = "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/scheme",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/registered:go_default_library",
@@ -20,7 +16,6 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/admissionregistration/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/apps/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/authentication/install:go_default_library",
@@ -29,6 +24,8 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/apis/batch/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/certificates/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig/install:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/install:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/events/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/extensions/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/networking/install:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/policy/install:go_default_library",
@@ -50,4 +47,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

@@ -12,9 +12,9 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/blang/semver:go_default_library",
-        "//vendor/github.com/docker/engine-api/client:go_default_library",
-        "//vendor/github.com/docker/engine-api/types:go_default_library",
-        "//vendor/github.com/docker/engine-api/types/container:go_default_library",
+        "//vendor/github.com/docker/docker/api/types:go_default_library",
+        "//vendor/github.com/docker/docker/api/types/container:go_default_library",
+        "//vendor/github.com/docker/docker/client:go_default_library",
         "//vendor/github.com/docker/go-connections/tlsconfig:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/google/cadvisor/container:go_default_library",
@@ -41,8 +41,8 @@ go_test(
         "factory_test.go",
         "handler_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor/container/docker",
-    library = ":go_default_library",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

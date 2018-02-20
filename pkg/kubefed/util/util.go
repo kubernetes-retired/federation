@@ -30,7 +30,7 @@ import (
 	federationapi "k8s.io/federation/apis/federation"
 	fedv1beta1 "k8s.io/federation/apis/federation/v1beta1"
 	fedclient "k8s.io/federation/client/clientset_generated/federation_clientset"
-	"k8s.io/kubernetes/pkg/api"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/apis/rbac"
 	rbacv1 "k8s.io/kubernetes/pkg/apis/rbac/v1"
 	rbacv1alpha1 "k8s.io/kubernetes/pkg/apis/rbac/v1alpha1"

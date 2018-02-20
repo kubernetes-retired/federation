@@ -38,11 +38,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/storageos/go-api/types/filters:all-srcs",
-        "//vendor/github.com/storageos/go-api/types/versions:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

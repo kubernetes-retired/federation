@@ -29,16 +29,16 @@ go_library(
 
 go_binary(
     name = "cadvisor",
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["cadvisor_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/google/cadvisor/container:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
@@ -56,9 +56,10 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
+        "//vendor/github.com/google/cadvisor/accelerators:all-srcs",
         "//vendor/github.com/google/cadvisor/api:all-srcs",
-        "//vendor/github.com/google/cadvisor/cache:all-srcs",
-        "//vendor/github.com/google/cadvisor/client:all-srcs",
+        "//vendor/github.com/google/cadvisor/cache/memory:all-srcs",
+        "//vendor/github.com/google/cadvisor/client/v2:all-srcs",
         "//vendor/github.com/google/cadvisor/collector:all-srcs",
         "//vendor/github.com/google/cadvisor/container:all-srcs",
         "//vendor/github.com/google/cadvisor/devicemapper:all-srcs",
@@ -68,10 +69,6 @@ filegroup(
         "//vendor/github.com/google/cadvisor/http:all-srcs",
         "//vendor/github.com/google/cadvisor/info/v1:all-srcs",
         "//vendor/github.com/google/cadvisor/info/v2:all-srcs",
-        "//vendor/github.com/google/cadvisor/integration/framework:all-srcs",
-        "//vendor/github.com/google/cadvisor/integration/runner:all-srcs",
-        "//vendor/github.com/google/cadvisor/integration/tests/api:all-srcs",
-        "//vendor/github.com/google/cadvisor/integration/tests/healthz:all-srcs",
         "//vendor/github.com/google/cadvisor/machine:all-srcs",
         "//vendor/github.com/google/cadvisor/manager:all-srcs",
         "//vendor/github.com/google/cadvisor/metrics:all-srcs",

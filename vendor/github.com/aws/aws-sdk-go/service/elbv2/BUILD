@@ -4,7 +4,10 @@ go_library(
     name = "go_default_library",
     srcs = [
         "api.go",
+        "doc.go",
+        "errors.go",
         "service.go",
+        "waiters.go",
     ],
     importpath = "github.com/aws/aws-sdk-go/service/elbv2",
     visibility = ["//visibility:public"],
@@ -26,6 +29,7 @@ go_test(
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
+        "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/session:go_default_library",
     ],
 )
@@ -39,10 +43,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/service/elbv2/elbv2iface:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -33,6 +28,7 @@ go_library(
         "volumes.go",
     ],
     importpath = "k8s.io/kubernetes/test/e2e/common",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
@@ -53,11 +49,10 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/testapi:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api/v1/helper:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/v1/pod:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core/v1/helper:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/conditions:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet:go_default_library",
@@ -81,4 +76,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

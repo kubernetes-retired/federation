@@ -10,6 +10,7 @@ go_library(
         "blobserviceclient.go",
         "blockblob.go",
         "client.go",
+        "commonsasuri.go",
         "container.go",
         "copyblob.go",
         "directory.go",
@@ -21,6 +22,7 @@ go_library(
         "odata.go",
         "pageblob.go",
         "queue.go",
+        "queuesasuri.go",
         "queueserviceclient.go",
         "share.go",
         "storagepolicy.go",
@@ -36,7 +38,7 @@ go_library(
     deps = [
         "//vendor/github.com/Azure/go-autorest/autorest:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/azure:go_default_library",
-        "//vendor/github.com/satori/uuid:go_default_library",
+        "//vendor/github.com/satori/go.uuid:go_default_library",
     ],
 )
 
@@ -58,19 +60,20 @@ go_test(
         "message_test.go",
         "pageblob_test.go",
         "queue_test.go",
+        "queuesasuri_test.go",
         "share_test.go",
         "storageservice_test.go",
         "table_batch_test.go",
         "table_test.go",
         "util_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/Azure/azure-sdk-for-go/storage",
-    library = ":go_default_library",
     deps = [
         "//vendor/github.com/Azure/go-autorest/autorest/azure:go_default_library",
         "//vendor/github.com/dnaeon/go-vcr/cassette:go_default_library",
         "//vendor/github.com/dnaeon/go-vcr/recorder:go_default_library",
-        "//vendor/github.com/satori/uuid:go_default_library",
+        "//vendor/github.com/satori/go.uuid:go_default_library",
         "//vendor/gopkg.in/check.v1:go_default_library",
     ],
 )

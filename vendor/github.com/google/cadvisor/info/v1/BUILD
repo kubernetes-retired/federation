@@ -15,8 +15,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["container_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/google/cadvisor/info/v1",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -28,10 +28,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/google/cadvisor/info/v1/test:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

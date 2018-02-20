@@ -30,8 +30,8 @@ go_test(
         "time_test.go",
         "value_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/prometheus/common/model",
-    library = ":go_default_library",
 )
 
 filegroup(

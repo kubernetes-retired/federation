@@ -21,8 +21,8 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["convert_test.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/jteeuwen/go-bindata",
-    library = ":go_default_library",
 )
 
 filegroup(
@@ -37,7 +37,6 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//vendor/github.com/jteeuwen/go-bindata/go-bindata:all-srcs",
-        "//vendor/github.com/jteeuwen/go-bindata/testdata/out:all-srcs",
     ],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],

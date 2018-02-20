@@ -23,8 +23,8 @@ go_test(
         "jwks_test.go",
         "verify_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/coreos/go-oidc",
-    library = ":go_default_library",
     deps = ["//vendor/gopkg.in/square/go-jose.v2:go_default_library"],
 )
 
@@ -39,9 +39,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/coreos/go-oidc/example/idtoken:all-srcs",
-        "//vendor/github.com/coreos/go-oidc/example/nonce:all-srcs",
-        "//vendor/github.com/coreos/go-oidc/example/userinfo:all-srcs",
         "//vendor/github.com/coreos/go-oidc/http:all-srcs",
         "//vendor/github.com/coreos/go-oidc/jose:all-srcs",
         "//vendor/github.com/coreos/go-oidc/key:all-srcs",

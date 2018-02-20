@@ -60,9 +60,8 @@ go_test(
         "writesched_test.go",
         "z_spec_test.go",
     ],
-    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
     importpath = "golang.org/x/net/http2",
-    library = ":go_default_library",
     deps = ["//vendor/golang.org/x/net/http2/hpack:go_default_library"],
 )
 
@@ -77,7 +76,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/golang.org/x/net/http2/h2i:all-srcs",
         "//vendor/golang.org/x/net/http2/hpack:all-srcs",
     ],
     tags = ["automanaged"],

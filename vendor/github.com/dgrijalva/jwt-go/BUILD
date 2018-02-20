@@ -52,12 +52,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/cmd/jwt:all-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/request:all-srcs",
-        "//vendor/github.com/dgrijalva/jwt-go/test:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

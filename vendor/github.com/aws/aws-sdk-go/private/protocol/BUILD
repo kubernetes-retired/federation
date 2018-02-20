@@ -50,7 +50,6 @@ filegroup(
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/jsonrpc:all-srcs",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/query:all-srcs",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/rest:all-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/private/protocol/restjson:all-srcs",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/restxml:all-srcs",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil:all-srcs",
     ],
