@@ -25,6 +25,7 @@ import (
 
 	// Admission policies
 	"k8s.io/apiserver/pkg/admission"
+	"k8s.io/federation/plugin/pkg/admission/lastupdatedby"
 	"k8s.io/federation/plugin/pkg/admission/schedulingpolicy"
 	"k8s.io/kubernetes/plugin/pkg/admission/admit"
 	"k8s.io/kubernetes/plugin/pkg/admission/deny"
@@ -37,4 +38,5 @@ func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
 	deny.Register(plugins)
 	gc.Register(plugins)
 	schedulingpolicy.Register(plugins)
+	lastupdatedby.Register(plugins)
 }
