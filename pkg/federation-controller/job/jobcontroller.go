@@ -43,6 +43,7 @@ import (
 	fedutil "k8s.io/federation/pkg/federation-controller/util"
 	"k8s.io/federation/pkg/federation-controller/util/deletionhelper"
 	"k8s.io/federation/pkg/federation-controller/util/eventsink"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 	"k8s.io/federation/pkg/federation-controller/util/planner"
 	"k8s.io/federation/pkg/federation-controller/util/replicapreferences"
 	"k8s.io/kubernetes/pkg/api"
@@ -95,7 +96,7 @@ type FederationJobController struct {
 }
 
 // NewJobController creates a new federation job controller
-func NewJobController(fedClient fedclientset.Interface) *FederationJobController {
+func NewJobController(fedClient fedclientset.Interface, identityProvider identityprovider.Interface) *FederationJobController {
 	broadcaster := record.NewBroadcaster()
 	broadcaster.StartRecordingToSink(eventsink.NewFederatedEventSink(fedClient))
 	recorder := broadcaster.NewRecorder(legacyscheme.Scheme, clientv1.EventSource{Component: "federated-job-controller"})
@@ -138,7 +139,7 @@ func NewJobController(fedClient fedclientset.Interface) *FederationJobController
 			fjc.clusterDeliverer.DeliverAfter(allClustersKey, nil, clusterUnavailableDelay)
 		},
 	}
-	fjc.fedJobInformer = fedutil.NewFederatedInformer(fedClient, jobFedInformerFactory, &clusterLifecycle)
+	fjc.fedJobInformer = fedutil.NewFederatedInformer(fedClient, identityProvider, jobFedInformerFactory, &clusterLifecycle)
 
 	fjc.jobStore, fjc.jobController = cache.NewInformer(
 		&cache.ListWatch{

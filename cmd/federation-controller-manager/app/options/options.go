@@ -85,6 +85,10 @@ type ControllerManagerConfiguration struct {
 	HpaScaleForbiddenWindow metav1.Duration `json:"HpaScaleForbiddenWindow"`
 	// pre-configured namespace name that would be created only in federation control plane
 	FederationOnlyNamespace string `json:"federationOnlyNamespaceName"`
+
+	// IdentityProvider provides the credential used by federation controllers to
+	// update the federated objects in the underlying clusters
+	IdentityProvider string `json:"identityProvider"`
 }
 
 // CMServer is the main context object for the controller manager.
@@ -116,6 +120,7 @@ func NewCMServer() *CMServer {
 			Controllers:               make(utilflag.ConfigurationMap),
 			HpaScaleForbiddenWindow:   metav1.Duration{Duration: 2 * time.Minute},
 			FederationOnlyNamespace:   "federation-only",
+			IdentityProvider:          "single",
 		},
 	}
 	return &s
@@ -148,5 +153,6 @@ func (s *CMServer) AddFlags(fs *pflag.FlagSet) {
 		"to enable/disable specific controllers. Key should be the resource name (like services) and value should be true or false. "+
 		"For example: services=false,ingresses=false")
 	fs.StringVar(&s.FederationOnlyNamespace, "federation-only-namespace", s.FederationOnlyNamespace, "Name of the namespace that would be created only in federation control plane.")
+	fs.StringVar(&s.IdentityProvider, "federation-identity-provider", s.IdentityProvider, "Name of the identity provider used to find the credentials used to authenticate the underlying clusters. Defaults to \"single\".")
 	leaderelectionconfig.BindFlags(&s.LeaderElection, fs)
 }

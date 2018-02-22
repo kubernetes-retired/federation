@@ -22,17 +22,19 @@ import (
 	"sync"
 	"time"
 
+	"github.com/golang/glog"
+
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	pkgruntime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	kubeclientset "k8s.io/client-go/kubernetes"
+	clientsetcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
-
-	"github.com/golang/glog"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 )
 
 const (
@@ -76,6 +78,10 @@ type FederatedReadOnlyStore interface {
 type FederationView interface {
 	// GetClientsetForCluster returns a clientset for the cluster, if present.
 	GetClientsetForCluster(clusterName string) (kubeclientset.Interface, error)
+
+	// GetClientsetForUserOnCluster returns a clientset the federation controll plane should use
+	// to up sync the user's objects to the cluster
+	GetClientsetForUserOnCluster(username string, clusterName string) (kubeclientset.Interface, error)
 
 	// GetUnreadyClusters returns a list of all clusters that are not ready yet.
 	GetUnreadyClusters() ([]*federationapi.Cluster, error)
@@ -134,6 +140,7 @@ type ClusterLifecycleHandlerFuncs struct {
 // Builds a FederatedInformer for the given federation client and factory.
 func NewFederatedInformer(
 	federationClient federationclientset.Interface,
+	identityProvider identityprovider.Interface,
 	targetInformerFactory TargetInformerFactory,
 	clusterLifecycle *ClusterLifecycleHandlerFuncs) FederatedInformer {
 
@@ -147,7 +154,9 @@ func NewFederatedInformer(
 			}
 			return nil, err
 		},
-		targetInformers: make(map[string]informer),
+		targetInformers:  make(map[string]informer),
+		identityProvider: identityProvider,
+		federationClient: federationClient,
 	}
 
 	getClusterData := func(name string) []interface{} {
@@ -260,6 +269,8 @@ type federatedInformerImpl struct {
 	// Structures returned by targetInformerFactory
 	targetInformers map[string]informer
 
+	identityProvider identityprovider.Interface
+	federationClient federationclientset.Interface
 	// A function to build clients.
 	clientFactory func(*federationapi.Cluster) (kubeclientset.Interface, error)
 }
@@ -322,6 +333,66 @@ func (f *federatedInformerImpl) getClientsetForClusterUnlocked(clusterName strin
 		}
 	}
 	return nil, fmt.Errorf("cluster %q not found", clusterName)
+}
+
+func (f *federatedInformerImpl) GetClientsetForUserOnCluster(username string, clusterName string) (kubeclientset.Interface, error) {
+	f.Lock()
+	defer f.Unlock()
+	glog.V(4).Infof("Getting clientset for %q on cluster %q", username, clusterName)
+
+	cluster, found, err := f.getReadyClusterUnlocked(clusterName)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, fmt.Errorf("cluster %q not found", clusterName)
+	}
+
+	// fallback if no provider specified
+	if f.identityProvider == nil {
+		return f.getClientsetForClusterUnlocked(clusterName)
+	}
+
+	identity, err := f.identityProvider.GetUserIdentityForCluster(username, cluster)
+	if err != nil {
+		return nil, err
+	}
+
+	var corev1client clientsetcorev1.CoreV1Interface
+	switch identity.Location {
+	case identityprovider.IdentityLocationFederation:
+		// make federation clientset compatible to kube clientset by type alias?
+		corev1client = clientsetcorev1.New(f.federationClient.CoreV1().RESTClient())
+	case identityprovider.IdentityLocationCluster:
+		client, err := f.getClientsetForClusterUnlocked(clusterName)
+		if err != nil {
+			return nil, fmt.Errorf("error in creating cluster client: %s", err)
+		}
+		corev1client = client.CoreV1()
+	case identityprovider.IdentityLocationHostCluster:
+		client, err := GetInClusterClient()
+		if err != nil {
+			return nil, fmt.Errorf("error in creating in-cluster client: %s", err)
+		}
+		corev1client = client.CoreV1()
+	default:
+		return nil, fmt.Errorf("unknown identity location: %q, credRef: %v", identity.Location, identity.CredentialRef)
+	}
+
+	clientConfig, err := BuildClusterConfigFromRef(corev1client, cluster, identity.CredentialRef)
+	if err != nil {
+		return nil, err
+	}
+
+	if identity.ImpersonatingUser != nil {
+		clientConfig.Impersonate.UserName = identity.ImpersonatingUser.Username
+		clientConfig.Impersonate.Groups = identity.ImpersonatingUser.Groups
+		for k, v := range identity.ImpersonatingUser.Extra {
+			clientConfig.Impersonate.Extra[k] = v
+		}
+	}
+
+	return kubeclientset.NewForConfig(restclient.AddUserAgent(clientConfig, userAgentName))
 }
 
 func (f *federatedInformerImpl) GetUnreadyClusters() ([]*federationapi.Cluster, error) {

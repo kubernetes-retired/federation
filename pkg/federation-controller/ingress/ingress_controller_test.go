@@ -96,7 +96,7 @@ func TestIngressController(t *testing.T) {
 			return nil, fmt.Errorf("Unknown cluster")
 		}
 	}
-	ingressController := NewIngressController(fedClient)
+	ingressController := NewIngressController(fedClient, nil)
 	ingressInformer := ToFederatedInformerForTestOnly(ingressController.ingressFederatedInformer)
 	ingressInformer.SetClientFactory(clientFactoryFunc)
 	configMapInformer := ToFederatedInformerForTestOnly(ingressController.configMapFederatedInformer)

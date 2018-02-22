@@ -45,6 +45,7 @@ import (
 	"k8s.io/kubernetes/pkg/controller"
 
 	"github.com/golang/glog"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 )
 
 const (
@@ -120,7 +121,7 @@ type IngressController struct {
 }
 
 // NewIngressController returns a new ingress controller
-func NewIngressController(client federationclientset.Interface) *IngressController {
+func NewIngressController(client federationclientset.Interface, identityProvider identityprovider.Interface) *IngressController {
 	glog.V(4).Infof("->NewIngressController V(4)")
 	broadcaster := record.NewBroadcaster()
 	broadcaster.StartRecordingToSink(eventsink.NewFederatedEventSink(client))
@@ -163,6 +164,7 @@ func NewIngressController(client federationclientset.Interface) *IngressControll
 	// Federated informer on ingresses in members of federation.
 	ic.ingressFederatedInformer = util.NewFederatedInformer(
 		client,
+		identityProvider,
 		func(cluster *federationapi.Cluster, targetClient kubeclientset.Interface) (cache.Store, cache.Controller) {
 			return cache.NewInformer(
 				&cache.ListWatch{
@@ -195,6 +197,7 @@ func NewIngressController(client federationclientset.Interface) *IngressControll
 	// Federated informer on configmaps for ingress controllers in members of the federation.
 	ic.configMapFederatedInformer = util.NewFederatedInformer(
 		client,
+		identityProvider,
 		func(cluster *federationapi.Cluster, targetClient kubeclientset.Interface) (cache.Store, cache.Controller) {
 			glog.V(4).Infof("Returning new informer for cluster %q", cluster.Name)
 			return cache.NewInformer(

@@ -48,6 +48,7 @@ import (
 	"k8s.io/federation/pkg/federation-controller/util/clusterselector"
 	"k8s.io/federation/pkg/federation-controller/util/deletionhelper"
 	"k8s.io/federation/pkg/federation-controller/util/eventsink"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/controller"
@@ -99,7 +100,7 @@ type ServiceController struct {
 
 // New returns a new service controller to keep service objects between
 // the federation and member clusters in sync.
-func New(federationClient fedclientset.Interface) *ServiceController {
+func New(federationClient fedclientset.Interface, identityProvider identityprovider.Interface) *ServiceController {
 	broadcaster := record.NewBroadcaster()
 	broadcaster.StartRecordingToSink(eventsink.NewFederatedEventSink(federationClient))
 	recorder := broadcaster.NewRecorder(legacyscheme.Scheme, v1.EventSource{Component: UserAgentName})
@@ -163,7 +164,7 @@ func New(federationClient fedclientset.Interface) *ServiceController {
 			))
 	}
 
-	s.federatedInformer = fedutil.NewFederatedInformer(federationClient, fedInformerFactory, &clusterLifecycle)
+	s.federatedInformer = fedutil.NewFederatedInformer(federationClient, identityProvider, fedInformerFactory, &clusterLifecycle)
 
 	s.federatedUpdater = fedutil.NewFederatedUpdater(s.federatedInformer, "service", updateTimeout, s.eventRecorder,
 		func(client kubeclientset.Interface, obj pkgruntime.Object) error {
@@ -187,6 +188,7 @@ func New(federationClient fedclientset.Interface) *ServiceController {
 	// This will enable to check if service ingress endpoints in federated clusters are reachable
 	s.endpointFederatedInformer = fedutil.NewFederatedInformer(
 		federationClient,
+		identityProvider,
 		func(cluster *v1beta1.Cluster, targetClient kubeclientset.Interface) (
 			cache.Store, cache.Controller) {
 			return cache.NewInformer(

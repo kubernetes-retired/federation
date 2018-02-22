@@ -45,6 +45,7 @@ import (
 	"k8s.io/kubernetes/pkg/controller"
 
 	"github.com/golang/glog"
+	"k8s.io/federation/pkg/federation-controller/util/identityprovider"
 )
 
 const (
@@ -94,11 +95,11 @@ type FederationSyncController struct {
 }
 
 // StartFederationSyncController starts a new sync controller for a type adapter
-func StartFederationSyncController(kind string, adapterFactory federatedtypes.AdapterFactory, config *restclient.Config, stopChan <-chan struct{}, minimizeLatency bool, adapterSpecificArgs map[string]interface{}) {
+func StartFederationSyncController(kind string, identityProvider identityprovider.Interface, adapterFactory federatedtypes.AdapterFactory, config *restclient.Config, stopChan <-chan struct{}, minimizeLatency bool, adapterSpecificArgs map[string]interface{}) {
 	restclient.AddUserAgent(config, fmt.Sprintf("federation-%s-controller", kind))
 	client := federationclientset.NewForConfigOrDie(config)
 	adapter := adapterFactory(client, config, adapterSpecificArgs)
-	controller := newFederationSyncController(client, adapter)
+	controller := newFederationSyncController(client, identityProvider, adapter)
 	if minimizeLatency {
 		controller.minimizeLatency()
 	}
@@ -107,7 +108,7 @@ func StartFederationSyncController(kind string, adapterFactory federatedtypes.Ad
 }
 
 // newFederationSyncController returns a new sync controller for the given client and type adapter
-func newFederationSyncController(client federationclientset.Interface, adapter federatedtypes.FederatedTypeAdapter) *FederationSyncController {
+func newFederationSyncController(client federationclientset.Interface, identityProvider identityprovider.Interface, adapter federatedtypes.FederatedTypeAdapter) *FederationSyncController {
 	broadcaster := record.NewBroadcaster()
 	broadcaster.StartRecordingToSink(eventsink.NewFederatedEventSink(client))
 	recorder := broadcaster.NewRecorder(legacyscheme.Scheme, v1.EventSource{Component: fmt.Sprintf("federation-%v-controller", adapter.Kind())})
@@ -145,6 +146,7 @@ func newFederationSyncController(client federationclientset.Interface, adapter f
 	// Federated informer on the resource type in members of federation.
 	s.informer = util.NewFederatedInformer(
 		client,
+		identityProvider,
 		func(cluster *federationapi.Cluster, targetClient kubeclientset.Interface) (cache.Store, cache.Controller) {
 			return cache.NewInformer(
 				&cache.ListWatch{

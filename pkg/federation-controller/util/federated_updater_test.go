@@ -42,6 +42,10 @@ func (f *fakeFederationView) GetClientsetForCluster(clusterName string) (kubecli
 	return &fakekubeclientset.Clientset{}, nil
 }
 
+func (f *fakeFederationView) GetClientsetForUserOnCluster(username string, clusterName string) (kubeclientset.Interface, error) {
+	return &fakekubeclientset.Clientset{}, nil
+}
+
 func (f *fakeFederationView) GetReadyClusters() ([]*federationapi.Cluster, error) {
 	return []*federationapi.Cluster{}, nil
 }
