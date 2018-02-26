@@ -481,16 +481,16 @@ func (s *ServiceController) reconcileService(key string) reconciliationStatus {
 			if err != nil {
 				return statusRecoverableError
 			}
+			clusterIngress := fedapi.ClusterServiceIngress{
+				Cluster: cluster.Name,
+			}
 			// if there are no endpoints created for the service then the loadbalancer ingress
 			// is not reachable, so do not consider such loadbalancer ingresses for federated
 			// service ingresses
 			if len(endpoints) > 0 {
-				clusterIngress := fedapi.ClusterServiceIngress{
-					Cluster: cluster.Name,
-					Items:   lbStatus.Ingress,
-				}
-				newServiceIngress.Items = append(newServiceIngress.Items, clusterIngress)
+				clusterIngress.Items = lbStatus.Ingress
 			}
+			newServiceIngress.Items = append(newServiceIngress.Items, clusterIngress)
 		}
 	}
 
