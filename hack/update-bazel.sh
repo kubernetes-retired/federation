@@ -39,10 +39,10 @@ rm -f "${KUBE_ROOT}/vendor/k8s.io/kubernetes/${GENERATED_FILENAME}"
 # TODO(marun) Update to point to official repo when required changes merge
 kube::util::go_install_from_commit \
     github.com/kubernetes/repo-infra/kazel \
-    ae4e9a3906ace4ba657b7a09242610c6266e832c
+    97099dccc8807e9159dc28f374a8f0602cab07e1
 kube::util::go_install_from_commit \
-    github.com/bazelbuild/rules_go/go/tools/gazelle/gazelle \
-    c72631a220406c4fae276861ee286aaec82c5af2
+    github.com/bazelbuild/bazel-gazelle/cmd/gazelle \
+    a85b63b06c2e0c75931e57c4a1a18d4e566bb6f4
 
 touch "${KUBE_ROOT}/vendor/BUILD"
 
