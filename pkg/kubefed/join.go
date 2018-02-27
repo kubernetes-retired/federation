@@ -394,6 +394,7 @@ func createConfigMap(hostClientSet internalclientset.Interface, config util.Admi
 		// For some reason the configMap exists but this data is empty
 		existingConfigMap.Data[util.FedDomainMapKey] = cmDep.Annotations[util.FedDomainMapKey]
 	}
+	existingConfigMap = populateStubDomainsIfRequired(existingConfigMap, cmDep.Annotations)
 
 	if dryRun {
 		return existingConfigMap, nil
@@ -503,6 +504,8 @@ func populateStubDomainsIfRequired(configMap *api.ConfigMap, annotations map[str
 	if dnsProvider != util.FedDNSProviderCoreDNS || dnsZoneName == "" || nameServer == "" {
 		return configMap
 	}
+
+	glog.V(2).Info("Added stubDomains to kube-dns configmap, %s:[%s]", dnsZoneName, nameServer)
 	configMap.Data[util.KubeDnsStubDomains] = fmt.Sprintf(`{"%s":["%s"]}`, dnsZoneName, nameServer)
 	return configMap
 }

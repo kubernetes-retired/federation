@@ -1113,7 +1113,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 	if dnsProviderConfig != "" {
 		cm = addDNSProviderConfigTest(cm, cmDNSProviderSecret.Name)
 		if dnsProvider == util.FedDNSProviderCoreDNS {
-			cm, err = addCoreDNSServerAnnotationTest(cm, dnsZoneName, dnsProviderConfig)
+			cm, err = addCoreDNSServerAnnotationTest(cm, strings.TrimRight(dnsZoneName, "."), dnsProviderConfig)
 			if err != nil {
 				return nil, err
 			}
