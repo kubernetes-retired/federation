@@ -10,8 +10,7 @@ load(
 
 go_binary(
     name = "federation-controller-manager",
-    importpath = "k8s.io/federation/cmd/federation-controller-manager",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     x_defs = version_x_defs(),
 )
 

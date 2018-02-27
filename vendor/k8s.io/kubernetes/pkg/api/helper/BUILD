@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["helpers_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/api/helper",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",

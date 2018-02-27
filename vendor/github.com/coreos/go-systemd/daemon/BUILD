@@ -16,8 +16,7 @@ go_test(
         "sdnotify_test.go",
         "watchdog_test.go",
     ],
-    importpath = "github.com/coreos/go-systemd/daemon",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

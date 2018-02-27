@@ -11,8 +11,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["scanner_test.go"],
-    importpath = "github.com/hashicorp/hcl/json/scanner",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/hashicorp/hcl/json/token:go_default_library"],
 )
 

@@ -20,8 +20,7 @@ go_test(
         "int_test.go",
         "scan_test.go",
     ],
-    importpath = "gopkg.in/gcfg.v1/types",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -21,8 +21,7 @@ go_test(
         "purell_test.go",
         "urlnorm_test.go",
     ],
-    importpath = "github.com/PuerkitoBio/purell",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

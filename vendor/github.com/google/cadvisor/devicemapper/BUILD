@@ -20,8 +20,7 @@ go_test(
         "thin_ls_client_test.go",
         "thin_pool_watcher_test.go",
     ],
-    importpath = "github.com/google/cadvisor/devicemapper",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/google/cadvisor/devicemapper/fake:go_default_library"],
 )
 

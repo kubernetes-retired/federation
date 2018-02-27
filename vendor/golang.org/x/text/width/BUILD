@@ -22,8 +22,7 @@ go_test(
         "tables_test.go",
         "transform_test.go",
     ],
-    importpath = "golang.org/x/text/width",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/text/internal/gen:go_default_library",
         "//vendor/golang.org/x/text/internal/testtext:go_default_library",
@@ -35,7 +34,6 @@ go_test(
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "golang.org/x/text/width_test",
     deps = [":go_default_library"],
 )
 

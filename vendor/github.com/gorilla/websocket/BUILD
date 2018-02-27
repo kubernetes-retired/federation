@@ -25,8 +25,7 @@ go_test(
         "server_test.go",
         "util_test.go",
     ],
-    importpath = "github.com/gorilla/websocket",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

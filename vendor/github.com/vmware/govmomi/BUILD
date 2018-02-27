@@ -17,8 +17,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["client_test.go"],
-    importpath = "github.com/vmware/govmomi",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/vmware/govmomi/test:go_default_library",
         "//vendor/github.com/vmware/govmomi/vim25/mo:go_default_library",

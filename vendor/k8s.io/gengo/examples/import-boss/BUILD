@@ -14,8 +14,7 @@ go_library(
 
 go_binary(
     name = "import-boss",
-    importpath = "k8s.io/gengo/examples/import-boss",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

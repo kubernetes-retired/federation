@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["storage_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/registry/core/pod/storage",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

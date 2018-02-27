@@ -21,8 +21,7 @@ go_test(
         "parser_test.go",
         "spec_test.go",
     ],
-    importpath = "github.com/robfig/cron",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

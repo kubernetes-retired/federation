@@ -28,8 +28,7 @@ go_test(
         "rotate_test.go",
         "sync_test.go",
     ],
-    importpath = "github.com/coreos/go-oidc/key",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/coreos/go-oidc/jose:go_default_library",
         "//vendor/github.com/jonboulle/clockwork:go_default_library",

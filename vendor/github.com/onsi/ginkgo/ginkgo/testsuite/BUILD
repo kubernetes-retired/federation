@@ -18,7 +18,6 @@ go_test(
         "testsuite_test.go",
         "vendor_check_go15_test.go",
     ],
-    importpath = "github.com/onsi/ginkgo/ginkgo/testsuite_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",

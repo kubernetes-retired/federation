@@ -30,8 +30,7 @@ go_test(
         "token_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/net/html",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/net/html/atom:go_default_library"],
 )
 
@@ -39,7 +38,6 @@ go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/net/html_test",
     deps = [":go_default_library"],
 )
 

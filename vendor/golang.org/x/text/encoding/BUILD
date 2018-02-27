@@ -18,7 +18,6 @@ go_test(
         "example_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/text/encoding_test",
     deps = [
         ":go_default_library",
         "//vendor/golang.org/x/text/encoding/charmap:go_default_library",

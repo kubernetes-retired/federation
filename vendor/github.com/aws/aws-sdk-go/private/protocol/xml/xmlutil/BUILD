@@ -15,7 +15,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["xml_to_struct_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil_test",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/awstesting/unit:go_default_library",

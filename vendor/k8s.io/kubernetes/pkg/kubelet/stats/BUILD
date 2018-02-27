@@ -52,8 +52,7 @@ go_test(
         "helper_test.go",
         "stats_provider_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/stats",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/fs:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",

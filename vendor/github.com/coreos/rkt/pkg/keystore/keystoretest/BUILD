@@ -1,16 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "keymap.go",
-        "opengpg.go",
-    ],
-    importpath = "github.com/coreos/rkt/pkg/keystore/keystoretest",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/golang.org/x/crypto/openpgp:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

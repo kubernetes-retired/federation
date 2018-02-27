@@ -29,8 +29,7 @@ go_test(
         "format_test.go",
         "time_test.go",
     ],
-    importpath = "github.com/go-openapi/strfmt",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/pborman/uuid:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

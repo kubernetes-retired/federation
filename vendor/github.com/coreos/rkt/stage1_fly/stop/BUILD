@@ -1,24 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "stop.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "github.com/coreos/rkt/stage1_fly/stop",
-    visibility = ["//visibility:private"],
-)
-
-go_binary(
-    name = "stop",
-    importpath = "github.com/coreos/rkt/stage1_fly/stop",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

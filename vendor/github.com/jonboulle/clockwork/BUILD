@@ -13,8 +13,7 @@ go_test(
         "clockwork_test.go",
         "example_test.go",
     ],
-    importpath = "github.com/jonboulle/clockwork",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

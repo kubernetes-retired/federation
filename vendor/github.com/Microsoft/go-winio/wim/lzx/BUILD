@@ -1,12 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["lzx.go"],
-    importpath = "github.com/Microsoft/go-winio/wim/lzx",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

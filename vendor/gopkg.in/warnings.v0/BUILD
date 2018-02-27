@@ -10,7 +10,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["warnings_test.go"],
-    importpath = "gopkg.in/warnings.v0_test",
     deps = [":go_default_library"],
 )
 

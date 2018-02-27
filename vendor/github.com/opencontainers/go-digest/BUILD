@@ -20,8 +20,7 @@ go_test(
         "digest_test.go",
         "verifiers_test.go",
     ],
-    importpath = "github.com/opencontainers/go-digest",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

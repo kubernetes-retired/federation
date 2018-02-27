@@ -8,8 +8,7 @@ load(
 
 go_binary(
     name = "conversion-gen",
-    importpath = "k8s.io/code-generator/cmd/conversion-gen",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_library(

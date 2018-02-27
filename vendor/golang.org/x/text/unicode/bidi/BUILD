@@ -21,8 +21,7 @@ go_test(
         "ranges_test.go",
         "tables_test.go",
     ],
-    importpath = "golang.org/x/text/unicode/bidi",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/text/internal/gen:go_default_library",
         "//vendor/golang.org/x/text/internal/testtext:go_default_library",

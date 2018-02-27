@@ -14,8 +14,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["io_test.go"],
-    importpath = "github.com/mxk/go-flowrate/flowrate",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

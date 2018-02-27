@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["fake.go"],
-    importpath = "github.com/google/cadvisor/utils/sysfs/fakesysfs",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/google/cadvisor/utils/sysfs:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

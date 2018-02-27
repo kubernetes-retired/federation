@@ -10,8 +10,7 @@ load(
 
 go_binary(
     name = "kubefed",
-    importpath = "k8s.io/federation/cmd/kubefed",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     x_defs = version_x_defs(),
 )
 

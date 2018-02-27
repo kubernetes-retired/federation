@@ -1,21 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["restartmanager.go"],
-    importpath = "github.com/docker/docker/restartmanager",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/docker/docker/api/types/container:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["restartmanager_test.go"],
-    importpath = "github.com/docker/docker/restartmanager",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/docker/docker/api/types/container:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

@@ -72,8 +72,7 @@ go_test(
         "serialization_test.go",
         "unstructured_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/api/testing",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/gogo/protobuf/proto:go_default_library",
         "//vendor/github.com/golang/protobuf/proto:go_default_library",

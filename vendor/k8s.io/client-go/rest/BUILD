@@ -16,8 +16,7 @@ go_test(
         "url_utils_test.go",
         "urlbackoff_test.go",
     ],
-    importpath = "k8s.io/client-go/rest",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

@@ -45,8 +45,7 @@ go_test(
         "peer_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "github.com/coreos/etcd/etcdserver/api/v2http",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/coreos/etcd/error:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver:go_default_library",

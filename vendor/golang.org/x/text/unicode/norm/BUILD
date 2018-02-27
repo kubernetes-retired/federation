@@ -28,8 +28,7 @@ go_test(
         "transform_test.go",
         "ucd_test.go",
     ],
-    importpath = "golang.org/x/text/unicode/norm",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/text/internal/gen:go_default_library",
         "//vendor/golang.org/x/text/internal/testtext:go_default_library",
@@ -44,7 +43,6 @@ go_test(
         "example_test.go",
         "norm_test.go",
     ],
-    importpath = "golang.org/x/text/unicode/norm_test",
     deps = [":go_default_library"],
 )
 

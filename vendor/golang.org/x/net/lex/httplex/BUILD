@@ -11,8 +11,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["httplex_test.go"],
-    importpath = "golang.org/x/net/lex/httplex",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

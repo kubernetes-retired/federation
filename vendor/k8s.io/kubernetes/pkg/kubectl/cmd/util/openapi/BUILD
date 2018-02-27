@@ -33,7 +33,6 @@ go_test(
         "openapi_test.go",
     ],
     data = ["//api/openapi-spec:swagger-spec"],
-    importpath = "k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",

@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["unstructured_test.go"],
-    importpath = "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

@@ -21,8 +21,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["util_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/util/metrics",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
     ],

@@ -19,8 +19,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["build_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/rest",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",

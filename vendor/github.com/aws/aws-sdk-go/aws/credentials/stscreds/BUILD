@@ -16,8 +16,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["assume_role_provider_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/aws/credentials/stscreds",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/service/sts:go_default_library",

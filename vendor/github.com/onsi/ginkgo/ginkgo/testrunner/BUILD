@@ -21,7 +21,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["test_runner_test.go"],
-    importpath = "github.com/onsi/ginkgo/ginkgo/testrunner_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",

@@ -11,10 +11,39 @@ go_library(
     srcs = [
         "conntrack.go",
         "server.go",
-        "server_others.go",
         "validation.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "server_others.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "server_windows.go",
         ],
         "//conditions:default": [],
@@ -30,7 +59,6 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/serializer/json:go_default_library",
-        "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/validation/field:go_default_library",
@@ -49,7 +77,6 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/apis/componentconfig/v1alpha1:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/informers/informers_generated/internalversion:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/qos:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/master/ports:go_default_library",
@@ -58,10 +85,8 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/proxy/healthcheck:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy/iptables:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy/ipvs:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/proxy/userspace:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/configz:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/iptables:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/ipvs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/util/mount:go_default_library",
@@ -74,7 +99,68 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/version/verflag:go_default_library",
         "//vendor/k8s.io/utils/exec:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/features:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/proxy/metrics:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/util/dbus:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/proxy/winkernel:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/proxy/winuserspace:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/util/netsh:go_default_library",
@@ -89,8 +175,7 @@ go_test(
         "server_test.go",
         "validation_test.go",
     ],
-    importpath = "k8s.io/kubernetes/cmd/kube-proxy/app",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",

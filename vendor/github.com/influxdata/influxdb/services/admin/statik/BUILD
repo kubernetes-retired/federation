@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["statik.go"],
-    importpath = "github.com/influxdata/influxdb/services/admin/statik",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/rakyll/statik/fs:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

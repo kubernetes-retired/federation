@@ -39,8 +39,7 @@ go_test(
         "watcher_hub_test.go",
         "watcher_test.go",
     ],
-    importpath = "github.com/coreos/etcd/store",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/coreos/etcd/error:go_default_library",
         "//vendor/github.com/jonboulle/clockwork:go_default_library",

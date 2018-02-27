@@ -42,8 +42,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["strategy_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/registry/core/node",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/fields:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/labels:go_default_library",

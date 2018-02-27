@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["gceutil.go"],
-    importpath = "go4.org/cloud/google/gceutil",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/google.golang.org/api/compute/v1:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

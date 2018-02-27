@@ -16,8 +16,7 @@ go_test(
     name = "go_default_test",
     srcs = ["prometheus_test.go"],
     data = glob(["testdata/**"]),
-    importpath = "github.com/google/cadvisor/metrics",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",

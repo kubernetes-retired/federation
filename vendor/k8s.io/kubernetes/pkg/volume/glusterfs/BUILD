@@ -42,8 +42,7 @@ go_test(
         "glusterfs_minmax_test.go",
         "glusterfs_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/volume/glusterfs",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/heketi/heketi/pkg/glusterfs/api:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

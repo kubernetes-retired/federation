@@ -50,8 +50,7 @@ go_test(
         "timer_test.go",
         "vec_test.go",
     ],
-    importpath = "github.com/prometheus/client_golang/prometheus",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/prometheus/client_model/go:go_default_library",
         "//vendor/github.com/prometheus/common/expfmt:go_default_library",
@@ -70,7 +69,6 @@ go_test(
         "expvar_collector_test.go",
         "registry_test.go",
     ],
-    importpath = "github.com/prometheus/client_golang/prometheus_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/golang/protobuf/proto:go_default_library",

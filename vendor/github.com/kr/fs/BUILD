@@ -16,7 +16,6 @@ go_test(
         "example_test.go",
         "walk_test.go",
     ],
-    importpath = "github.com/kr/fs_test",
     deps = [":go_default_library"],
 )
 

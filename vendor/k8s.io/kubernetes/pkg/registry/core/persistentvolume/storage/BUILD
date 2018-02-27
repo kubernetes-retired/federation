@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["storage_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/registry/core/persistentvolume/storage",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/api/equality:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/resource:go_default_library",

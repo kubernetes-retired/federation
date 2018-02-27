@@ -17,8 +17,7 @@ go_test(
         "dec_go1_2_test.go",
         "dec_internal_test.go",
     ],
-    importpath = "gopkg.in/inf.v0",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
@@ -29,7 +28,6 @@ go_test(
         "rounder_example_test.go",
         "rounder_test.go",
     ],
-    importpath = "gopkg.in/inf.v0_test",
     deps = [":go_default_library"],
 )
 

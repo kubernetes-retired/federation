@@ -22,8 +22,7 @@ go_test(
         "header_test.go",
         "util_test.go",
     ],
-    importpath = "github.com/chai2010/gettext-go/gettext/mo",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

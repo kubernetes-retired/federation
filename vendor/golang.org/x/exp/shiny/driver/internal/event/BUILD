@@ -1,12 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["event.go"],
-    importpath = "golang.org/x/exp/shiny/driver/internal/event",
-    visibility = ["//vendor/golang.org/x/exp/shiny/driver:__subpackages__"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

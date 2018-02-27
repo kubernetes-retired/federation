@@ -26,8 +26,7 @@ go_test(
         "instrument_client_1_8_test.go",
         "instrument_server_test.go",
     ],
-    importpath = "github.com/prometheus/client_golang/prometheus/promhttp",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/prometheus/client_golang/prometheus:go_default_library"],
 )
 

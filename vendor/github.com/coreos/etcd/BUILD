@@ -10,8 +10,7 @@ go_library(
 
 go_binary(
     name = "etcd",
-    importpath = "github.com/coreos/etcd",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

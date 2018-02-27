@@ -29,8 +29,7 @@ go_test(
         "sdk_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/oauth2/google",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/oauth2/jws:go_default_library"],
 )
 

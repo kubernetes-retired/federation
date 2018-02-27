@@ -23,8 +23,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["mustmatchpatterns_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/security/podsecuritypolicy/sysctl",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/helper:go_default_library",

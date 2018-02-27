@@ -25,8 +25,7 @@ go_test(
         "message_set_test.go",
         "size2_test.go",
     ],
-    importpath = "github.com/golang/protobuf/proto",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
@@ -44,7 +43,6 @@ go_test(
         "text_parser_test.go",
         "text_test.go",
     ],
-    importpath = "github.com/golang/protobuf/proto_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/golang/protobuf/proto/proto3_proto:go_default_library",

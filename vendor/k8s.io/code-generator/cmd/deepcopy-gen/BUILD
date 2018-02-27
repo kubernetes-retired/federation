@@ -8,8 +8,7 @@ load(
 
 go_binary(
     name = "deepcopy-gen",
-    importpath = "k8s.io/code-generator/cmd/deepcopy-gen",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_library(

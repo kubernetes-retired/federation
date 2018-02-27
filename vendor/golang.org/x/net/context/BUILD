@@ -16,14 +16,12 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["context_test.go"],
-    importpath = "golang.org/x/net/context",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["withtimeout_test.go"],
-    importpath = "golang.org/x/net/context_test",
     deps = [":go_default_library"],
 )
 

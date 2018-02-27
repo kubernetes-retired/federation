@@ -23,7 +23,6 @@ go_test(
         "api_test.go",
         "service_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/ec2metadata_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

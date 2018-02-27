@@ -51,8 +51,7 @@ go_test(
         "endpoint_test.go",
         "manager_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/cm/deviceplugin",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",

@@ -16,7 +16,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["ec2_role_provider_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

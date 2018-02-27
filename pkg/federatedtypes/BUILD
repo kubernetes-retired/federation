@@ -12,8 +12,7 @@ go_test(
         "hpa_test.go",
         "scheduling_test.go",
     ],
-    importpath = "k8s.io/federation/pkg/federatedtypes",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//pkg/federation-controller/util/test:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

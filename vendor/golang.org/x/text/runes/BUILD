@@ -17,8 +17,7 @@ go_test(
         "cond_test.go",
         "runes_test.go",
     ],
-    importpath = "golang.org/x/text/runes",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/text/cases:go_default_library",
         "//vendor/golang.org/x/text/internal/testtext:go_default_library",
@@ -30,7 +29,6 @@ go_test(
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "golang.org/x/text/runes_test",
     deps = [
         ":go_default_library",
         "//vendor/golang.org/x/text/transform:go_default_library",

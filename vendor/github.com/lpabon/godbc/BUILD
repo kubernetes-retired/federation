@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["godbc_test.go"],
-    importpath = "github.com/lpabon/godbc",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

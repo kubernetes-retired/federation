@@ -35,8 +35,7 @@ go_test(
         "summary_test.go",
         "volume_stat_calculator_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/server/stats",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

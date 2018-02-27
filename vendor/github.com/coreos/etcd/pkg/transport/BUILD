@@ -32,8 +32,7 @@ go_test(
         "timeout_listener_test.go",
         "timeout_transport_test.go",
     ],
-    importpath = "github.com/coreos/etcd/pkg/transport",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

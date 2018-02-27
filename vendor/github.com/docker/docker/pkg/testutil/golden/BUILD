@@ -1,12 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["golden.go"],
-    importpath = "github.com/docker/docker/pkg/testutil/golden",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

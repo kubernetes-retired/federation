@@ -34,8 +34,7 @@ go_test(
         "swagger_test.go",
         "utils_test.go",
     ],
-    importpath = "github.com/emicklei/go-restful-swagger12",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/emicklei/go-restful:go_default_library",
         "//vendor/github.com/emicklei/go-restful-swagger12/test_package:go_default_library",

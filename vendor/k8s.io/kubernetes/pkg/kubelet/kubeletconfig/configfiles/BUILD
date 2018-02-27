@@ -35,8 +35,7 @@ filegroup(
 go_test(
     name = "go_default_test",
     srcs = ["configfiles_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/kubeletconfig/configfiles",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/equality:go_default_library",

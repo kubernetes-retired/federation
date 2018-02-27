@@ -18,8 +18,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["lessor_test.go"],
-    importpath = "github.com/coreos/etcd/lease",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/coreos/etcd/mvcc/backend:go_default_library"],
 )
 

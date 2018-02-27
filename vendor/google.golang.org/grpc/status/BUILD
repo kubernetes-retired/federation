@@ -15,8 +15,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["status_test.go"],
-    importpath = "google.golang.org/grpc/status",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/golang/protobuf/proto:go_default_library",
         "//vendor/github.com/golang/protobuf/ptypes/any:go_default_library",

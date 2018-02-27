@@ -8,8 +8,7 @@ load(
 
 go_binary(
     name = "import-boss",
-    importpath = "k8s.io/code-generator/cmd/import-boss",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_library(

@@ -12,8 +12,7 @@ go_test(
     name = "go_default_test",
     srcs = ["ed25519_test.go"],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/crypto/ed25519",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/crypto/ed25519/internal/edwards25519:go_default_library"],
 )
 

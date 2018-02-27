@@ -40,8 +40,7 @@ go_test(
         "helper_test.go",
         "values_test.go",
     ],
-    importpath = "github.com/ugorji/go/codec",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

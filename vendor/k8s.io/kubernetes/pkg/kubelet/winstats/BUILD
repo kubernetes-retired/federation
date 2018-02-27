@@ -22,7 +22,7 @@ go_library(
     srcs = [
         "winstats.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "perfcounter_nodestats.go",
             "perfcounters.go",
         ],
@@ -33,7 +33,7 @@ go_library(
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v2:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "//vendor/github.com/golang/glog:go_default_library",
             "//vendor/github.com/lxn/win:go_default_library",
             "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
@@ -45,8 +45,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["winstats_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/winstats",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v2:go_default_library",

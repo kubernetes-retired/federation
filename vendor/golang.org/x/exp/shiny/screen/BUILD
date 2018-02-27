@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["screen.go"],
-    importpath = "golang.org/x/exp/shiny/screen",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/golang.org/x/image/math/f64:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

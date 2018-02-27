@@ -160,13 +160,12 @@ go_test(
         "reason_cache_test.go",
         "runonce_test.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "kubelet_pods_windows_test.go",
         ],
         "//conditions:default": [],
     }),
-    importpath = "k8s.io/kubernetes/pkg/kubelet",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v2:go_default_library",

@@ -17,8 +17,7 @@ go_library(
 
 go_binary(
     name = "go-vhd",
-    importpath = "github.com/rubiojr/go-vhd",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

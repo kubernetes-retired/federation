@@ -21,8 +21,7 @@ go_test(
         "error_test.go",
         "parser_test.go",
     ],
-    importpath = "github.com/hashicorp/hcl/hcl/parser",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/hashicorp/hcl/hcl/ast:go_default_library",
         "//vendor/github.com/hashicorp/hcl/hcl/token:go_default_library",

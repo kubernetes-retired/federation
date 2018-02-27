@@ -11,8 +11,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["diskcache_test.go"],
-    importpath = "github.com/gregjones/httpcache/diskcache",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -18,7 +18,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["factory_test.go"],
-    importpath = "github.com/google/cadvisor/container_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/google/cadvisor/container/testing:go_default_library",

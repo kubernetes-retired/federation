@@ -17,14 +17,12 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["local_parse_test.go"],
-    importpath = "k8s.io/gengo/parser",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["parse_test.go"],
-    importpath = "k8s.io/gengo/parser_test",
     deps = [
         ":go_default_library",
         "//vendor/k8s.io/gengo/args:go_default_library",

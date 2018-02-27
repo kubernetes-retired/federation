@@ -30,8 +30,7 @@ go_test(
         "sender_test.go",
         "utility_test.go",
     ],
-    importpath = "github.com/Azure/go-autorest/autorest",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/Azure/go-autorest/autorest/adal:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/mocks:go_default_library",

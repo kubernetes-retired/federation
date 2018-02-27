@@ -41,8 +41,7 @@ go_test(
         "text_test.go",
         "xml_test.go",
     ],
-    importpath = "github.com/go-openapi/runtime",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/go-openapi/errors:go_default_library",
         "//vendor/github.com/go-openapi/strfmt:go_default_library",

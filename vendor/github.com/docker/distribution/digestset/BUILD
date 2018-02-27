@@ -11,8 +11,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["set_test.go"],
-    importpath = "github.com/docker/distribution/digestset",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/opencontainers/go-digest:go_default_library"],
 )
 

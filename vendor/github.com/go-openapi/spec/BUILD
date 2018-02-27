@@ -56,8 +56,7 @@ go_test(
         "swagger_test.go",
         "xml_object_test.go",
     ],
-    importpath = "github.com/go-openapi/spec",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/go-openapi/jsonpointer:go_default_library",
         "//vendor/github.com/go-openapi/swag:go_default_library",

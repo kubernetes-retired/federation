@@ -37,8 +37,7 @@ go_test(
         "certs_test.go",
         "config_test.go",
     ],
-    importpath = "k8s.io/kubernetes/plugin/pkg/admission/imagepolicy",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/api/imagepolicy/v1alpha1:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/admission:go_default_library",

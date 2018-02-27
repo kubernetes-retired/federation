@@ -56,8 +56,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["azure_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/azure",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/network:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/to:go_default_library",

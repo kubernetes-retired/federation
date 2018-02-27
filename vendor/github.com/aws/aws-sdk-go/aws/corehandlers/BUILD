@@ -22,7 +22,6 @@ go_test(
         "handlers_test.go",
         "param_validator_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/corehandlers_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

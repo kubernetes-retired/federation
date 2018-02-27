@@ -15,8 +15,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["analyzer_test.go"],
-    importpath = "github.com/go-openapi/analysis",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/go-openapi/loads/fmts:go_default_library",
         "//vendor/github.com/go-openapi/spec:go_default_library",

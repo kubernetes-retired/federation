@@ -25,8 +25,7 @@ go_test(
         "quantity_test.go",
         "scale_int_test.go",
     ],
-    importpath = "github.com/appc/spec/schema/types/resource",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/gofuzz:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
@@ -37,7 +36,6 @@ go_test(
 go_test(
     name = "go_default_xtest",
     srcs = ["quantity_example_test.go"],
-    importpath = "github.com/appc/spec/schema/types/resource_test",
     deps = [":go_default_library"],
 )
 

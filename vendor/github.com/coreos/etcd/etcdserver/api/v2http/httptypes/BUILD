@@ -20,8 +20,7 @@ go_test(
         "errors_test.go",
         "member_test.go",
     ],
-    importpath = "github.com/coreos/etcd/etcdserver/api/v2http/httptypes",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/coreos/etcd/pkg/types:go_default_library"],
 )
 

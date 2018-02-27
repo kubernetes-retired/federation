@@ -13,8 +13,7 @@ go_test(
         "config_test.go",
         "errors_test.go",
     ],
-    importpath = "k8s.io/apiserver/pkg/admission",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",

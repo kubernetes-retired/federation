@@ -1,28 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "client.go",
-        "errors.go",
-        "http.go",
-        "operations.go",
-        "publishSettings.go",
-        "util.go",
-        "version.go",
-    ],
-    importpath = "github.com/Azure/azure-sdk-for-go/management",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/golang.org/x/crypto/pkcs12:go_default_library"],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["errors_test.go"],
-    importpath = "github.com/Azure/azure-sdk-for-go/management_test",
-    deps = [":go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

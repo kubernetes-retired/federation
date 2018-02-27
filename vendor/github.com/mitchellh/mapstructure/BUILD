@@ -20,8 +20,7 @@ go_test(
         "mapstructure_examples_test.go",
         "mapstructure_test.go",
     ],
-    importpath = "github.com/mitchellh/mapstructure",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

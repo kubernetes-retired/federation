@@ -17,8 +17,7 @@ go_test(
         "googleapi_test.go",
         "types_test.go",
     ],
-    importpath = "google.golang.org/api/googleapi",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

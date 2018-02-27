@@ -18,8 +18,7 @@ go_library(
 
 go_binary(
     name = "heketi",
-    importpath = "github.com/heketi/heketi",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

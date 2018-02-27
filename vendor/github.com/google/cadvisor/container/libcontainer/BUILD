@@ -19,8 +19,7 @@ go_test(
     name = "go_default_test",
     srcs = ["helpers_test.go"],
     data = glob(["testdata/**"]),
-    importpath = "github.com/google/cadvisor/container/libcontainer",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/opencontainers/runc/libcontainer/cgroups:go_default_library",

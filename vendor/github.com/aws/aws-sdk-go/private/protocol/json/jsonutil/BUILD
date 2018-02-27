@@ -14,7 +14,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["build_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/json/jsonutil_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

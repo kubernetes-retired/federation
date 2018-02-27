@@ -13,7 +13,6 @@ go_test(
         "example_test.go",
         "heredoc_test.go",
     ],
-    importpath = "github.com/MakeNowJust/heredoc_test",
     deps = [":go_default_library"],
 )
 

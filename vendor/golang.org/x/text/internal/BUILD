@@ -19,8 +19,7 @@ go_test(
         "internal_test.go",
         "match_test.go",
     ],
-    importpath = "golang.org/x/text/internal",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/text/language:go_default_library"],
 )
 

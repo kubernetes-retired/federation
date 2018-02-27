@@ -14,8 +14,7 @@ go_library(
 
 go_binary(
     name = "set-gen",
-    importpath = "k8s.io/gengo/examples/set-gen",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

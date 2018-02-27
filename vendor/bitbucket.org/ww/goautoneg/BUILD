@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["autoneg_test.go"],
-    importpath = "bitbucket.org/ww/goautoneg",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

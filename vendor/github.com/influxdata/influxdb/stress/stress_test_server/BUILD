@@ -1,20 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["server.go"],
-    importpath = "github.com/influxdata/influxdb/stress/stress_test_server",
-    visibility = ["//visibility:private"],
-    deps = ["//vendor/github.com/paulbellamy/ratecounter:go_default_library"],
-)
-
-go_binary(
-    name = "stress_test_server",
-    importpath = "github.com/influxdata/influxdb/stress/stress_test_server",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

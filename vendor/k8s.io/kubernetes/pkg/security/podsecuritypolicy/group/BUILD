@@ -29,8 +29,7 @@ go_test(
         "mustrunas_test.go",
         "runasany_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/security/podsecuritypolicy/group",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/apis/extensions:go_default_library",

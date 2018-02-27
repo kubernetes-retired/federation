@@ -39,8 +39,7 @@ go_test(
         "image_gc_manager_test.go",
         "image_manager_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/images",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",

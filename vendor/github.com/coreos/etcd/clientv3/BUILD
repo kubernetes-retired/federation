@@ -51,8 +51,7 @@ go_test(
         "txn_test.go",
         "watch_test.go",
     ],
-    importpath = "github.com/coreos/etcd/clientv3",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/coreos/etcd/etcdserver/api/v3rpc/rpctypes:go_default_library",
         "//vendor/github.com/coreos/etcd/etcdserver/etcdserverpb:go_default_library",
@@ -77,7 +76,6 @@ go_test(
         "example_watch_test.go",
         "main_test.go",
     ],
-    importpath = "github.com/coreos/etcd/clientv3_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/coreos/etcd/auth:go_default_library",

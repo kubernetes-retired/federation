@@ -56,8 +56,7 @@ go_test(
         "handlers_test.go",
         "meta_test.go",
     ],
-    importpath = "k8s.io/federation/pkg/federation-controller/util",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset/fake:go_default_library",

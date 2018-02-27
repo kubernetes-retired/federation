@@ -17,8 +17,7 @@ go_test(
         "struct_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "github.com/go-ini/ini",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/smartystreets/goconvey/convey:go_default_library"],
 )
 

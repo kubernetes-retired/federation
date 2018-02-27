@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["getter.go"],
-    importpath = "github.com/docker/docker/pkg/plugingetter",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/docker/docker/pkg/plugins:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

@@ -16,15 +16,13 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["jwt_test.go"],
-    importpath = "golang.org/x/oauth2/jwt",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/oauth2/jws:go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "golang.org/x/oauth2/jwt_test",
     deps = [":go_default_library"],
 )
 

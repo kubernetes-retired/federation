@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["units_test.go"],
-    importpath = "github.com/libopenstorage/openstorage/pkg/units",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/require:go_default_library"],
 )
 

@@ -13,8 +13,7 @@ go_test(
         "configmap_test.go",
         "download_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/kubeletconfig/checkpoint",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

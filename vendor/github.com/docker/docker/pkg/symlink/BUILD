@@ -4,9 +4,38 @@ go_library(
     name = "go_default_library",
     srcs = [
         "fs.go",
-        "fs_unix.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "fs_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "fs_windows.go",
         ],
         "//conditions:default": [],
@@ -16,7 +45,7 @@ go_library(
     deps = [
         "//vendor/github.com/docker/docker/pkg/system:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:windows": [
             "//vendor/github.com/docker/docker/pkg/longpath:go_default_library",
             "//vendor/golang.org/x/sys/windows:go_default_library",
         ],
@@ -26,9 +55,40 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["fs_unix_test.go"],
-    importpath = "github.com/docker/docker/pkg/symlink",
-    library = ":go_default_library",
+    srcs = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "fs_unix_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "fs_unix_test.go",
+        ],
+        "//conditions:default": [],
+    }),
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -19,8 +19,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["mock_test.go"],
-    importpath = "github.com/stretchr/testify/mock",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",

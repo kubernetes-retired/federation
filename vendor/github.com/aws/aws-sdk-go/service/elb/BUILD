@@ -24,7 +24,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["examples_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/service/elb_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
