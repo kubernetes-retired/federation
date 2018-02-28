@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@io_kubernetes_build//defs:build.bzl", "release_filegroup")
+load("@io_kubernetes_build//defs:pkg.bzl", "pkg_tar")
 
 filegroup(
     name = "package-srcs",
@@ -38,16 +38,17 @@ grep ^STABLE_BUILD_GIT_COMMIT bazel-out/stable-status.txt | cut -d' ' -f2 >>$@
 
 pkg_tar(
     name = "federation-src",
-    extension = "tar.gz",
-    files = select({
+    srcs = select({
         ":package_src": ["//:all-srcs"],
         "//conditions:default": ["README-src.txt"],
     }),
+    extension = "tar.gz",
     package_dir = "federation",
     strip_prefix = select({
         ":package_src": "//",
         "//conditions:default": ".",
     }),
+    tags = ["no-cache"],
 )
 
 # FIXME: this should be configurable/auto-detected
@@ -65,18 +66,18 @@ filegroup(
 
 pkg_tar(
     name = "_client-bin",
-    files = ["//build:client-targets"],
+    srcs = ["//build:client-targets"],
     mode = "0755",
     package_dir = "client/bin",
+    tags = ["no-cache"],
     visibility = ["//visibility:private"],
 )
 
 pkg_tar(
     name = "federation-client-%s" % PLATFORM_ARCH_STRING,
     extension = "tar.gz",
-    files = [":license-targets"],
-    mode = "0644",
-    package_dir = "federation",
+    package_dir = "kubernetes",
+    tags = ["no-cache"],
     deps = [
         ":_client-bin",
     ],
@@ -84,21 +85,23 @@ pkg_tar(
 
 pkg_tar(
     name = "_server-bin",
-    files = [
+    srcs = [
         "//build:server-targets",
     ],
     mode = "0755",
     package_dir = "server/bin",
+    tags = ["no-cache"],
     visibility = ["//visibility:private"],
 )
 
 pkg_tar(
     name = "_server_image-bin",
-    files = [
+    srcs = [
         "//build:docker-artifacts",
     ],
     mode = "0755",
     package_dir = "server/bin/image",
+    tags = ["no-cache"],
     visibility = ["//visibility:private"],
 )
 
@@ -111,10 +114,11 @@ genrule(
 
 pkg_tar(
     name = "federation-server-%s" % PLATFORM_ARCH_STRING,
+    srcs = [":license-targets"],
     extension = "tar.gz",
-    files = [":license-targets"],
     mode = "0644",
     package_dir = "federation",
+    tags = ["no-cache"],
     deps = [
         ":_server-bin",
         ":_server_image-bin",
@@ -123,19 +127,21 @@ pkg_tar(
 
 pkg_tar(
     name = "_test-bin",
-    files = ["//build:test-targets"],
+    srcs = ["//build:test-targets"],
     mode = "0755",
     package_dir = "platforms/" + PLATFORM_ARCH_STRING.replace("-", "/"),
+    tags = ["no-cache"],
     # TODO: how to make this multiplatform?
     visibility = ["//visibility:private"],
 )
 
 pkg_tar(
     name = "federation-test",
+    srcs = ["//build:test-portable-targets"],
     extension = "tar.gz",
-    files = ["//build:test-portable-targets"],
     package_dir = "federation",
     strip_prefix = "//",
+    tags = ["no-cache"],
     deps = [
         # TODO: how to make this multiplatform?
         ":_test-bin",
@@ -146,8 +152,7 @@ pkg_tar(
 # We can also consider this as one final tar and include client bins too.
 pkg_tar(
     name = "federation",
-    extension = "tar.gz",
-    files = [
+    srcs = [
         "//:LICENSE",
         "//:README.md",
         "//:k8s-version",
@@ -157,8 +162,10 @@ pkg_tar(
         "//docs:all-srcs",
         "//hack/lib:all-srcs",
     ],
+    extension = "tar.gz",
     package_dir = "federation",
     strip_prefix = "//",
+    tags = ["no-cache"],
     deps = [
         ":_server-bin",
     ],

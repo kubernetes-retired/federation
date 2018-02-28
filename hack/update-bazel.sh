@@ -53,7 +53,7 @@ gazelle fix \
     -mode=fix
 
 # Ignore unneeded rebuild for vendored openapi
-kazel 3>&1 1>&2 2>&3 3>&- | grep -vq 'vendor/k8s.io/kubernetes/pkg/generated/openapi/BUILD' && true
+kazel
 
 # Rewrite the openapi BUILD file for federation to work for building
 # openapi for vendored kube.  This seems simpler than fixing kazel to
