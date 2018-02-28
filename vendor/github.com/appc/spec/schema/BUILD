@@ -23,8 +23,7 @@ go_test(
         "image_test.go",
         "pod_test.go",
     ],
-    importpath = "github.com/appc/spec/schema",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/appc/spec/schema/types:go_default_library"],
 )
 

@@ -1,20 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "main.go",
-        "main19.go",
-        "type.go",
-    ],
-    importpath = "golang.org/x/tools/cmd/guru/testdata/src/definition-json",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/lib:go_default_library",
-        "//vendor/nosuchpkg:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

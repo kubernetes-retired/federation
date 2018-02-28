@@ -33,8 +33,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["namer_test.go"],
-    importpath = "k8s.io/code-generator/cmd/go-to-protobuf/protobuf",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

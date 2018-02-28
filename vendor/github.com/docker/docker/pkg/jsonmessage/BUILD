@@ -16,8 +16,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["jsonmessage_test.go"],
-    importpath = "github.com/docker/docker/pkg/jsonmessage",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/docker/docker/pkg/jsonlog:go_default_library",
         "//vendor/github.com/docker/docker/pkg/term:go_default_library",

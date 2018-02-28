@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["btree_test.go"],
-    importpath = "github.com/google/btree",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

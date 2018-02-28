@@ -24,8 +24,7 @@ go_test(
         "jws_test.go",
         "jwt_test.go",
     ],
-    importpath = "github.com/coreos/go-oidc/jose",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

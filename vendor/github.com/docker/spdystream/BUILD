@@ -21,8 +21,7 @@ go_test(
         "spdy_bench_test.go",
         "spdy_test.go",
     ],
-    importpath = "github.com/docker/spdystream",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/docker/spdystream/spdy:go_default_library"],
 )
 

@@ -31,8 +31,7 @@ go_test(
         "keyring_test.go",
         "provider_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/credentialprovider",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/docker/docker/api/types:go_default_library"],
 )
 

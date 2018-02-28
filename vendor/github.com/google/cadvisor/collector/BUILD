@@ -29,8 +29,7 @@ go_test(
         "generic_collector_test.go",
         "prometheus_collector_test.go",
     ],
-    importpath = "github.com/google/cadvisor/collector",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/container/testing:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",

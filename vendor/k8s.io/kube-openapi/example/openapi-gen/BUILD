@@ -14,8 +14,7 @@ go_library(
 
 go_binary(
     name = "openapi-gen",
-    importpath = "k8s.io/kube-openapi/example/openapi-gen",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

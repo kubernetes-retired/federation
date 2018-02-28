@@ -26,7 +26,6 @@ go_test(
         "customizations_test.go",
         "examples_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/service/sts_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

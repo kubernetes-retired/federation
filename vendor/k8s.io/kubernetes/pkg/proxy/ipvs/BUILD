@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["proxier_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/proxy/ipvs",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/davecgh/go-spew/spew:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -34,11 +33,40 @@ go_library(
     name = "go_default_library",
     srcs = [
         "netlink.go",
-        "netlink_unsupported.go",
         "proxier.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "netlink_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "netlink_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "netlink_unsupported.go",
         ],
         "//conditions:default": [],
     }),
@@ -66,7 +94,7 @@ go_library(
         "//vendor/k8s.io/kubernetes/pkg/util/sysctl:go_default_library",
         "//vendor/k8s.io/utils/exec:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/vishvananda/netlink:go_default_library",
         ],
         "//conditions:default": [],

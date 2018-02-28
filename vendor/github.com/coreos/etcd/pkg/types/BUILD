@@ -23,8 +23,7 @@ go_test(
         "urls_test.go",
         "urlsmap_test.go",
     ],
-    importpath = "github.com/coreos/etcd/pkg/types",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library"],
 )
 

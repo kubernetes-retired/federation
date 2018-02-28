@@ -34,8 +34,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["vsphere_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/vsphere",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/types:go_default_library",

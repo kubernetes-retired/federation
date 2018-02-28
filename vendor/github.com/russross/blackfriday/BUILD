@@ -23,8 +23,7 @@ go_test(
         "ref_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "github.com/russross/blackfriday",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

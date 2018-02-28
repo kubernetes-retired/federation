@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["difflib_test.go"],
-    importpath = "github.com/pmezard/go-difflib/difflib",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

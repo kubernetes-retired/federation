@@ -14,8 +14,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["aggregator_test.go"],
-    importpath = "k8s.io/kube-openapi/pkg/aggregator",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/ghodss/yaml:go_default_library",
         "//vendor/github.com/go-openapi/spec:go_default_library",

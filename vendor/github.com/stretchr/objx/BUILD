@@ -33,8 +33,7 @@ go_test(
         "type_specific_codegen_test.go",
         "value_test.go",
     ],
-    importpath = "github.com/stretchr/objx",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

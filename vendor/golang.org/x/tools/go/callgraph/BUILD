@@ -1,16 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "callgraph.go",
-        "util.go",
-    ],
-    importpath = "golang.org/x/tools/go/callgraph",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/golang.org/x/tools/go/ssa:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

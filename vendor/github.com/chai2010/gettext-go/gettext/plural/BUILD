@@ -14,8 +14,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["formula_test.go"],
-    importpath = "github.com/chai2010/gettext-go/gettext/plural",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

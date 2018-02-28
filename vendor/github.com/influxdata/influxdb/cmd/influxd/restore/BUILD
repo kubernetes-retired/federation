@@ -1,17 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["restore.go"],
-    importpath = "github.com/influxdata/influxdb/cmd/influxd/restore",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/influxdata/influxdb/cmd/influxd/backup:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/services/meta:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/services/snapshotter:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

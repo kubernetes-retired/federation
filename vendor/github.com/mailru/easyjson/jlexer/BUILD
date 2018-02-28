@@ -14,8 +14,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["lexer_test.go"],
-    importpath = "github.com/mailru/easyjson/jlexer",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -26,8 +26,7 @@ go_test(
         "convert_types_test.go",
         "types_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws/credentials:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

@@ -26,8 +26,7 @@ go_test(
         "scale_test.go",
         "tee_test.go",
     ],
-    importpath = "github.com/vmware/govmomi/vim25/progress",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

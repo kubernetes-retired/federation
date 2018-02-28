@@ -58,8 +58,7 @@ go_test(
         "tracer_test.go",
         "web_service_test.go",
     ],
-    importpath = "github.com/emicklei/go-restful",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

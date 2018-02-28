@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["lru_test.go"],
-    importpath = "github.com/golang/groupcache/lru",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -80,8 +80,7 @@ go_test(
         "legacy_test.go",
         "security_context_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/kuberuntime",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/golang/mock/gomock:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",

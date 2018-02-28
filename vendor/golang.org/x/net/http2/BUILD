@@ -61,8 +61,7 @@ go_test(
         "z_spec_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "golang.org/x/net/http2",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/net/http2/hpack:go_default_library"],
 )
 

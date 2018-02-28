@@ -25,8 +25,7 @@ go_test(
         "parser_test.go",
         "util_test.go",
     ],
-    importpath = "github.com/jmespath/go-jmespath",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

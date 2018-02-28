@@ -56,8 +56,7 @@ go_test(
         "server_test.go",
         "server_websocket_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/server",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

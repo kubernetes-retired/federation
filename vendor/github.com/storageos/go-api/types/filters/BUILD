@@ -1,20 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["parse.go"],
-    importpath = "github.com/storageos/go-api/types/filters",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/storageos/go-api/types/versions:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["parse_test.go"],
-    importpath = "github.com/storageos/go-api/types/filters",
-    library = ":go_default_library",
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

@@ -26,8 +26,7 @@ go_test(
         "forward_assertions_test.go",
         "http_assertions_test.go",
     ],
-    importpath = "github.com/stretchr/testify/assert",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

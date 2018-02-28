@@ -23,8 +23,7 @@ go_test(
         "header_rules_test.go",
         "v4_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/signer/v4",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/credentials:go_default_library",
@@ -40,7 +39,6 @@ go_test(
         "functional_1_5_test.go",
         "functional_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/signer/v4_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

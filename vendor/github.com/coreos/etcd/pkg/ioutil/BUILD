@@ -20,8 +20,7 @@ go_test(
         "readcloser_test.go",
         "reader_test.go",
     ],
-    importpath = "github.com/coreos/etcd/pkg/ioutil",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

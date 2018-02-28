@@ -29,8 +29,7 @@ go_test(
         "flags_test.go",
         "viper_test.go",
     ],
-    importpath = "github.com/spf13/viper",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

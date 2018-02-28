@@ -9,28 +9,83 @@ go_library(
     name = "go_default_library",
     srcs = [
         "container_manager.go",
-        "container_manager_unsupported.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "container_manager_linux.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "container_manager_unsupported.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "container_manager_windows.go",
         ],
         "//conditions:default": [],
     }),
     importpath = "k8s.io/kubernetes/pkg/kubelet/dockershim/cm",
-    deps = [
-        "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+    deps = select({
+        "@io_bazel_rules_go//go/platform:android": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/golang/glog:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/cgroups/fs:go_default_library",
             "//vendor/github.com/opencontainers/runc/libcontainer/configs:go_default_library",
             "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/kubelet/cm:go_default_library",
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/kubelet/qos:go_default_library",
             "//vendor/k8s.io/kubernetes/pkg/util/version:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "//vendor/k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker:go_default_library",
         ],
         "//conditions:default": [],
     }),

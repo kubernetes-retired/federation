@@ -35,7 +35,6 @@ go_test(
         "rsa_pss_test.go",
         "rsa_test.go",
     ],
-    importpath = "github.com/dgrijalva/jwt-go_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/dgrijalva/jwt-go/request:go_default_library",

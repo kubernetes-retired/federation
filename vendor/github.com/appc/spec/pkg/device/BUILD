@@ -1,21 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
-            "device_posix.go",
-        ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "device_linux.go",
-        ],
-        "//conditions:default": [],
-    }),
-    cgo = True,
-    importpath = "github.com/appc/spec/pkg/device",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

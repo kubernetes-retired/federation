@@ -16,7 +16,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["descriptor_test.go"],
-    importpath = "github.com/gogo/protobuf/protoc-gen-gogo/descriptor_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/gogo/protobuf/proto/testdata:go_default_library",

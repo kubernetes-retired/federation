@@ -13,8 +13,7 @@ go_library(
 
 go_binary(
     name = "go-to-protobuf",
-    importpath = "k8s.io/gengo/examples/go-to-protobuf",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

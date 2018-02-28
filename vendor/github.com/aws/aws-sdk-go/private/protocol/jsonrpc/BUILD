@@ -19,7 +19,6 @@ go_test(
         "build_test.go",
         "unmarshal_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/jsonrpc_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

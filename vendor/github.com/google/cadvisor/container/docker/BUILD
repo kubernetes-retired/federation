@@ -41,8 +41,7 @@ go_test(
         "factory_test.go",
         "handler_test.go",
     ],
-    importpath = "github.com/google/cadvisor/container/docker",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

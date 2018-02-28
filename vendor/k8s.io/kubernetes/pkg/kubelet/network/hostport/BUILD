@@ -31,8 +31,7 @@ go_test(
         "hostport_syncer_test.go",
         "hostport_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/kubelet/network/hostport",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

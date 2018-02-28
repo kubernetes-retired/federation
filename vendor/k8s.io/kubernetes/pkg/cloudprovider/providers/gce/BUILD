@@ -99,8 +99,7 @@ go_test(
         "gce_test.go",
         "metrics_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/gce",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/github.com/stretchr/testify/require:go_default_library",

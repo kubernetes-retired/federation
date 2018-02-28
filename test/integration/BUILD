@@ -13,7 +13,6 @@ go_test(
         "crud_test.go",
         "main_test.go",
     ],
-    importpath = "k8s.io/federation/test/integration",
     tags = ["integration"],
     deps = [
         "//apis/federation/v1beta1:go_default_library",

@@ -16,8 +16,7 @@ go_test(
         "merge_test.go",
         "patch_test.go",
     ],
-    importpath = "github.com/evanphx/json-patch",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

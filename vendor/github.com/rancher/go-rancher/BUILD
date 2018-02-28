@@ -10,8 +10,7 @@ go_library(
 
 go_binary(
     name = "go-rancher",
-    importpath = "github.com/rancher/go-rancher",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 

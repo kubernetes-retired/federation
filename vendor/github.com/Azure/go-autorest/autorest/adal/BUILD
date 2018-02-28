@@ -22,8 +22,7 @@ go_test(
         "persist_test.go",
         "token_test.go",
     ],
-    importpath = "github.com/Azure/go-autorest/autorest/adal",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/Azure/go-autorest/autorest/mocks:go_default_library"],
 )
 

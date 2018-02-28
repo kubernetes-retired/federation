@@ -39,8 +39,7 @@ go_test(
         "flocker_util_test.go",
         "flocker_volume_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/volume/flocker",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/clusterhq/flocker-go:go_default_library",
         "//vendor/github.com/stretchr/testify/assert:go_default_library",

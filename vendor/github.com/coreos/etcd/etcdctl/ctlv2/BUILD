@@ -1,17 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["ctl.go"],
-    importpath = "github.com/coreos/etcd/etcdctl/ctlv2",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/coreos/etcd/etcdctl/ctlv2/command:go_default_library",
-        "//vendor/github.com/coreos/etcd/version:go_default_library",
-        "//vendor/github.com/urfave/cli:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

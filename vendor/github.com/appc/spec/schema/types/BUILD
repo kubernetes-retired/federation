@@ -64,8 +64,7 @@ go_test(
         "uuid_test.go",
         "volume_test.go",
     ],
-    importpath = "github.com/appc/spec/schema/types",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/appc/spec/schema/types/resource:go_default_library",
         "//vendor/github.com/coreos/go-semver/semver:go_default_library",

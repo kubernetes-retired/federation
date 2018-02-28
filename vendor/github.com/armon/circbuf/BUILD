@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["circbuf_test.go"],
-    importpath = "github.com/armon/circbuf",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

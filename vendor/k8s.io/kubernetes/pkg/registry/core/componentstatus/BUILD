@@ -33,8 +33,7 @@ go_test(
         "rest_test.go",
         "validator_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/registry/core/componentstatus",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/diff:go_default_library",

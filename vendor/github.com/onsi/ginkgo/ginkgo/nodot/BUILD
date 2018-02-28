@@ -13,7 +13,6 @@ go_test(
         "nodot_suite_test.go",
         "nodot_test.go",
     ],
-    importpath = "github.com/onsi/ginkgo/ginkgo/nodot_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",

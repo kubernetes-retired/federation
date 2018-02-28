@@ -27,8 +27,7 @@ go_test(
         "appengine_test.go",
         "namespace_test.go",
     ],
-    importpath = "google.golang.org/appengine",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/net/context:go_default_library"],
 )
 

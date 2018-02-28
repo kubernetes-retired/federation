@@ -39,8 +39,7 @@ go_test(
         "attacher_test.go",
         "gce_pd_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/volume/gce_pd",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

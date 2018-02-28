@@ -19,8 +19,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["envelope_test.go"],
-    importpath = "k8s.io/apiserver/pkg/storage/value/encrypt/envelope",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/apiserver/pkg/storage/value:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/value/encrypt/aes:go_default_library",

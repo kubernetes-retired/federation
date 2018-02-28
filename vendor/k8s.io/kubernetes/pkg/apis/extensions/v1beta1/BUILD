@@ -35,7 +35,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["defaults_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/apis/extensions/v1beta1_test",
     deps = [
         ":go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

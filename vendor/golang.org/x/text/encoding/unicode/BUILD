@@ -21,8 +21,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["unicode_test.go"],
-    importpath = "golang.org/x/text/encoding/unicode",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/golang.org/x/text/encoding:go_default_library",
         "//vendor/golang.org/x/text/encoding/charmap:go_default_library",

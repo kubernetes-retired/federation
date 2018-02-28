@@ -14,14 +14,12 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["secretbox_test.go"],
-    importpath = "golang.org/x/crypto/nacl/secretbox",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "golang.org/x/crypto/nacl/secretbox_test",
     deps = [":go_default_library"],
 )
 

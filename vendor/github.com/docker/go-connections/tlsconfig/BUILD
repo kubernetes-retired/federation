@@ -17,8 +17,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["config_test.go"],
-    importpath = "github.com/docker/go-connections/tlsconfig",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

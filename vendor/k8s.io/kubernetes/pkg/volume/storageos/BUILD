@@ -37,8 +37,7 @@ go_test(
         "storageos_test.go",
         "storageos_util_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/volume/storageos",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/storageos/go-api/types:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

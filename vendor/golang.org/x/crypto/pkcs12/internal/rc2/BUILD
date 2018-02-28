@@ -13,8 +13,7 @@ go_test(
         "bench_test.go",
         "rc2_test.go",
     ],
-    importpath = "golang.org/x/crypto/pkcs12/internal/rc2",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

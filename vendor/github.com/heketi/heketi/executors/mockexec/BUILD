@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["mock.go"],
-    importpath = "github.com/heketi/heketi/executors/mockexec",
-    visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/heketi/heketi/executors:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

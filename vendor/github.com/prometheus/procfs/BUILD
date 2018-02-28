@@ -36,8 +36,7 @@ go_test(
         "stat_test.go",
         "xfrm_test.go",
     ],
-    importpath = "github.com/prometheus/procfs",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

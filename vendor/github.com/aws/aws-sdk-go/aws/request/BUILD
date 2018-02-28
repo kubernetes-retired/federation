@@ -34,8 +34,7 @@ go_test(
         "request_resetbody_test.go",
         "retryer_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/request",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
@@ -53,7 +52,6 @@ go_test(
         "request_pagination_test.go",
         "request_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/request_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

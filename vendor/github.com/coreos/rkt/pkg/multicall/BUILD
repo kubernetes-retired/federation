@@ -1,17 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "multicall.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "github.com/coreos/rkt/pkg/multicall",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

@@ -1,29 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "cgo.go",
-        "day.go",
-        "gap.go",
-        "num.go",
-        "number.go",
-        "prime.go",
-        "unum.go",
-        "unum2.go",
-    ],
-    cgo = True,
-    importpath = "golang.org/x/tools/cmd/stringer/testdata",
-    visibility = ["//visibility:private"],
-)
-
-go_binary(
-    name = "testdata",
-    importpath = "golang.org/x/tools/cmd/stringer/testdata",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

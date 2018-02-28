@@ -14,14 +14,12 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["client_test.go"],
-    importpath = "github.com/influxdata/influxdb/client/v2",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "github.com/influxdata/influxdb/client/v2_test",
     deps = [":go_default_library"],
 )
 

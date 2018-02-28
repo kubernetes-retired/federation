@@ -25,7 +25,6 @@ go_test(
         "reconcile_test.go",
         "version_suite_test.go",
     ],
-    importpath = "github.com/containernetworking/cni/pkg/version_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",

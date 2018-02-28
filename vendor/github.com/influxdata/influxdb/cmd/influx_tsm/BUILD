@@ -1,30 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "converter.go",
-        "main.go",
-        "tracker.go",
-    ],
-    importpath = "github.com/influxdata/influxdb/cmd/influx_tsm",
-    visibility = ["//visibility:private"],
-    deps = [
-        "//vendor/github.com/influxdata/influxdb/cmd/influx_tsm/b1:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/cmd/influx_tsm/bz1:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/cmd/influx_tsm/stats:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/cmd/influx_tsm/tsdb:go_default_library",
-        "//vendor/github.com/influxdata/influxdb/tsdb/engine/tsm1:go_default_library",
-    ],
-)
-
-go_binary(
-    name = "influx_tsm",
-    importpath = "github.com/influxdata/influxdb/cmd/influx_tsm",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

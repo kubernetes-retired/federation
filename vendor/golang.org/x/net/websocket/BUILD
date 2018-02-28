@@ -20,8 +20,7 @@ go_test(
         "hybi_test.go",
         "websocket_test.go",
     ],
-    importpath = "golang.org/x/net/websocket",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_test(
@@ -30,7 +29,6 @@ go_test(
         "exampledial_test.go",
         "examplehandler_test.go",
     ],
-    importpath = "golang.org/x/net/websocket_test",
     deps = [":go_default_library"],
 )
 

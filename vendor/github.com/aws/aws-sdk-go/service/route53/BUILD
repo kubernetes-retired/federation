@@ -27,8 +27,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["unmarshal_error_leak_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/service/route53",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/awstesting:go_default_library",
@@ -43,7 +42,6 @@ go_test(
         "examples_test.go",
         "unmarshal_error_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/service/route53_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

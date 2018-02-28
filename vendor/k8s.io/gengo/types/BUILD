@@ -19,8 +19,7 @@ go_test(
         "flatten_test.go",
         "types_test.go",
     ],
-    importpath = "k8s.io/gengo/types",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

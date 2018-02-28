@@ -1,23 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["main.go"],
-    importpath = "golang.org/x/tools/cmd/guru/testdata/src/imports",
-    visibility = ["//visibility:private"],
-    deps = [
-        "//vendor/lib:go_default_library",
-        "//vendor/lib/sublib:go_default_library",
-    ],
-)
-
-go_binary(
-    name = "imports",
-    importpath = "golang.org/x/tools/cmd/guru/testdata/src/imports",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

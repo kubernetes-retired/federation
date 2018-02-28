@@ -18,16 +18,14 @@ go_library(
 
 go_binary(
     name = "gnostic",
-    importpath = "github.com/googleapis/gnostic",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )
 
 go_test(
     name = "go_default_test",
     srcs = ["gnostic_test.go"],
-    importpath = "github.com/googleapis/gnostic",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

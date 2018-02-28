@@ -59,8 +59,7 @@ go_test(
         "virtualnetworks_test.go",
         "vms_test.go",
     ],
-    importpath = "github.com/vmware/photon-controller-go-sdk/photon",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
@@ -72,7 +71,6 @@ go_test(
 go_test(
     name = "go_default_xtest",
     srcs = ["photon_suite_test.go"],
-    importpath = "github.com/vmware/photon-controller-go-sdk/photon_test",
     deps = [
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",

@@ -18,7 +18,6 @@ go_test(
         "controller_test.go",
         "matchers_test.go",
     ],
-    importpath = "github.com/golang/mock/gomock_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/golang/mock/gomock/mock_matcher:go_default_library",

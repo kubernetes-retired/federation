@@ -1,18 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["unsupported.go"],
-    cgo = True,
-    importpath = "github.com/libopenstorage/openstorage/graph/drivers/chainfs",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/docker/docker/daemon/graphdriver:go_default_library",
-        "//vendor/github.com/docker/docker/pkg/idtools:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/api:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

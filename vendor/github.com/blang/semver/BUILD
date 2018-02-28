@@ -22,8 +22,7 @@ go_test(
         "sort_test.go",
         "sql_test.go",
     ],
-    importpath = "github.com/blang/semver",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

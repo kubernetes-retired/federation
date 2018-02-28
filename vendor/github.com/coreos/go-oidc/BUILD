@@ -23,8 +23,7 @@ go_test(
         "jwks_test.go",
         "verify_test.go",
     ],
-    importpath = "github.com/coreos/go-oidc",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/gopkg.in/square/go-jose.v2:go_default_library"],
 )
 

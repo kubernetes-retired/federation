@@ -18,8 +18,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["parser_test.go"],
-    importpath = "github.com/hashicorp/hcl/json/parser",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/hashicorp/hcl/hcl/ast:go_default_library",
         "//vendor/github.com/hashicorp/hcl/hcl/token:go_default_library",

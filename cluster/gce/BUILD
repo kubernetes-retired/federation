@@ -1,11 +1,11 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@io_kubernetes_build//defs:build.bzl", "release_filegroup")
+load("@io_kubernetes_build//defs:pkg.bzl", "pkg_tar")
 
 pkg_tar(
     name = "gci-trusty-manifests",
-    files = [
+    srcs = [
         "container-linux/configure-helper.sh",
         "gci/configure-helper.sh",
         "gci/health-monitor.sh",

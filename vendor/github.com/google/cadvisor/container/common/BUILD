@@ -23,8 +23,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["container_hints_test.go"],
-    importpath = "github.com/google/cadvisor/container/common",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

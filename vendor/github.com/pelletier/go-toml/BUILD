@@ -37,8 +37,7 @@ go_test(
         "toml_test.go",
         "tomltree_conversions_test.go",
     ],
-    importpath = "github.com/pelletier/go-toml",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/davecgh/go-spew/spew:go_default_library"],
 )
 

@@ -1,15 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "cloudsql.go",
-        "cloudsql_vm.go",
-    ],
-    importpath = "google.golang.org/appengine/cloudsql",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

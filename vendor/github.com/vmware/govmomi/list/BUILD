@@ -19,8 +19,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["path_test.go"],
-    importpath = "github.com/vmware/govmomi/list",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -13,8 +13,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["request_test.go"],
-    importpath = "github.com/libopenstorage/openstorage/api/client",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

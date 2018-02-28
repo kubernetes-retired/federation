@@ -18,7 +18,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["provider_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/aws/credentials/endpointcreds_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",

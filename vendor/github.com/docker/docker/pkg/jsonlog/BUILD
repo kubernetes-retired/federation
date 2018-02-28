@@ -19,8 +19,7 @@ go_test(
         "jsonlogbytes_test.go",
         "time_marshalling_test.go",
     ],
-    importpath = "github.com/docker/docker/pkg/jsonlog",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

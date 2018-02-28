@@ -29,8 +29,7 @@ go_test(
         "text_parse_test.go",
     ],
     data = glob(["testdata/**"]),
-    importpath = "github.com/prometheus/common/expfmt",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/golang/protobuf/proto:go_default_library",
         "//vendor/github.com/matttproud/golang_protobuf_extensions/pbutil:go_default_library",

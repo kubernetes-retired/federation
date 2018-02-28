@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "util.go",
         "util_cgo.go",
+        "util_stub.go",
     ],
     cgo = True,
     importpath = "github.com/coreos/go-systemd/util",
@@ -15,8 +16,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["util_test.go"],
-    importpath = "github.com/coreos/go-systemd/util",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

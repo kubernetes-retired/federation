@@ -1,19 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["types.go"],
-    importpath = "github.com/docker/libnetwork/types",
-    visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["types_test.go"],
-    importpath = "github.com/docker/libnetwork/types",
-    library = ":go_default_library",
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

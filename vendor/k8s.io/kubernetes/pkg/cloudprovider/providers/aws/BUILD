@@ -66,8 +66,7 @@ go_test(
         "retry_handler_test.go",
         "tags_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/cloudprovider/providers/aws",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/service/ec2:go_default_library",

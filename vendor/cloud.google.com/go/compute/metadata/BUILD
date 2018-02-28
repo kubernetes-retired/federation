@@ -15,8 +15,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["metadata_test.go"],
-    importpath = "cloud.google.com/go/compute/metadata",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

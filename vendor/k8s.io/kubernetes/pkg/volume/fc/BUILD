@@ -34,8 +34,7 @@ go_test(
         "fc_test.go",
         "fc_util_test.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/volume/fc",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/k8s.io/api/core/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",

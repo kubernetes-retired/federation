@@ -23,15 +23,13 @@ go_test(
         "man_docs_test.go",
         "md_docs_test.go",
     ],
-    importpath = "github.com/spf13/cobra/doc",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/spf13/cobra:go_default_library"],
 )
 
 go_test(
     name = "go_default_xtest",
     srcs = ["man_examples_test.go"],
-    importpath = "github.com/spf13/cobra/doc_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/spf13/cobra:go_default_library",

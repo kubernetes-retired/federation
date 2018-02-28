@@ -23,8 +23,7 @@ go_test(
         "parsing_test.go",
         "schema_test.go",
     ],
-    importpath = "github.com/go-openapi/errors",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

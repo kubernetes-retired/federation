@@ -31,8 +31,7 @@ go_test(
         "rsa_key_test.go",
         "util_test.go",
     ],
-    importpath = "github.com/docker/libtrust",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/docker/libtrust/testutil:go_default_library"],
 )
 

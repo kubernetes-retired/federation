@@ -18,8 +18,7 @@ go_test(
         "json_test.go",
         "spec_test.go",
     ],
-    importpath = "github.com/go-openapi/loads",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 

@@ -23,8 +23,7 @@ go_test(
         "registry_test.go",
         "types_test.go",
     ],
-    importpath = "github.com/vmware/govmomi/vim25/types",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/vmware/govmomi/vim25/xml:go_default_library"],
 )
 

@@ -50,8 +50,7 @@ go_test(
         "v3_stm_test.go",
         "v3_watch_test.go",
     ],
-    importpath = "github.com/coreos/etcd/integration",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/coreos/etcd/client:go_default_library",
         "//vendor/github.com/coreos/etcd/clientv3:go_default_library",

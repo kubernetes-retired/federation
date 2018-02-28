@@ -26,8 +26,7 @@ go_test(
         "load_test.go",
         "properties_test.go",
     ],
-    importpath = "github.com/magiconair/properties",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/github.com/magiconair/properties/_third_party/gopkg.in/check.v1:go_default_library"],
 )
 

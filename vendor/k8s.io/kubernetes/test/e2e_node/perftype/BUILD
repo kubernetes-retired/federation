@@ -1,16 +1,5 @@
 package(default_visibility = ["//visibility:public"])
 
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
-
-go_library(
-    name = "go_default_library",
-    srcs = ["perftype.go"],
-    importpath = "k8s.io/kubernetes/test/e2e_node/perftype",
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

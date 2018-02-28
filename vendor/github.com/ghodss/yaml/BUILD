@@ -14,8 +14,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["yaml_test.go"],
-    importpath = "github.com/ghodss/yaml",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

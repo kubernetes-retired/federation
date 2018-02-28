@@ -15,8 +15,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["vcs_test.go"],
-    importpath = "golang.org/x/tools/go/vcs",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

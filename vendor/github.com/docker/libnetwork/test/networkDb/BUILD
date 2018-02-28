@@ -1,24 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["testMain.go"],
-    importpath = "github.com/docker/libnetwork/test/networkDb",
-    visibility = ["//visibility:private"],
-    deps = [
-        "//vendor/github.com/docker/libnetwork/test/networkDb/dbclient:go_default_library",
-        "//vendor/github.com/docker/libnetwork/test/networkDb/dbserver:go_default_library",
-        "//vendor/github.com/sirupsen/logrus:go_default_library",
-    ],
-)
-
-go_binary(
-    name = "networkDb",
-    importpath = "github.com/docker/libnetwork/test/networkDb",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

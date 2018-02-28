@@ -18,7 +18,6 @@ go_test(
         "protocol_test.go",
         "unmarshal_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/client/metadata:go_default_library",

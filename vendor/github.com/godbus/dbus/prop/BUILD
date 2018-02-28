@@ -1,16 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["prop.go"],
-    importpath = "github.com/godbus/dbus/prop",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/godbus/dbus:go_default_library",
-        "//vendor/github.com/godbus/dbus/introspect:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

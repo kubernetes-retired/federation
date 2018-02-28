@@ -11,8 +11,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["rate_test.go"],
-    importpath = "golang.org/x/time/rate",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/golang.org/x/net/context:go_default_library"],
 )
 

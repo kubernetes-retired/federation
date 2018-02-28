@@ -10,8 +10,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["buffruneio_test.go"],
-    importpath = "github.com/pelletier/go-buffruneio",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

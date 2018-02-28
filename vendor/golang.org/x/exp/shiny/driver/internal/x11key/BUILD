@@ -1,13 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["x11key.go"],
-    importpath = "golang.org/x/exp/shiny/driver/internal/x11key",
-    visibility = ["//vendor/golang.org/x/exp/shiny/driver:__subpackages__"],
-    deps = ["//vendor/golang.org/x/mobile/event/key:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

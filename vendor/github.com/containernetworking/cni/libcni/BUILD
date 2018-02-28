@@ -23,7 +23,6 @@ go_test(
         "conf_test.go",
         "libcni_suite_test.go",
     ],
-    importpath = "github.com/containernetworking/cni/libcni_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/containernetworking/cni/pkg/skel:go_default_library",

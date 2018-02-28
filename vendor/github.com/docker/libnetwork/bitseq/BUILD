@@ -1,33 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
-
-go_library(
-    name = "go_default_library",
-    srcs = [
-        "sequence.go",
-        "store.go",
-    ],
-    importpath = "github.com/docker/libnetwork/bitseq",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/docker/libnetwork/datastore:go_default_library",
-        "//vendor/github.com/docker/libnetwork/types:go_default_library",
-        "//vendor/github.com/sirupsen/logrus:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["sequence_test.go"],
-    importpath = "github.com/docker/libnetwork/bitseq",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/docker/libkv/store:go_default_library",
-        "//vendor/github.com/docker/libkv/store/boltdb:go_default_library",
-        "//vendor/github.com/docker/libnetwork/datastore:go_default_library",
-        "//vendor/github.com/docker/libnetwork/testutils:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

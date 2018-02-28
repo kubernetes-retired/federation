@@ -13,8 +13,7 @@ go_test(
         "benchmarks_test.go",
         "uuid_test.go",
     ],
-    importpath = "github.com/satori/uuid",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 filegroup(

@@ -25,8 +25,7 @@ go_test(
         "client_test.go",
         "server_test.go",
     ],
-    importpath = "github.com/grpc-ecosystem/go-grpc-prometheus",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/grpc-ecosystem/go-grpc-prometheus/examples/testproto:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",

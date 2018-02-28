@@ -17,7 +17,6 @@ go_test(
         "types_suite_test.go",
         "types_test.go",
     ],
-    importpath = "github.com/containernetworking/cni/pkg/types/current_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/containernetworking/cni/pkg/types:go_default_library",

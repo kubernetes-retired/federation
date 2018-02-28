@@ -20,8 +20,7 @@ go_test(
         "namer_test.go",
         "plural_namer_test.go",
     ],
-    importpath = "k8s.io/gengo/namer",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = ["//vendor/k8s.io/gengo/types:go_default_library"],
 )
 

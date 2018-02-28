@@ -1,23 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "go_default_library",
-    srcs = ["drivers.go"],
-    importpath = "github.com/libopenstorage/openstorage/volume/drivers",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//vendor/github.com/libopenstorage/openstorage/api:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/aws:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/btrfs:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/buse:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/coprhd:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/nfs:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/pwx:go_default_library",
-        "//vendor/github.com/libopenstorage/openstorage/volume/drivers/vfs:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),

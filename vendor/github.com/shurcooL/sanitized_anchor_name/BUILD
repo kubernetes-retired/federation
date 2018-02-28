@@ -10,7 +10,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["main_test.go"],
-    importpath = "github.com/shurcooL/sanitized_anchor_name_test",
     deps = [":go_default_library"],
 )
 

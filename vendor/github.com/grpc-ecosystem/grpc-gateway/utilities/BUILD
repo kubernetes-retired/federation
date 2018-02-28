@@ -14,7 +14,6 @@ go_library(
 go_test(
     name = "go_default_xtest",
     srcs = ["trie_test.go"],
-    importpath = "github.com/grpc-ecosystem/grpc-gateway/utilities_test",
     deps = [":go_default_library"],
 )
 

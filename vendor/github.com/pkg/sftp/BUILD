@@ -9,23 +9,75 @@ go_library(
         "packet.go",
         "release.go",
         "server.go",
-        "server_statvfs_stubs.go",
         "sftp.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "attrs_stubs.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "attrs_stubs.go",
             "attrs_unix.go",
             "server_statvfs_darwin.go",
             "server_statvfs_impl.go",
+            "server_stubs.go",
             "server_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "attrs_stubs.go",
             "attrs_unix.go",
             "server_statvfs_impl.go",
             "server_statvfs_linux.go",
+            "server_stubs.go",
             "server_unix.go",
         ],
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:nacl": [
             "attrs_stubs.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "server_statvfs_stubs.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "attrs_stubs.go",
+            "attrs_unix.go",
+            "server_statvfs_stubs.go",
+            "server_stubs.go",
+            "server_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "attrs_stubs.go",
+            "server_statvfs_stubs.go",
             "server_stubs.go",
         ],
         "//conditions:default": [],
@@ -45,21 +97,46 @@ go_test(
         "attrs_test.go",
         "client_integration_test.go",
         "client_test.go",
-        "other_test.go",
         "packet_test.go",
         "server_integration_test.go",
         "server_test.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:darwin_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
             "client_integration_darwin_test.go",
         ],
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "client_integration_linux_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "other_test.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "other_test.go",
         ],
         "//conditions:default": [],
     }),
-    importpath = "github.com/pkg/sftp",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/kr/fs:go_default_library",
         "//vendor/golang.org/x/crypto/ssh:go_default_library",
@@ -69,7 +146,6 @@ go_test(
 go_test(
     name = "go_default_xtest",
     srcs = ["example_test.go"],
-    importpath = "github.com/pkg/sftp_test",
     deps = [
         ":go_default_library",
         "//vendor/golang.org/x/crypto/ssh:go_default_library",

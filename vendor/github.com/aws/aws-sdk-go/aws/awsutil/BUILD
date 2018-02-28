@@ -21,7 +21,6 @@ go_test(
         "equal_test.go",
         "path_value_test.go",
     ],
-    importpath = "github.com/aws/aws-sdk-go/aws/awsutil_test",
     deps = [
         ":go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

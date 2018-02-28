@@ -14,7 +14,6 @@ go_test(
         "example_test.go",
         "influxdb_test.go",
     ],
-    importpath = "github.com/influxdata/influxdb/client_test",
     deps = [":go_default_library"],
 )
 
