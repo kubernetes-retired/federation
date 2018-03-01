@@ -79,6 +79,8 @@ filegroup(
         "//test/common:all-srcs",
         "//test/e2e:all-srcs",
         "//test/integration:all-srcs",
+        "//test/k8s/e2e/framework:all-srcs",
+        "//test/k8s/integration/framework:all-srcs",
         "//test/testapi:all-srcs",
         "//vendor:all-srcs",
     ],

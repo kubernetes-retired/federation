@@ -11,9 +11,9 @@ go_library(
     importpath = "k8s.io/federation/cmd/kubefed/app",
     deps = [
         "//pkg/kubefed:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/logs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/metrics/prometheus:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubectl/util/logs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version/prometheus:go_default_library",
     ],

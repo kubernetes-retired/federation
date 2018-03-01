@@ -39,8 +39,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["clouddns_test.go"],
-    importpath = "k8s.io/federation/pkg/dnsprovider/providers/google/clouddns",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//pkg/dnsprovider:go_default_library",
         "//pkg/dnsprovider/rrstype:go_default_library",

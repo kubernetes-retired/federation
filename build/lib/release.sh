@@ -88,8 +88,8 @@ function kube::release::package_tarballs() {
   kube::release::package_server_tarballs &
   kube::util::wait-for-jobs || { kube::log::error "previous tarball phase failed"; return 1; }
 
-  kube::release::package_final_tarball # _final depends on some of the previous phases
-  kube::release::package_test_tarball # _test doesn't depend on anything
+  kube::release::package_final_tarball & # _final depends on some of the previous phases
+  kube::release::package_test_tarball & # _test doesn't depend on anything
   kube::log::status "Completed federation release build."
 }
 

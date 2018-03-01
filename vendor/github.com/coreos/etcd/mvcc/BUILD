@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -7,12 +7,16 @@ go_library(
         "index.go",
         "key_index.go",
         "kv.go",
+        "kv_view.go",
         "kvstore.go",
         "kvstore_compaction.go",
+        "kvstore_txn.go",
         "metrics.go",
+        "metrics_txn.go",
         "revision.go",
         "util.go",
         "watchable_store.go",
+        "watchable_store_txn.go",
         "watcher.go",
         "watcher_group.go",
     ],
@@ -28,33 +32,6 @@ go_library(
         "//vendor/github.com/google/btree:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
         "//vendor/golang.org/x/net/context:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "index_test.go",
-        "key_index_test.go",
-        "kv_test.go",
-        "kvstore_bench_test.go",
-        "kvstore_compaction_test.go",
-        "kvstore_test.go",
-        "revision_test.go",
-        "watchable_store_bench_test.go",
-        "watchable_store_test.go",
-        "watcher_bench_test.go",
-        "watcher_test.go",
-    ],
-    importpath = "github.com/coreos/etcd/mvcc",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/coreos/etcd/lease:go_default_library",
-        "//vendor/github.com/coreos/etcd/mvcc/backend:go_default_library",
-        "//vendor/github.com/coreos/etcd/mvcc/mvccpb:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/schedule:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/testutil:go_default_library",
-        "//vendor/github.com/google/btree:go_default_library",
     ],
 )
 

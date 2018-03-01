@@ -40,8 +40,8 @@ import (
 	"k8s.io/federation/pkg/federation-controller/util/clusterselector"
 	"k8s.io/federation/pkg/federation-controller/util/deletionhelper"
 	"k8s.io/federation/pkg/federation-controller/util/eventsink"
-	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/controller"
 
 	"github.com/golang/glog"

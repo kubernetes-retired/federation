@@ -23,6 +23,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -42,7 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	netutil "k8s.io/apimachinery/pkg/util/net"
 	certutil "k8s.io/client-go/util/cert"
-	v1helper "k8s.io/kubernetes/pkg/api/v1/helper"
+	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
 	"k8s.io/kubernetes/pkg/cloudprovider"
 	"k8s.io/kubernetes/pkg/controller"
 )
@@ -74,11 +75,13 @@ func (d *MyDuration) UnmarshalText(text []byte) error {
 type LoadBalancer struct {
 	network *gophercloud.ServiceClient
 	compute *gophercloud.ServiceClient
+	lb      *gophercloud.ServiceClient
 	opts    LoadBalancerOpts
 }
 
 type LoadBalancerOpts struct {
 	LBVersion            string     `gcfg:"lb-version"`          // overrides autodetection. Only support v2.
+	UseOctavia           bool       `gcfg:"use-octavia"`         // uses Octavia V2 service catalog endpoint
 	SubnetId             string     `gcfg:"subnet-id"`           // overrides autodetection.
 	FloatingNetworkId    string     `gcfg:"floating-network-id"` // If specified, will create floating ip for loadbalancer, or do not create floating ip.
 	LBMethod             string     `gcfg:"lb-method"`           // default to ROUND_ROBIN.
@@ -178,12 +181,50 @@ func (cfg Config) toAuth3Options() tokens3.AuthOptions {
 	}
 }
 
+// configFromEnv allows setting up credentials etc using the
+// standard OS_* OpenStack client environment variables.
+func configFromEnv() (cfg Config, ok bool) {
+	cfg.Global.AuthUrl = os.Getenv("OS_AUTH_URL")
+	cfg.Global.Username = os.Getenv("OS_USERNAME")
+	cfg.Global.Password = os.Getenv("OS_PASSWORD")
+	cfg.Global.Region = os.Getenv("OS_REGION_NAME")
+
+	cfg.Global.TenantId = os.Getenv("OS_TENANT_ID")
+	if cfg.Global.TenantId == "" {
+		cfg.Global.TenantId = os.Getenv("OS_PROJECT_ID")
+	}
+	cfg.Global.TenantName = os.Getenv("OS_TENANT_NAME")
+	if cfg.Global.TenantName == "" {
+		cfg.Global.TenantName = os.Getenv("OS_PROJECT_NAME")
+	}
+
+	cfg.Global.DomainId = os.Getenv("OS_DOMAIN_ID")
+	if cfg.Global.DomainId == "" {
+		cfg.Global.DomainId = os.Getenv("OS_USER_DOMAIN_ID")
+	}
+	cfg.Global.DomainName = os.Getenv("OS_DOMAIN_NAME")
+	if cfg.Global.DomainName == "" {
+		cfg.Global.DomainName = os.Getenv("OS_USER_DOMAIN_NAME")
+	}
+
+	ok = cfg.Global.AuthUrl != "" &&
+		cfg.Global.Username != "" &&
+		cfg.Global.Password != "" &&
+		(cfg.Global.TenantId != "" || cfg.Global.TenantName != "" ||
+			cfg.Global.DomainId != "" || cfg.Global.DomainName != "")
+
+	cfg.Metadata.SearchOrder = fmt.Sprintf("%s,%s", configDriveID, metadataID)
+	cfg.BlockStorage.BSVersion = "auto"
+
+	return
+}
+
 func readConfig(config io.Reader) (Config, error) {
 	if config == nil {
 		return Config{}, fmt.Errorf("no OpenStack cloud provider config file given")
 	}
 
-	var cfg Config
+	cfg, _ := configFromEnv()
 
 	// Set default values for config params
 	cfg.BlockStorage.BSVersion = "auto"
@@ -317,6 +358,22 @@ func mapNodeNameToServerName(nodeName types.NodeName) string {
 	return string(nodeName)
 }
 
+// getNodeNameByID maps instanceid to types.NodeName
+func (os *OpenStack) GetNodeNameByID(instanceID string) (types.NodeName, error) {
+	client, err := os.NewComputeV2()
+	var nodeName types.NodeName
+	if err != nil {
+		return nodeName, err
+	}
+
+	server, err := servers.Get(client, instanceID).Extract()
+	if err != nil {
+		return nodeName, err
+	}
+	nodeName = mapServerToNodeName(server)
+	return nodeName, nil
+}
+
 // mapServerToNodeName maps an OpenStack Server to a k8s NodeName
 func mapServerToNodeName(server *servers.Server) types.NodeName {
 	// Node names are always lowercase, and (at least)
@@ -344,11 +401,14 @@ func foreachServer(client *gophercloud.ServiceClient, opts servers.ListOptsBuild
 	return err
 }
 
-func getServerByName(client *gophercloud.ServiceClient, name types.NodeName) (*servers.Server, error) {
+func getServerByName(client *gophercloud.ServiceClient, name types.NodeName, showOnlyActive bool) (*servers.Server, error) {
 	opts := servers.ListOpts{
-		Name:   fmt.Sprintf("^%s$", regexp.QuoteMeta(mapNodeNameToServerName(name))),
-		Status: "ACTIVE",
+		Name: fmt.Sprintf("^%s$", regexp.QuoteMeta(mapNodeNameToServerName(name))),
 	}
+	if showOnlyActive {
+		opts.Status = "ACTIVE"
+	}
+
 	pager := servers.List(client, opts)
 
 	serverList := make([]servers.Server, 0, 1)
@@ -430,7 +490,7 @@ func nodeAddresses(srv *servers.Server) ([]v1.NodeAddress, error) {
 }
 
 func getAddressesByName(client *gophercloud.ServiceClient, name types.NodeName) ([]v1.NodeAddress, error) {
-	srv, err := getServerByName(client, name)
+	srv, err := getServerByName(client, name, true)
 	if err != nil {
 		return nil, err
 	}
@@ -484,11 +544,6 @@ func (os *OpenStack) ProviderName() string {
 	return ProviderName
 }
 
-// ScrubDNS filters DNS settings for pods.
-func (os *OpenStack) ScrubDNS(nameServers, searches []string) ([]string, []string) {
-	return nameServers, searches
-}
-
 // HasClusterID returns true if the cluster has a clusterID
 func (os *OpenStack) HasClusterID() bool {
 	return true
@@ -507,6 +562,11 @@ func (os *OpenStack) LoadBalancer() (cloudprovider.LoadBalancer, bool) {
 		return nil, false
 	}
 
+	lb, err := os.NewLoadBalancerV2()
+	if err != nil {
+		return nil, false
+	}
+
 	// LBaaS v1 is deprecated in the OpenStack Liberty release.
 	// Currently kubernetes OpenStack cloud provider just support LBaaS v2.
 	lbVersion := os.lbOpts.LBVersion
@@ -517,7 +577,7 @@ func (os *OpenStack) LoadBalancer() (cloudprovider.LoadBalancer, bool) {
 
 	glog.V(1).Info("Claiming to support LoadBalancer")
 
-	return &LbaasV2{LoadBalancer{network, compute, os.lbOpts}}, true
+	return &LbaasV2{LoadBalancer{network, compute, lb, os.lbOpts}}, true
 }
 
 func isNotFound(err error) bool {
@@ -580,7 +640,7 @@ func (os *OpenStack) GetZoneByNodeName(nodeName types.NodeName) (cloudprovider.Z
 		return cloudprovider.Zone{}, err
 	}
 
-	srv, err := getServerByName(compute, nodeName)
+	srv, err := getServerByName(compute, nodeName, true)
 	if err != nil {
 		if err == ErrNotFound {
 			return cloudprovider.Zone{}, cloudprovider.InstanceNotFound
@@ -653,27 +713,36 @@ func (os *OpenStack) volumeService(forceVersion string) (volumeService, error) {
 		}
 		glog.V(3).Infof("Using Blockstorage API V2")
 		return &VolumesV2{sClient, os.bsOpts}, nil
-	case "auto":
-		// Currently kubernetes just support Cinder v1 and Cinder v2.
-		// Choose Cinder v2 firstly, if kubernetes can't initialize cinder v2 client, try to initialize cinder v1 client.
-		// Return appropriate message when kubernetes can't initialize them.
-		// TODO(FengyunPan): revisit 'auto' after supporting Cinder v3.
-		sClient, err := os.NewBlockStorageV2()
+	case "v3":
+		sClient, err := os.NewBlockStorageV3()
 		if err != nil {
-			sClient, err = os.NewBlockStorageV1()
-			if err != nil {
-				// Nothing suitable found, failed autodetection, just exit with appropriate message
-				err_txt := "BlockStorage API version autodetection failed. " +
-					"Please set it explicitly in cloud.conf in section [BlockStorage] with key `bs-version`"
-				return nil, errors.New(err_txt)
-			} else {
-				glog.V(3).Infof("Using Blockstorage API V1")
-				return &VolumesV1{sClient, os.bsOpts}, nil
-			}
-		} else {
+			return nil, err
+		}
+		glog.V(3).Infof("Using Blockstorage API V3")
+		return &VolumesV3{sClient, os.bsOpts}, nil
+	case "auto":
+		// Currently kubernetes support Cinder v1 / Cinder v2 / Cinder v3.
+		// Choose Cinder v3 firstly, if kubernetes can't initialize cinder v3 client, try to initialize cinder v2 client.
+		// If kubernetes can't initialize cinder v2 client, try to initialize cinder v1 client.
+		// Return appropriate message when kubernetes can't initialize them.
+		if sClient, err := os.NewBlockStorageV3(); err == nil {
+			glog.V(3).Infof("Using Blockstorage API V3")
+			return &VolumesV3{sClient, os.bsOpts}, nil
+		}
+
+		if sClient, err := os.NewBlockStorageV2(); err == nil {
 			glog.V(3).Infof("Using Blockstorage API V2")
 			return &VolumesV2{sClient, os.bsOpts}, nil
 		}
+
+		if sClient, err := os.NewBlockStorageV1(); err == nil {
+			glog.V(3).Infof("Using Blockstorage API V1")
+			return &VolumesV1{sClient, os.bsOpts}, nil
+		}
+
+		err_txt := "BlockStorage API version autodetection failed. " +
+			"Please set it explicitly in cloud.conf in section [BlockStorage] with key `bs-version`"
+		return nil, errors.New(err_txt)
 	default:
 		err_txt := fmt.Sprintf("Config error: unrecognised bs-version \"%v\"", os.bsOpts.BSVersion)
 		return nil, errors.New(err_txt)

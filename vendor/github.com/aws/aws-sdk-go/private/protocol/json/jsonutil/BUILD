@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,16 +9,6 @@ go_library(
     importpath = "github.com/aws/aws-sdk-go/private/protocol/json/jsonutil",
     visibility = ["//visibility:public"],
     deps = ["//vendor/github.com/aws/aws-sdk-go/private/protocol:go_default_library"],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["build_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/json/jsonutil_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
-    ],
 )
 
 filegroup(

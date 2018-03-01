@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,14 +9,6 @@ go_library(
     importpath = "github.com/spf13/cast",
     visibility = ["//visibility:public"],
     deps = ["//vendor/github.com/spf13/jwalterweatherman:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["cast_test.go"],
-    importpath = "github.com/spf13/cast",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
 filegroup(

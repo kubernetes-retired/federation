@@ -1,10 +1,12 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
         "api.go",
         "customizations.go",
+        "doc.go",
+        "errors.go",
         "service.go",
         "unmarshal_error.go",
         "waiters.go",
@@ -20,38 +22,6 @@ go_library(
         "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/signer/v4:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/private/protocol/restxml:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/private/waiter:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["unmarshal_error_leak_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/service/route53",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/awstesting:go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = [
-        "customizations_test.go",
-        "examples_test.go",
-        "unmarshal_error_test.go",
-    ],
-    importpath = "github.com/aws/aws-sdk-go/service/route53_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws/session:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/awstesting/unit:go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
     ],
 )
 
@@ -64,10 +34,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/aws/aws-sdk-go/service/route53/route53iface:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

@@ -43,7 +43,7 @@ type ServerRunOptions struct {
 	Authorization           *kubeoptions.BuiltInAuthorizationOptions
 	CloudProvider           *kubeoptions.CloudProviderOptions
 	StorageSerialization    *kubeoptions.StorageSerializationOptions
-	APIEnablement           *kubeoptions.APIEnablementOptions
+	APIEnablement           *genericoptions.APIEnablementOptions
 
 	EventTTL time.Duration
 }
@@ -60,16 +60,13 @@ func NewServerRunOptions() *ServerRunOptions {
 		Admission:            genericoptions.NewAdmissionOptions(),
 		Authentication:       kubeoptions.NewBuiltInAuthenticationOptions().WithAll(),
 		Authorization:        kubeoptions.NewBuiltInAuthorizationOptions(),
-		CloudProvider:        kubeoptions.NewCloudProviderOptions(),
 		StorageSerialization: kubeoptions.NewStorageSerializationOptions(),
-		APIEnablement:        kubeoptions.NewAPIEnablementOptions(),
+		APIEnablement:        genericoptions.NewAPIEnablementOptions(),
 
 		EventTTL: 1 * time.Hour,
 	}
 	// Overwrite the default for storage data format.
 	s.Etcd.DefaultStorageMediaType = "application/vnd.kubernetes.protobuf"
-	// Set the default for admission plugins names
-	s.Admission.PluginNames = []string{"AlwaysAdmit"}
 	return &s
 }
 
@@ -84,7 +81,6 @@ func (s *ServerRunOptions) AddFlags(fs *pflag.FlagSet) {
 	s.Features.AddFlags(fs)
 	s.Authentication.AddFlags(fs)
 	s.Authorization.AddFlags(fs)
-	s.CloudProvider.AddFlags(fs)
 	s.StorageSerialization.AddFlags(fs)
 	s.APIEnablement.AddFlags(fs)
 	s.Admission.AddFlags(fs)

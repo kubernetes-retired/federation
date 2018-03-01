@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,24 +9,6 @@ go_library(
     importpath = "gopkg.in/gcfg.v1/scanner",
     visibility = ["//visibility:public"],
     deps = ["//vendor/gopkg.in/gcfg.v1/token:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["scanner_test.go"],
-    importpath = "gopkg.in/gcfg.v1/scanner",
-    library = ":go_default_library",
-    deps = ["//vendor/gopkg.in/gcfg.v1/token:go_default_library"],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = ["example_test.go"],
-    importpath = "gopkg.in/gcfg.v1/scanner_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/gopkg.in/gcfg.v1/token:go_default_library",
-    ],
 )
 
 filegroup(

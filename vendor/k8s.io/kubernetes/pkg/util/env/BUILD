@@ -1,23 +1,10 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["env.go"],
     importpath = "k8s.io/kubernetes/pkg/util/env",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["env_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/util/env",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -31,4 +18,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

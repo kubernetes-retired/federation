@@ -33,8 +33,7 @@ filegroup(
 go_test(
     name = "go_default_test",
     srcs = ["finalizers_test.go"],
-    importpath = "k8s.io/federation/pkg/federation-controller/util/finalizers",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

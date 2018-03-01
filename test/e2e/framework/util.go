@@ -33,9 +33,9 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	"k8s.io/federation/client/clientset_generated/federation_clientset"
+	"k8s.io/federation/test/k8s/e2e/framework"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	"k8s.io/kubernetes/pkg/api/validation"
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/kubernetes/pkg/apis/core/validation"
 )
 
 const FederatedDefaultTestTimeout = 5 * time.Minute

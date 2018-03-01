@@ -1,9 +1,4 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -13,10 +8,12 @@ go_library(
         "import.go",
     ],
     importpath = "k8s.io/client-go/kubernetes",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/k8s.io/client-go/discovery:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/admissionregistration/v1alpha1:go_default_library",
+        "//vendor/k8s.io/client-go/kubernetes/typed/admissionregistration/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1beta2:go_default_library",
@@ -31,6 +28,7 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes/typed/batch/v2alpha1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/certificates/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:go_default_library",
+        "//vendor/k8s.io/client-go/kubernetes/typed/events/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/extensions/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/networking/v1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/policy/v1beta1:go_default_library",
@@ -40,6 +38,7 @@ go_library(
         "//vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1alpha1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/settings/v1alpha1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1:go_default_library",
+        "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1alpha1:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1beta1:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/util/flowcontrol:go_default_library",
@@ -60,6 +59,7 @@ filegroup(
         "//vendor/k8s.io/client-go/kubernetes/fake:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/scheme:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/admissionregistration/v1alpha1:all-srcs",
+        "//vendor/k8s.io/client-go/kubernetes/typed/admissionregistration/v1beta1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1beta1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/apps/v1beta2:all-srcs",
@@ -74,6 +74,7 @@ filegroup(
         "//vendor/k8s.io/client-go/kubernetes/typed/batch/v2alpha1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/certificates/v1beta1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/core/v1:all-srcs",
+        "//vendor/k8s.io/client-go/kubernetes/typed/events/v1beta1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/extensions/v1beta1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/networking/v1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/policy/v1beta1:all-srcs",
@@ -83,7 +84,9 @@ filegroup(
         "//vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1alpha1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/settings/v1alpha1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1:all-srcs",
+        "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1alpha1:all-srcs",
         "//vendor/k8s.io/client-go/kubernetes/typed/storage/v1beta1:all-srcs",
     ],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

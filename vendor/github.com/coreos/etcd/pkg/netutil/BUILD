@@ -1,15 +1,53 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
-        "isolate_stub.go",
         "netutil.go",
-        "routes.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
             "isolate_linux.go",
             "routes_linux.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "isolate_stub.go",
+            "routes.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
+            "isolate_stub.go",
+            "routes.go",
         ],
         "//conditions:default": [],
     }),
@@ -18,28 +56,12 @@ go_library(
     deps = [
         "//vendor/github.com/coreos/etcd/pkg/types:go_default_library",
         "//vendor/github.com/coreos/pkg/capnslog:go_default_library",
-        "//vendor/golang.org/x/net/context:go_default_library",
     ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
+        "@io_bazel_rules_go//go/platform:linux": [
             "//vendor/github.com/coreos/etcd/pkg/cpuutil:go_default_library",
         ],
         "//conditions:default": [],
     }),
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "netutil_test.go",
-    ] + select({
-        "@io_bazel_rules_go//go/platform:linux_amd64": [
-            "routes_linux_test.go",
-        ],
-        "//conditions:default": [],
-    }),
-    importpath = "github.com/coreos/etcd/pkg/netutil",
-    library = ":go_default_library",
-    deps = ["//vendor/golang.org/x/net/context:go_default_library"],
 )
 
 filegroup(

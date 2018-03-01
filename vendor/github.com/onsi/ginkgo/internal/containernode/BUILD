@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -8,23 +8,6 @@ go_library(
     deps = [
         "//vendor/github.com/onsi/ginkgo/internal/leafnodes:go_default_library",
         "//vendor/github.com/onsi/ginkgo/types:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_xtest",
-    srcs = [
-        "container_node_suite_test.go",
-        "container_node_test.go",
-    ],
-    importpath = "github.com/onsi/ginkgo/internal/containernode_test",
-    deps = [
-        ":go_default_library",
-        "//vendor/github.com/onsi/ginkgo:go_default_library",
-        "//vendor/github.com/onsi/ginkgo/internal/codelocation:go_default_library",
-        "//vendor/github.com/onsi/ginkgo/internal/leafnodes:go_default_library",
-        "//vendor/github.com/onsi/ginkgo/types:go_default_library",
-        "//vendor/github.com/onsi/gomega:go_default_library",
     ],
 )
 

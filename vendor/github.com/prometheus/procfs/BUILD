@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -21,25 +21,6 @@ go_library(
     deps = ["//vendor/github.com/prometheus/procfs/xfs:go_default_library"],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "buddyinfo_test.go",
-        "fs_test.go",
-        "ipvs_test.go",
-        "mdstat_test.go",
-        "mountstats_test.go",
-        "proc_io_test.go",
-        "proc_limits_test.go",
-        "proc_stat_test.go",
-        "proc_test.go",
-        "stat_test.go",
-        "xfrm_test.go",
-    ],
-    importpath = "github.com/prometheus/procfs",
-    library = ":go_default_library",
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -51,7 +32,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/prometheus/procfs/sysfs:all-srcs",
         "//vendor/github.com/prometheus/procfs/xfs:all-srcs",
     ],
     tags = ["automanaged"],

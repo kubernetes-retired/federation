@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -17,24 +17,13 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/endpoints/request:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/registry/rest:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage:go_default_library",
         "//vendor/k8s.io/client-go/util/retry:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/api/endpoints:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/registry/core/endpoint:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["lease_test.go"],
-    importpath = "k8s.io/kubernetes/pkg/master/reconcilers",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/registry/registrytest:go_default_library",
     ],
 )
 

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -18,19 +18,6 @@ go_library(
     ],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = ["unicode_test.go"],
-    importpath = "golang.org/x/text/encoding/unicode",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/golang.org/x/text/encoding:go_default_library",
-        "//vendor/golang.org/x/text/encoding/charmap:go_default_library",
-        "//vendor/golang.org/x/text/encoding/internal/enctest:go_default_library",
-        "//vendor/golang.org/x/text/transform:go_default_library",
-    ],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -40,10 +27,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/golang.org/x/text/encoding/unicode/utf32:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

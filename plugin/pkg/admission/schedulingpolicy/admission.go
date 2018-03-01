@@ -30,14 +30,14 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/api/ref"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset"
 )
 
 const (
-	pluginName               = "SchedulingPolicy"
+	PluginName               = "SchedulingPolicy"
 	configKey                = "schedulingPolicy"
 	policyConfigMapNamespace = "kube-federation-scheduling-policy"
 
@@ -62,7 +62,7 @@ type admissionController struct {
 
 // Register registers the plugin.
 func Register(plugins *admission.Plugins) {
-	plugins.Register(pluginName, func(file io.Reader) (admission.Interface, error) {
+	plugins.Register(PluginName, func(file io.Reader) (admission.Interface, error) {
 		return newAdmissionController(file)
 	})
 }
@@ -89,7 +89,7 @@ func newAdmissionController(file io.Reader) (*admissionController, error) {
 
 func (c *admissionController) Validate() error {
 	if c.client == nil {
-		return fmt.Errorf("%s requires a client", pluginName)
+		return fmt.Errorf("%s requires a client", PluginName)
 	}
 	return nil
 }

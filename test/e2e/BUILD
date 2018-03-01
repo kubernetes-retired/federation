@@ -32,6 +32,8 @@ go_library(
         "//test/common:go_default_library",
         "//test/e2e/framework:go_default_library",
         "//test/e2e/upgrades:go_default_library",
+        "//test/k8s/e2e/framework:go_default_library",
+        "//test/k8s/e2e/framework/ginkgowrapper:go_default_library",
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/ginkgo/config:go_default_library",
@@ -48,20 +50,14 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/util/runtime:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/uuid:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/wait:go_default_library",
+        "//vendor/k8s.io/apiserver/pkg/util/logs:go_default_library",
         "//vendor/k8s.io/client-go/kubernetes:go_default_library",
         "//vendor/k8s.io/client-go/tools/clientcmd:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/azure:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/cloudprovider/providers/gce:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubectl/util/logs:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/version:go_default_library",
         "//vendor/k8s.io/kubernetes/test/e2e/chaosmonkey:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e/common:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e/framework:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e/framework/ginkgowrapper:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e/framework/metrics:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/e2e/manifest:go_default_library",
-        "//vendor/k8s.io/kubernetes/test/utils:go_default_library",
     ],
 )
 
@@ -88,6 +84,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//test/e2e/framework:all-srcs",
+        "//test/e2e/k8s/test/e2e/framework:all-srcs",
         "//test/e2e/upgrades:all-srcs",
     ],
     tags = ["automanaged"],
@@ -96,8 +93,7 @@ filegroup(
 go_test(
     name = "go_default_test",
     srcs = ["e2e_test.go"],
-    importpath = "k8s.io/federation/test/e2e",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     tags = ["e2e"],
     deps = ["//test/e2e/framework:go_default_library"],
 )

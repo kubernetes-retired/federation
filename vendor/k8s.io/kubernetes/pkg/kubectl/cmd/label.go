@@ -39,7 +39,6 @@ import (
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 	"k8s.io/kubernetes/pkg/kubectl/resource"
 	"k8s.io/kubernetes/pkg/kubectl/util/i18n"
-	"k8s.io/kubernetes/pkg/printers"
 )
 
 // LabelOptions have the data required to perform the label operation
@@ -70,7 +69,8 @@ var (
 	labelLong = templates.LongDesc(i18n.T(`
 		Update the labels on a resource.
 
-		* A label must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores, up to %[1]d characters.
+		* A label key and value must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores, up to %[1]d characters each.
+		* Optionally, the key can begin with a DNS subdomain prefix and a single '/', like example.com/my-app
 		* If --overwrite is true, then existing labels can be overwritten, otherwise attempting to overwrite a label will result in an error.
 		* If --resource-version is specified, then updates will use this resource version, otherwise the existing resource-version will be used.`))
 
@@ -97,20 +97,11 @@ var (
 
 func NewCmdLabel(f cmdutil.Factory, out io.Writer) *cobra.Command {
 	options := &LabelOptions{}
-
-	// retrieve a list of handled resources from printer as valid args
-	validArgs, argAliases := []string{}, []string{}
-	p, err := f.Printer(nil, printers.PrintOptions{
-		ColumnLabels: []string{},
-	})
-	cmdutil.CheckErr(err)
-	if p != nil {
-		validArgs = p.HandledResources()
-		argAliases = kubectl.ResourceAliases(validArgs)
-	}
+	validArgs := cmdutil.ValidArgList(f)
 
 	cmd := &cobra.Command{
-		Use:     "label [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]",
+		Use: "label [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]",
+		DisableFlagsInUseLine: true,
 		Short:   i18n.T("Update the labels on a resource"),
 		Long:    fmt.Sprintf(labelLong, validation.LabelValueMaxLength),
 		Example: labelExample,
@@ -124,7 +115,7 @@ func NewCmdLabel(f cmdutil.Factory, out io.Writer) *cobra.Command {
 			cmdutil.CheckErr(options.RunLabel(f, cmd))
 		},
 		ValidArgs:  validArgs,
-		ArgAliases: argAliases,
+		ArgAliases: kubectl.ResourceAliases(validArgs),
 	}
 	cmdutil.AddPrinterFlags(cmd)
 	cmd.Flags().Bool("overwrite", false, "If true, allow labels to be overwritten, otherwise reject label updates that overwrite existing labels.")
@@ -191,6 +182,8 @@ func (o *LabelOptions) RunLabel(f cmdutil.Factory, cmd *cobra.Command) error {
 
 	includeUninitialized := cmdutil.ShouldIncludeUninitialized(cmd, false)
 	b := f.NewBuilder().
+		Unstructured().
+		LocalParam(o.local).
 		ContinueOnError().
 		NamespaceParam(cmdNamespace).DefaultNamespace().
 		FilenameParam(enforceNamespace, &o.FilenameOptions).
@@ -198,20 +191,9 @@ func (o *LabelOptions) RunLabel(f cmdutil.Factory, cmd *cobra.Command) error {
 		Flatten()
 
 	if !o.local {
-		// call this method here, as it requires an api call
-		// and will cause the command to fail when there is
-		// no connection to a server
-		mapper, typer, err := f.UnstructuredObject()
-		if err != nil {
-			return err
-		}
-
-		b = b.SelectorParam(o.selector).
-			Unstructured(f.UnstructuredClientForMapping, mapper, typer).
+		b = b.LabelSelectorParam(o.selector).
 			ResourceTypeOrNameArgs(o.all, o.resources...).
 			Latest()
-	} else {
-		b = b.Local(f.ClientForMapping)
 	}
 
 	one := false
@@ -308,19 +290,10 @@ func (o *LabelOptions) RunLabel(f cmdutil.Factory, cmd *cobra.Command) error {
 			return nil
 		}
 
-		var mapper meta.RESTMapper
-		if o.local {
-			mapper, _ = f.Object()
-		} else {
-			mapper, _, err = f.UnstructuredObject()
-			if err != nil {
-				return err
-			}
-		}
 		if o.outputFormat != "" {
-			return f.PrintObject(cmd, o.local, mapper, outputObj, o.out)
+			return f.PrintObject(cmd, o.local, r.Mapper().RESTMapper, outputObj, o.out)
 		}
-		cmdutil.PrintSuccess(mapper, false, o.out, info.Mapping.Resource, info.Name, o.dryrun, dataChangeMsg)
+		f.PrintSuccess(r.Mapper().RESTMapper, false, o.out, info.Mapping.Resource, info.Name, o.dryrun, dataChangeMsg)
 		return nil
 	})
 }

@@ -18,7 +18,9 @@ package framework
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/pborman/uuid"
@@ -28,7 +30,7 @@ import (
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	"k8s.io/federation/cmd/federation-apiserver/app"
 	"k8s.io/federation/cmd/federation-apiserver/app/options"
-	"k8s.io/kubernetes/test/integration/framework"
+	"k8s.io/federation/test/k8s/integration/framework"
 )
 
 const apiNoun = "federation apiserver"
@@ -65,7 +67,14 @@ func (f *FederationAPIFixture) SetUpWithRunOptions(t *testing.T, runOptions *opt
 
 	f.stopChan = make(chan struct{})
 
-	err := startServer(t, runOptions, f.stopChan)
+	tempDir, err := ioutil.TempDir("", "fed-intg-test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.RemoveAll(tempDir)
+	runOptions.SecureServing.ServerCert.CertDirectory = tempDir
+
+	err = startServer(t, runOptions, f.stopChan)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,23 +105,25 @@ func (f *FederationAPIFixture) NewClient(userAgent string) federationclientset.I
 }
 
 func startServer(t *testing.T, runOptions *options.ServerRunOptions, stopChan <-chan struct{}) error {
+	var port int
 	err := wait.PollImmediate(DefaultWaitInterval, wait.ForeverTestTimeout, func() (bool, error) {
-		port, err := framework.FindFreeLocalPort()
+		var err error
+		port, err = framework.FindFreeLocalPort()
 		if err != nil {
 			t.Logf("Error allocating an ephemeral port: %v", err)
-			return false, nil
-		}
-
-		runOptions.InsecureServing.BindPort = port
-		err = app.NonBlockingRun(runOptions, stopChan)
-		if err != nil {
-			t.Logf("Error starting the %s: %v", apiNoun, err)
 			return false, nil
 		}
 		return true, nil
 	})
 	if err != nil {
 		return fmt.Errorf("Timed out waiting for the %s: %v", apiNoun, err)
+	}
+
+	runOptions.InsecureServing.BindPort = port
+	err = app.NonBlockingRun(runOptions, stopChan)
+	if err != nil {
+		t.Logf("Error starting the %s: %v", apiNoun, err)
+		return err
 	}
 	return nil
 }

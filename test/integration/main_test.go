@@ -17,9 +17,8 @@ limitations under the License.
 package integration
 
 import (
+	"k8s.io/federation/test/k8s/integration/framework"
 	"testing"
-
-	"k8s.io/kubernetes/test/integration/framework"
 )
 
 func TestMain(m *testing.M) {

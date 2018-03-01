@@ -23,7 +23,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/golang.org/x/text/encoding/internal/enctest:all-srcs",
         "//vendor/golang.org/x/text/encoding/internal/identifier:all-srcs",
     ],
     tags = ["automanaged"],

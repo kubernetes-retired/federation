@@ -32,7 +32,6 @@ import (
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 	"k8s.io/kubernetes/pkg/kubectl/resource"
 	"k8s.io/kubernetes/pkg/kubectl/util/i18n"
-	"k8s.io/kubernetes/pkg/printers"
 )
 
 var (
@@ -114,20 +113,11 @@ type DeleteOptions struct {
 
 func NewCmdDelete(f cmdutil.Factory, out, errOut io.Writer) *cobra.Command {
 	options := &DeleteOptions{}
-
-	// retrieve a list of handled resources from printer as valid args
-	validArgs, argAliases := []string{}, []string{}
-	p, err := f.Printer(nil, printers.PrintOptions{
-		ColumnLabels: []string{},
-	})
-	cmdutil.CheckErr(err)
-	if p != nil {
-		validArgs = p.HandledResources()
-		argAliases = kubectl.ResourceAliases(validArgs)
-	}
+	validArgs := cmdutil.ValidArgList(f)
 
 	cmd := &cobra.Command{
-		Use:     "delete ([-f FILENAME] | TYPE [(NAME | -l label | --all)])",
+		Use: "delete ([-f FILENAME] | TYPE [(NAME | -l label | --all)])",
+		DisableFlagsInUseLine: true,
 		Short:   i18n.T("Delete resources by filenames, stdin, resources and names, or by resources and label selector"),
 		Long:    delete_long,
 		Example: delete_example,
@@ -145,7 +135,7 @@ func NewCmdDelete(f cmdutil.Factory, out, errOut io.Writer) *cobra.Command {
 		},
 		SuggestFor: []string{"rm"},
 		ValidArgs:  validArgs,
-		ArgAliases: argAliases,
+		ArgAliases: kubectl.ResourceAliases(validArgs),
 	}
 	usage := "containing the resource to delete."
 	cmdutil.AddFilenameOptionFlags(cmd, &options.FilenameOptions, usage)
@@ -169,20 +159,13 @@ func (o *DeleteOptions) Complete(f cmdutil.Factory, out, errOut io.Writer, args 
 		return err
 	}
 
-	// Set up client based support.
-	mapper, typer, err := f.UnstructuredObject()
-	if err != nil {
-		return err
-	}
-
-	o.Mapper = mapper
 	includeUninitialized := cmdutil.ShouldIncludeUninitialized(cmd, false)
 	r := f.NewBuilder().
-		Unstructured(f.UnstructuredClientForMapping, mapper, typer).
+		Unstructured().
 		ContinueOnError().
 		NamespaceParam(cmdNamespace).DefaultNamespace().
 		FilenameParam(enforceNamespace, &o.FilenameOptions).
-		SelectorParam(o.Selector).
+		LabelSelectorParam(o.Selector).
 		IncludeUninitialized(includeUninitialized).
 		SelectAllParam(o.DeleteAll).
 		ResourceTypeOrNameArgs(false, args...).RequireObject(false).
@@ -193,6 +176,7 @@ func (o *DeleteOptions) Complete(f cmdutil.Factory, out, errOut io.Writer, args 
 		return err
 	}
 	o.Result = r
+	o.Mapper = r.Mapper().RESTMapper
 
 	o.f = f
 	// Set up writer
@@ -240,7 +224,7 @@ func (o *DeleteOptions) RunDelete() error {
 	if o.Cascade {
 		return ReapResult(o.Result, o.f, o.Out, true, o.IgnoreNotFound, o.Timeout, o.GracePeriod, o.WaitForDeletion, shortOutput, o.Mapper, false)
 	}
-	return DeleteResult(o.Result, o.Out, o.IgnoreNotFound, o.GracePeriod, shortOutput, o.Mapper)
+	return DeleteResult(o.Result, o.f, o.Out, o.IgnoreNotFound, o.GracePeriod, shortOutput, o.Mapper)
 }
 
 func ReapResult(r *resource.Result, f cmdutil.Factory, out io.Writer, isDefaultDelete, ignoreNotFound bool, timeout time.Duration, gracePeriod int, waitForDeletion, shortOutput bool, mapper meta.RESTMapper, quiet bool) error {
@@ -258,7 +242,7 @@ func ReapResult(r *resource.Result, f cmdutil.Factory, out io.Writer, isDefaultD
 			// If there is no reaper for this resources and the user didn't explicitly ask for stop.
 			if kubectl.IsNoSuchReaperError(err) && isDefaultDelete {
 				// No client side reaper found. Let the server do cascading deletion.
-				return cascadingDeleteResource(info, out, shortOutput, mapper)
+				return cascadingDeleteResource(info, f, out, shortOutput, mapper)
 			}
 			return cmdutil.AddSourceToErr("reaping", info.Source, err)
 		}
@@ -275,7 +259,7 @@ func ReapResult(r *resource.Result, f cmdutil.Factory, out io.Writer, isDefaultD
 			}
 		}
 		if !quiet {
-			cmdutil.PrintSuccess(mapper, shortOutput, out, info.Mapping.Resource, info.Name, false, "deleted")
+			f.PrintSuccess(mapper, shortOutput, out, info.Mapping.Resource, info.Name, false, "deleted")
 		}
 		return nil
 	})
@@ -288,7 +272,7 @@ func ReapResult(r *resource.Result, f cmdutil.Factory, out io.Writer, isDefaultD
 	return nil
 }
 
-func DeleteResult(r *resource.Result, out io.Writer, ignoreNotFound bool, gracePeriod int, shortOutput bool, mapper meta.RESTMapper) error {
+func DeleteResult(r *resource.Result, f cmdutil.Factory, out io.Writer, ignoreNotFound bool, gracePeriod int, shortOutput bool, mapper meta.RESTMapper) error {
 	found := 0
 	if ignoreNotFound {
 		r = r.IgnoreErrors(errors.IsNotFound)
@@ -306,7 +290,7 @@ func DeleteResult(r *resource.Result, out io.Writer, ignoreNotFound bool, graceP
 			options = metav1.NewDeleteOptions(int64(gracePeriod))
 		}
 		options.OrphanDependents = &orphan
-		return deleteResource(info, out, shortOutput, mapper, options)
+		return deleteResource(info, f, out, shortOutput, mapper, options)
 	})
 	if err != nil {
 		return err
@@ -317,17 +301,17 @@ func DeleteResult(r *resource.Result, out io.Writer, ignoreNotFound bool, graceP
 	return nil
 }
 
-func cascadingDeleteResource(info *resource.Info, out io.Writer, shortOutput bool, mapper meta.RESTMapper) error {
+func cascadingDeleteResource(info *resource.Info, f cmdutil.Factory, out io.Writer, shortOutput bool, mapper meta.RESTMapper) error {
 	falseVar := false
 	deleteOptions := &metav1.DeleteOptions{OrphanDependents: &falseVar}
-	return deleteResource(info, out, shortOutput, mapper, deleteOptions)
+	return deleteResource(info, f, out, shortOutput, mapper, deleteOptions)
 }
 
-func deleteResource(info *resource.Info, out io.Writer, shortOutput bool, mapper meta.RESTMapper, deleteOptions *metav1.DeleteOptions) error {
+func deleteResource(info *resource.Info, f cmdutil.Factory, out io.Writer, shortOutput bool, mapper meta.RESTMapper, deleteOptions *metav1.DeleteOptions) error {
 	if err := resource.NewHelper(info.Client, info.Mapping).DeleteWithOptions(info.Namespace, info.Name, deleteOptions); err != nil {
 		return cmdutil.AddSourceToErr("deleting", info.Source, err)
 	}
-	cmdutil.PrintSuccess(mapper, shortOutput, out, info.Mapping.Resource, info.Name, false, "deleted")
+	f.PrintSuccess(mapper, shortOutput, out, info.Mapping.Resource, info.Name, false, "deleted")
 	return nil
 }
 

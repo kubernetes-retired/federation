@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -21,27 +21,6 @@ go_library(
     deps = ["//vendor/github.com/pelletier/go-buffruneio:go_default_library"],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "doc_test.go",
-        "keysparsing_test.go",
-        "lexer_test.go",
-        "match_test.go",
-        "parser_test.go",
-        "position_test.go",
-        "query_test.go",
-        "querylexer_test.go",
-        "queryparser_test.go",
-        "token_test.go",
-        "toml_test.go",
-        "tomltree_conversions_test.go",
-    ],
-    importpath = "github.com/pelletier/go-toml",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/davecgh/go-spew/spew:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -51,10 +30,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/pelletier/go-toml/cmd:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

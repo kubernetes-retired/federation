@@ -26,9 +26,8 @@ import (
 	federationapi "k8s.io/federation/apis/federation/v1beta1"
 	federationclientset "k8s.io/federation/client/clientset_generated/federation_clientset"
 	clustercontroller "k8s.io/federation/pkg/federation-controller/cluster"
+	"k8s.io/federation/test/k8s/integration/framework"
 	"k8s.io/kubernetes/pkg/master"
-	"k8s.io/kubernetes/test/e2e_node/services"
-	"k8s.io/kubernetes/test/integration/framework"
 )
 
 type MemberCluster struct {
@@ -36,7 +35,7 @@ type MemberCluster struct {
 	Config              *master.Config
 	Client              clientset.Interface
 	Host                string
-	namespaceController *services.NamespaceController
+	namespaceController *framework.NamespaceController
 }
 
 // FederationFixture manages a federation api server and a set of member clusters
@@ -90,7 +89,7 @@ func (f *FederationFixture) StartCluster(t *testing.T) {
 		Config:              config,
 		Client:              clusterClient,
 		Host:                host,
-		namespaceController: services.NewNamespaceController(host),
+		namespaceController: framework.NewNamespaceController(host),
 	}
 	f.Clusters = append(f.Clusters, memberCluster)
 	err := memberCluster.namespaceController.Start()

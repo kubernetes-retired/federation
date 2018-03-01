@@ -24,8 +24,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["install_test.go"],
-    importpath = "k8s.io/federation/apis/federation/install",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//apis/federation:go_default_library",
         "//apis/federation/v1beta1:go_default_library",

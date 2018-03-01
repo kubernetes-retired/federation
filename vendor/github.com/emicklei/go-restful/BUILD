@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -35,33 +35,6 @@ go_library(
     deps = ["//vendor/github.com/emicklei/go-restful/log:go_default_library"],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "bench_curly_test.go",
-        "bench_test.go",
-        "compress_test.go",
-        "container_test.go",
-        "cors_filter_test.go",
-        "curly_test.go",
-        "doc_examples_test.go",
-        "entity_accessors_test.go",
-        "filter_test.go",
-        "jsr311_test.go",
-        "mime_test.go",
-        "options_filter_test.go",
-        "path_expression_test.go",
-        "request_test.go",
-        "response_test.go",
-        "route_builder_test.go",
-        "route_test.go",
-        "tracer_test.go",
-        "web_service_test.go",
-    ],
-    importpath = "github.com/emicklei/go-restful",
-    library = ":go_default_library",
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -73,7 +46,6 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//vendor/github.com/emicklei/go-restful/examples:all-srcs",
         "//vendor/github.com/emicklei/go-restful/log:all-srcs",
     ],
     tags = ["automanaged"],

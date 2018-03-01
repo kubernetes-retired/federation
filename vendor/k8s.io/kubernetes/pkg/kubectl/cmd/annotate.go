@@ -36,7 +36,6 @@ import (
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 	"k8s.io/kubernetes/pkg/kubectl/resource"
 	"k8s.io/kubernetes/pkg/kubectl/util/i18n"
-	"k8s.io/kubernetes/pkg/printers"
 )
 
 // AnnotateOptions have the data required to perform the annotate operation
@@ -65,14 +64,16 @@ type AnnotateOptions struct {
 
 var (
 	annotateLong = templates.LongDesc(`
-		Update the annotations on one or more resources.
+		Update the annotations on one or more resources
 
-		* An annotation is a key/value pair that can hold larger (compared to a label), and possibly not human-readable, data.
-		* It is intended to store non-identifying auxiliary data, especially data manipulated by tools and system extensions.
-		* If --overwrite is true, then existing annotations can be overwritten, otherwise attempting to overwrite an annotation will result in an error.
-		* If --resource-version is specified, then updates will use this resource version, otherwise the existing resource-version will be used.
+		All Kubernetes objects support the ability to store additional data with the object as
+		annotations. Annotations are key/value pairs that can be larger than labels and include
+		arbitrary string values such as structured JSON. Tools and system extensions may use
+		annotations to store their own data.  
 
-		` + validResources)
+		Attempting to set an annotation that already exists will fail unless --overwrite is set.
+		If --resource-version is specified and does not match the current resource version on
+		the server the command will fail.`)
 
 	annotateExample = templates.Examples(i18n.T(`
     # Update pod 'foo' with the annotation 'description' and the value 'my frontend'.
@@ -98,22 +99,13 @@ var (
 
 func NewCmdAnnotate(f cmdutil.Factory, out io.Writer) *cobra.Command {
 	options := &AnnotateOptions{}
-
-	// retrieve a list of handled resources from printer as valid args
-	validArgs, argAliases := []string{}, []string{}
-	p, err := f.Printer(nil, printers.PrintOptions{
-		ColumnLabels: []string{},
-	})
-	cmdutil.CheckErr(err)
-	if p != nil {
-		validArgs = p.HandledResources()
-		argAliases = kubectl.ResourceAliases(validArgs)
-	}
+	validArgs := cmdutil.ValidArgList(f)
 
 	cmd := &cobra.Command{
-		Use:     "annotate [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]",
+		Use: "annotate [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]",
+		DisableFlagsInUseLine: true,
 		Short:   i18n.T("Update the annotations on a resource"),
-		Long:    annotateLong,
+		Long:    annotateLong + "\n\n" + cmdutil.ValidResourceTypeList(f),
 		Example: annotateExample,
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := options.Complete(out, cmd, args); err != nil {
@@ -125,7 +117,7 @@ func NewCmdAnnotate(f cmdutil.Factory, out io.Writer) *cobra.Command {
 			cmdutil.CheckErr(options.RunAnnotate(f, cmd))
 		},
 		ValidArgs:  validArgs,
-		ArgAliases: argAliases,
+		ArgAliases: kubectl.ResourceAliases(validArgs),
 	}
 	cmdutil.AddPrinterFlags(cmd)
 	cmdutil.AddIncludeUninitializedFlag(cmd)
@@ -188,6 +180,8 @@ func (o AnnotateOptions) RunAnnotate(f cmdutil.Factory, cmd *cobra.Command) erro
 
 	includeUninitialized := cmdutil.ShouldIncludeUninitialized(cmd, false)
 	b := f.NewBuilder().
+		Unstructured().
+		LocalParam(o.local).
 		ContinueOnError().
 		NamespaceParam(namespace).DefaultNamespace().
 		FilenameParam(enforceNamespace, &o.FilenameOptions).
@@ -195,20 +189,9 @@ func (o AnnotateOptions) RunAnnotate(f cmdutil.Factory, cmd *cobra.Command) erro
 		Flatten()
 
 	if !o.local {
-		// call this method here, as it requires an api call
-		// and will cause the command to fail when there is
-		// no connection to a server
-		mapper, typer, err := f.UnstructuredObject()
-		if err != nil {
-			return err
-		}
-
-		b = b.SelectorParam(o.selector).
-			Unstructured(f.UnstructuredClientForMapping, mapper, typer).
+		b = b.LabelSelectorParam(o.selector).
 			ResourceTypeOrNameArgs(o.all, o.resources...).
 			Latest()
-	} else {
-		b = b.Local(f.ClientForMapping)
 	}
 
 	r := b.Do()
@@ -285,19 +268,11 @@ func (o AnnotateOptions) RunAnnotate(f cmdutil.Factory, cmd *cobra.Command) erro
 			}
 		}
 
-		var mapper meta.RESTMapper
-		if o.local {
-			mapper, _ = f.Object()
-		} else {
-			mapper, _, err = f.UnstructuredObject()
-			if err != nil {
-				return err
-			}
-		}
+		mapper := r.Mapper().RESTMapper
 		if len(o.outputFormat) > 0 {
 			return f.PrintObject(cmd, o.local, mapper, outputObj, o.out)
 		}
-		cmdutil.PrintSuccess(mapper, false, o.out, info.Mapping.Resource, info.Name, o.dryrun, "annotated")
+		f.PrintSuccess(mapper, false, o.out, info.Mapping.Resource, info.Name, o.dryrun, "annotated")
 		return nil
 	})
 }

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -14,20 +14,6 @@ go_library(
     ],
     importpath = "github.com/chai2010/gettext-go/gettext/po",
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "comment_test.go",
-        "file_test.go",
-        "header_test.go",
-        "message_test.go",
-        "poedit_test.go",
-        "util_test.go",
-    ],
-    importpath = "github.com/chai2010/gettext-go/gettext/po",
-    library = ":go_default_library",
 )
 
 filegroup(

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -12,17 +12,6 @@ go_library(
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/awserr:go_default_library",
-        "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = ["build_test.go"],
-    importpath = "github.com/aws/aws-sdk-go/private/protocol/rest",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",
         "//vendor/github.com/aws/aws-sdk-go/aws/request:go_default_library",
     ],
 )

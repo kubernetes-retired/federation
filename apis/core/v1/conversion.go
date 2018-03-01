@@ -18,40 +18,40 @@ package v1
 
 import (
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/kubernetes/pkg/api/v1"
+	"k8s.io/kubernetes/pkg/apis/core/v1"
 )
 
 func addConversionFuncs(scheme *runtime.Scheme) error {
 	// Add non-generated conversion functions
 	err := scheme.AddConversionFuncs(
-		v1.Convert_v1_DeleteOptions_To_api_DeleteOptions,
-		v1.Convert_api_DeleteOptions_To_v1_DeleteOptions,
-		v1.Convert_v1_List_To_api_List,
-		v1.Convert_api_List_To_v1_List,
-		v1.Convert_v1_ListOptions_To_api_ListOptions,
-		v1.Convert_api_ListOptions_To_v1_ListOptions,
-		v1.Convert_v1_ObjectFieldSelector_To_api_ObjectFieldSelector,
-		v1.Convert_api_ObjectFieldSelector_To_v1_ObjectFieldSelector,
-		v1.Convert_v1_ObjectMeta_To_api_ObjectMeta,
-		v1.Convert_api_ObjectMeta_To_v1_ObjectMeta,
-		v1.Convert_v1_ObjectReference_To_api_ObjectReference,
-		v1.Convert_api_ObjectReference_To_v1_ObjectReference,
-		v1.Convert_v1_Secret_To_api_Secret,
-		v1.Convert_api_Secret_To_v1_Secret,
-		v1.Convert_v1_SecretList_To_api_SecretList,
-		v1.Convert_api_SecretList_To_v1_SecretList,
-		v1.Convert_v1_Service_To_api_Service,
-		v1.Convert_api_Service_To_v1_Service,
-		v1.Convert_v1_ServiceList_To_api_ServiceList,
-		v1.Convert_api_ServiceList_To_v1_ServiceList,
-		v1.Convert_v1_ServicePort_To_api_ServicePort,
-		v1.Convert_api_ServicePort_To_v1_ServicePort,
-		v1.Convert_v1_ServiceProxyOptions_To_api_ServiceProxyOptions,
-		v1.Convert_api_ServiceProxyOptions_To_v1_ServiceProxyOptions,
-		v1.Convert_v1_ServiceSpec_To_api_ServiceSpec,
-		v1.Convert_api_ServiceSpec_To_v1_ServiceSpec,
-		v1.Convert_v1_ServiceStatus_To_api_ServiceStatus,
-		v1.Convert_api_ServiceStatus_To_v1_ServiceStatus,
+		v1.Convert_v1_DeleteOptions_To_core_DeleteOptions,
+		v1.Convert_core_DeleteOptions_To_v1_DeleteOptions,
+		v1.Convert_v1_List_To_core_List,
+		v1.Convert_core_List_To_v1_List,
+		v1.Convert_v1_ListOptions_To_core_ListOptions,
+		v1.Convert_core_ListOptions_To_v1_ListOptions,
+		v1.Convert_v1_ObjectFieldSelector_To_core_ObjectFieldSelector,
+		v1.Convert_core_ObjectFieldSelector_To_v1_ObjectFieldSelector,
+		v1.Convert_v1_ObjectMeta_To_core_ObjectMeta,
+		v1.Convert_core_ObjectMeta_To_v1_ObjectMeta,
+		v1.Convert_v1_ObjectReference_To_core_ObjectReference,
+		v1.Convert_core_ObjectReference_To_v1_ObjectReference,
+		v1.Convert_v1_Secret_To_core_Secret,
+		v1.Convert_core_Secret_To_v1_Secret,
+		v1.Convert_v1_SecretList_To_core_SecretList,
+		v1.Convert_core_SecretList_To_v1_SecretList,
+		v1.Convert_v1_Service_To_core_Service,
+		v1.Convert_core_Service_To_v1_Service,
+		v1.Convert_v1_ServiceList_To_core_ServiceList,
+		v1.Convert_core_ServiceList_To_v1_ServiceList,
+		v1.Convert_v1_ServicePort_To_core_ServicePort,
+		v1.Convert_core_ServicePort_To_v1_ServicePort,
+		v1.Convert_v1_ServiceProxyOptions_To_core_ServiceProxyOptions,
+		v1.Convert_core_ServiceProxyOptions_To_v1_ServiceProxyOptions,
+		v1.Convert_v1_ServiceSpec_To_core_ServiceSpec,
+		v1.Convert_core_ServiceSpec_To_v1_ServiceSpec,
+		v1.Convert_v1_ServiceStatus_To_core_ServiceStatus,
+		v1.Convert_core_ServiceStatus_To_v1_ServiceStatus,
 	)
 	if err != nil {
 		return err

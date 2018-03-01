@@ -19,8 +19,8 @@ package e2e
 import (
 	fedframework "k8s.io/federation/test/e2e/framework"
 	"k8s.io/federation/test/e2e/upgrades"
+	"k8s.io/federation/test/k8s/e2e/framework"
 	"k8s.io/kubernetes/test/e2e/chaosmonkey"
-	"k8s.io/kubernetes/test/e2e/framework"
 
 	. "github.com/onsi/ginkgo"
 )

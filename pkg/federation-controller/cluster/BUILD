@@ -9,8 +9,7 @@ load(
 go_test(
     name = "go_default_test",
     srcs = ["clustercontroller_test.go"],
-    importpath = "k8s.io/federation/pkg/federation-controller/cluster",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset:go_default_library",
@@ -46,7 +45,7 @@ go_library(
         "//vendor/k8s.io/apimachinery/pkg/watch:go_default_library",
         "//vendor/k8s.io/client-go/rest:go_default_library",
         "//vendor/k8s.io/client-go/tools/cache:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/api:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/apis/core:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/controller:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/kubelet/apis:go_default_library",

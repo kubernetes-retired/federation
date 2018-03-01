@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -16,20 +16,6 @@ go_library(
     visibility = ["//visibility:public"],
 )
 
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "compliance_test.go",
-        "interpreter_test.go",
-        "lexer_test.go",
-        "parser_test.go",
-        "util_test.go",
-    ],
-    importpath = "github.com/jmespath/go-jmespath",
-    library = ":go_default_library",
-    deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
-)
-
 filegroup(
     name = "package-srcs",
     srcs = glob(["**"]),
@@ -39,10 +25,7 @@ filegroup(
 
 filegroup(
     name = "all-srcs",
-    srcs = [
-        ":package-srcs",
-        "//vendor/github.com/jmespath/go-jmespath/fuzz:all-srcs",
-    ],
+    srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
 )

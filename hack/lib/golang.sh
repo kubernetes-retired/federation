@@ -172,11 +172,6 @@ readonly KUBE_STATIC_LIBRARIES=(
   kubefed
 )
 
-# Add any files with those //generate annotations in the array below.
-readonly KUBE_BINDATAS=(
-  vendor/k8s.io/kubernetes/test/e2e/generated/gobindata_util.go
-)
-
 kube::golang::is_statically_linked_library() {
   local e
   for e in "${KUBE_STATIC_LIBRARIES[@]}"; do [[ "$1" == *"/$e" ]] && return 0; done;
@@ -405,7 +400,6 @@ kube::golang::fallback_if_stdlib_not_installable() {
 kube::golang::build_kube_toolchain() {
   local targets=(
     vendor/k8s.io/kubernetes/hack/cmd/teststale
-    vendor/github.com/jteeuwen/go-bindata/go-bindata
   )
 
   local binaries
@@ -518,7 +512,7 @@ kube::golang::build_binaries_for_platform() {
     # but it never installs them. `go test -i` only installs the dependencies
     # of the test, but not the test package itself. So neither `go test -c`
     # nor `go test -i` installs, for example, test/e2e.a. And without that,
-    # doing a staleness check on k8s.io/kubernetes/test/e2e package always
+    # doing a staleness check on k8s.io/federation/test/e2e package always
     # returns true (always stale). And that's why we need to install the
     # test package.
     go install "${goflags[@]:+${goflags[@]}}" \
@@ -631,15 +625,6 @@ kube::golang::build_binaries() {
 
     # First build the toolchain before building any other targets
     kube::golang::build_kube_toolchain
-
-    kube::log::status "Generating bindata:" "${KUBE_BINDATAS[@]}"
-    for bindata in ${KUBE_BINDATAS[@]}; do
-      # Only try to generate bindata if the file exists, since in some cases
-      # one-off builds of individual directories may exclude some files.
-      if [[ -f "${KUBE_ROOT}/${bindata}" ]]; then
-        go generate "${goflags[@]:+${goflags[@]}}" "${KUBE_ROOT}/${bindata}"
-      fi
-    done
 
     if [[ "${parallel}" == "true" ]]; then
       kube::log::status "Building go targets for {${platforms[*]}} in parallel (output will appear in a burst when complete):" "${targets[@]}"

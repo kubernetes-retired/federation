@@ -50,10 +50,10 @@ import (
 	"k8s.io/federation/pkg/dnsprovider/providers/coredns"
 	kubefedtesting "k8s.io/federation/pkg/kubefed/testing"
 	"k8s.io/federation/pkg/kubefed/util"
-	"k8s.io/kubernetes/pkg/api"
-	"k8s.io/kubernetes/pkg/api/helper"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/api/testapi"
+	api "k8s.io/kubernetes/pkg/apis/core"
+	"k8s.io/kubernetes/pkg/apis/core/helper"
 	"k8s.io/kubernetes/pkg/apis/rbac"
 	cmdtesting "k8s.io/kubernetes/pkg/kubectl/cmd/testing"
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
@@ -891,7 +891,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 		fmt.Sprintf("--secure-port=%d", apiServerSecurePort),
 		"--tls-cert-file=/etc/federation/apiserver/server.crt",
 		"--tls-private-key-file=/etc/federation/apiserver/server.key",
-		"--admission-control=NamespaceLifecycle",
+		"--enable-admission-plugins=NamespaceLifecycle",
 		fmt.Sprintf("--advertise-address=%s", address),
 	}
 

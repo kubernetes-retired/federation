@@ -1,37 +1,23 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-    "go_test",
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "map_string_bool_test.go",
-        "namedcertkey_flag_test.go",
-    ],
-    importpath = "k8s.io/apiserver/pkg/util/flag",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/spf13/pflag:go_default_library",
-        "//vendor/github.com/stretchr/testify/assert:go_default_library",
-        "//vendor/github.com/stretchr/testify/require:go_default_library",
-    ],
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = [
+        "ciphersuites_flag.go",
+        "colon_separated_multimap_string_string.go",
         "configuration_map.go",
         "flags.go",
+        "langle_separated_map_string_string.go",
         "map_string_bool.go",
+        "map_string_string.go",
         "namedcertkey_flag.go",
+        "noop.go",
+        "omitempty.go",
         "string_flag.go",
         "tristate.go",
     ],
     importpath = "k8s.io/apiserver/pkg/util/flag",
+    visibility = ["//visibility:public"],
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
@@ -49,4 +35,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

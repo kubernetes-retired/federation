@@ -19,7 +19,7 @@ package framework
 import (
 	"flag"
 
-	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/federation/test/k8s/e2e/framework"
 )
 
 type FederationTestContextType struct {

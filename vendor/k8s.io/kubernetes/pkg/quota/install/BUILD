@@ -1,19 +1,15 @@
-package(default_visibility = ["//visibility:public"])
-
-load(
-    "@io_bazel_rules_go//go:def.bzl",
-    "go_library",
-)
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
     srcs = ["registry.go"],
     importpath = "k8s.io/kubernetes/pkg/quota/install",
+    visibility = ["//visibility:public"],
     deps = [
-        "//vendor/k8s.io/client-go/informers:go_default_library",
-        "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/quota:go_default_library",
         "//vendor/k8s.io/kubernetes/pkg/quota/evaluator/core:go_default_library",
+        "//vendor/k8s.io/kubernetes/pkg/quota/generic:go_default_library",
     ],
 )
 
@@ -28,4 +24,5 @@ filegroup(
     name = "all-srcs",
     srcs = [":package-srcs"],
     tags = ["automanaged"],
+    visibility = ["//visibility:public"],
 )

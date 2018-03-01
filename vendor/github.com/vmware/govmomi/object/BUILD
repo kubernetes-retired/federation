@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -38,13 +38,11 @@ go_library(
         "host_virtual_nic_manager.go",
         "host_vsan_internal_system.go",
         "host_vsan_system.go",
-        "http_nfc_lease.go",
         "namespace_manager.go",
         "network.go",
         "network_reference.go",
         "opaque_network.go",
         "option_manager.go",
-        "ovf_manager.go",
         "resource_pool.go",
         "search_index.go",
         "storage_pod.go",
@@ -61,6 +59,7 @@ go_library(
     importpath = "github.com/vmware/govmomi/object",
     visibility = ["//visibility:public"],
     deps = [
+        "//vendor/github.com/vmware/govmomi/nfc:go_default_library",
         "//vendor/github.com/vmware/govmomi/property:go_default_library",
         "//vendor/github.com/vmware/govmomi/session:go_default_library",
         "//vendor/github.com/vmware/govmomi/task:go_default_library",
@@ -69,32 +68,6 @@ go_library(
         "//vendor/github.com/vmware/govmomi/vim25/mo:go_default_library",
         "//vendor/github.com/vmware/govmomi/vim25/progress:go_default_library",
         "//vendor/github.com/vmware/govmomi/vim25/soap:go_default_library",
-        "//vendor/github.com/vmware/govmomi/vim25/types:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "cluster_compute_resource_test.go",
-        "common_test.go",
-        "compute_resource_test.go",
-        "datacenter_test.go",
-        "datastore_path_test.go",
-        "datastore_test.go",
-        "distributed_virtual_portgroup_test.go",
-        "folder_test.go",
-        "host_certificate_info_test.go",
-        "network_test.go",
-        "search_index_test.go",
-        "virtual_device_list_test.go",
-        "virtual_machine_test.go",
-    ],
-    importpath = "github.com/vmware/govmomi/object",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/vmware/govmomi/test:go_default_library",
-        "//vendor/github.com/vmware/govmomi/vim25/mo:go_default_library",
         "//vendor/github.com/vmware/govmomi/vim25/types:go_default_library",
     ],
 )

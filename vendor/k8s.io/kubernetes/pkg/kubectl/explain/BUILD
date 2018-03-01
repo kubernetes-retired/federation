@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -16,6 +16,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/api/meta:go_default_library",
+        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
         "//vendor/k8s.io/kube-openapi/pkg/util/proto:go_default_library",
     ],
 )
@@ -32,23 +33,4 @@ filegroup(
     srcs = [":package-srcs"],
     tags = ["automanaged"],
     visibility = ["//visibility:public"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "field_lookup_test.go",
-        "fields_printer_test.go",
-        "formatter_test.go",
-        "model_printer_test.go",
-        "recursive_fields_printer_test.go",
-        "typename_test.go",
-    ],
-    data = ["test-swagger.json"],
-    importpath = "k8s.io/kubernetes/pkg/kubectl/explain",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/k8s.io/apimachinery/pkg/runtime/schema:go_default_library",
-        "//vendor/k8s.io/kubernetes/pkg/kubectl/cmd/util/openapi/testing:go_default_library",
-    ],
 )

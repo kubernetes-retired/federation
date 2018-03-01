@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -9,6 +9,9 @@ go_library(
         "error.go",
         "preparer.go",
         "responder.go",
+        "retriablerequest.go",
+        "retriablerequest_1.7.go",
+        "retriablerequest_1.8.go",
         "sender.go",
         "utility.go",
         "version.go",
@@ -16,26 +19,6 @@ go_library(
     importpath = "github.com/Azure/go-autorest/autorest",
     visibility = ["//visibility:public"],
     deps = ["//vendor/github.com/Azure/go-autorest/autorest/adal:go_default_library"],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "authorization_test.go",
-        "autorest_test.go",
-        "client_test.go",
-        "error_test.go",
-        "preparer_test.go",
-        "responder_test.go",
-        "sender_test.go",
-        "utility_test.go",
-    ],
-    importpath = "github.com/Azure/go-autorest/autorest",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/Azure/go-autorest/autorest/adal:go_default_library",
-        "//vendor/github.com/Azure/go-autorest/autorest/mocks:go_default_library",
-    ],
 )
 
 filegroup(
@@ -52,7 +35,6 @@ filegroup(
         "//vendor/github.com/Azure/go-autorest/autorest/adal:all-srcs",
         "//vendor/github.com/Azure/go-autorest/autorest/azure:all-srcs",
         "//vendor/github.com/Azure/go-autorest/autorest/date:all-srcs",
-        "//vendor/github.com/Azure/go-autorest/autorest/mocks:all-srcs",
         "//vendor/github.com/Azure/go-autorest/autorest/to:all-srcs",
         "//vendor/github.com/Azure/go-autorest/autorest/validation:all-srcs",
     ],

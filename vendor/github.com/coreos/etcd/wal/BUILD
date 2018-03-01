@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
@@ -11,9 +11,38 @@ go_library(
         "repair.go",
         "util.go",
         "wal.go",
-        "wal_unix.go",
     ] + select({
-        "@io_bazel_rules_go//go/platform:windows_amd64": [
+        "@io_bazel_rules_go//go/platform:android": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:darwin": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:dragonfly": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:freebsd": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:linux": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:nacl": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:netbsd": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:openbsd": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:plan9": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:solaris": [
+            "wal_unix.go",
+        ],
+        "@io_bazel_rules_go//go/platform:windows": [
             "wal_windows.go",
         ],
         "//conditions:default": [],
@@ -30,24 +59,6 @@ go_library(
         "//vendor/github.com/coreos/etcd/wal/walpb:go_default_library",
         "//vendor/github.com/coreos/pkg/capnslog:go_default_library",
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
-    ],
-)
-
-go_test(
-    name = "go_default_test",
-    srcs = [
-        "record_test.go",
-        "repair_test.go",
-        "wal_bench_test.go",
-        "wal_test.go",
-    ],
-    importpath = "github.com/coreos/etcd/wal",
-    library = ":go_default_library",
-    deps = [
-        "//vendor/github.com/coreos/etcd/pkg/fileutil:go_default_library",
-        "//vendor/github.com/coreos/etcd/pkg/pbutil:go_default_library",
-        "//vendor/github.com/coreos/etcd/raft/raftpb:go_default_library",
-        "//vendor/github.com/coreos/etcd/wal/walpb:go_default_library",
     ],
 )
 

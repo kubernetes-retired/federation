@@ -8,8 +8,7 @@ load(
 
 go_binary(
     name = "etcd-version-monitor",
-    importpath = "k8s.io/federation/cluster/images/etcd-version-monitor",
-    library = ":go_default_library",
+    embed = [":go_default_library"],
 )
 
 go_library(
