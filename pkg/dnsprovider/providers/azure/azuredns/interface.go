@@ -96,7 +96,8 @@ func (c *DNSAPI) ListResourceRecordSetsByZone(zoneName string) (*[]dns.RecordSet
 
 	result, err := c.rc.ListByDNSZone(c.conf.Global.ResourceGroup,
 		zoneName,
-		to.Int32Ptr(1000))
+		to.Int32Ptr(1000),
+		"")
 
 	err = c.appendListRecordSetsResult(&rrsets, result)
 
