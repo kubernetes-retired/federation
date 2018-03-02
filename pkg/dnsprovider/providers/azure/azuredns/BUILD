@@ -20,11 +20,12 @@ go_library(
         "zone.go",
         "zones.go",
     ],
+    importpath = "k8s.io/federation/pkg/dnsprovider/providers/azure/azuredns",
     tags = ["automanaged"],
     deps = [
-        "//federation/pkg/dnsprovider:go_default_library",
-        "//federation/pkg/dnsprovider/providers/azure/azuredns/stubs:go_default_library",
-        "//federation/pkg/dnsprovider/rrstype:go_default_library",
+        "//pkg/dnsprovider:go_default_library",
+        "//pkg/dnsprovider/providers/azure/azuredns/stubs:go_default_library",
+        "//pkg/dnsprovider/rrstype:go_default_library",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/dns:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/adal:go_default_library",
@@ -38,13 +39,13 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = ["azuredns_test.go"],
-    library = ":go_default_library",
+    embed = [":go_default_library"],
     tags = ["automanaged"],
     deps = [
-        "//federation/pkg/dnsprovider:go_default_library",
-        "//federation/pkg/dnsprovider/providers/azure/azuredns/stubs:go_default_library",
-        "//federation/pkg/dnsprovider/rrstype:go_default_library",
-        "//federation/pkg/dnsprovider/tests:go_default_library",
+        "//pkg/dnsprovider:go_default_library",
+        "//pkg/dnsprovider/providers/azure/azuredns/stubs:go_default_library",
+        "//pkg/dnsprovider/rrstype:go_default_library",
+        "//pkg/dnsprovider/tests:go_default_library",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/dns:go_default_library",
         "//vendor/github.com/Azure/go-autorest/autorest/to:go_default_library",
     ],
@@ -61,7 +62,7 @@ filegroup(
     name = "all-srcs",
     srcs = [
         ":package-srcs",
-        "//federation/pkg/dnsprovider/providers/azure/azuredns/stubs:all-srcs",
+        "//pkg/dnsprovider/providers/azure/azuredns/stubs:all-srcs",
     ],
     tags = ["automanaged"],
 )
