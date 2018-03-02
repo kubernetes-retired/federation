@@ -25,6 +25,10 @@ required = [
 
 # These come from godeps.json in kubernetes
 [[override]]
+  name = "github.com/Azure/azure-sdk-for-go"
+  version = "v12.1.0-beta"
+
+[[override]]
   name = "github.com/Azure/go-autorest"
   revision = "e14a70c556c8e0db173358d1a903dca345a8e75e"
 
