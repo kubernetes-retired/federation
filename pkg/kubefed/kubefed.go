@@ -49,7 +49,7 @@ func NewKubeFedCommand(f cmdutil.Factory, in io.Reader, out, err io.Writer, defa
 		Long: templates.LongDesc(`
       kubefed controls a Kubernetes Cluster Federation.
 
-      Find more information at https://github.com/kubernetes/kubernetes.`),
+      Find more information at https://github.com/kubernetes/federation.`),
 		Run: runHelp,
 	}
 
