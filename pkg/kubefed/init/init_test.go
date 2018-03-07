@@ -92,6 +92,7 @@ func TestInitFederation(t *testing.T) {
 		federation                   string
 		kubeconfigGlobal             string
 		kubeconfigExplicit           string
+		kubeconfigForCredentials     string
 		dnsZoneName                  string
 		lbIP                         string
 		apiserverServiceType         v1.ServiceType
@@ -221,6 +222,28 @@ func TestInitFederation(t *testing.T) {
 			apiserverEnableTokenAuth:     true,
 			isRBACAPIAvailable:           true,
 		},
+		// This test checks if init works ok when a RBAC usage is overridden
+		// using a credentials kubeconfig (even when RBAC API is available).
+		// The same (or default) kubeconfig can be used for both flags.
+		{
+			federation:               "union",
+			kubeconfigGlobal:         fakeKubeFiles[0],
+			kubeconfigForCredentials: fakeKubeFiles[0],
+			dnsZoneName:              "example.test.",
+			apiserverServiceType:     v1.ServiceTypeNodePort,
+			advertiseAddress:         nodeIP,
+			serverImage:              "example.test/foo:bar",
+			imagePullPolicy:          "IfNotPresent",
+			etcdImage:                "gcr.io/google_containers/etcd:latest",
+			etcdPVCapacity:           "5Gi",
+			etcdPVStorageClass:       "fast",
+			etcdPersistence:          "true",
+			expectedErr:              "",
+			dryRun:                   "",
+			apiserverEnableHTTPBasicAuth: true,
+			apiserverEnableTokenAuth:     true,
+			isRBACAPIAvailable:           true,
+		},
 	}
 
 	defaultEtcdImage := "gcr.io/google_containers/etcd:3.1.10"
@@ -261,7 +284,7 @@ func TestInitFederation(t *testing.T) {
 			tc.imagePullPolicy = "IfNotPresent"
 		}
 
-		hostFactory, err := fakeInitHostFactory(tc.apiserverServiceType, tc.federation, util.DefaultFederationSystemNamespace, tc.advertiseAddress, tc.lbIP, tc.dnsZoneName, tc.serverImage, tc.etcdImage, tc.dnsProvider, tc.dnsProviderConfig, tc.etcdPersistence, tc.etcdPVCapacity, tc.etcdPVStorageClass, tc.apiserverArgOverrides, tc.cmArgOverrides, tmpDirPath, tc.apiserverEnableHTTPBasicAuth, tc.apiserverEnableTokenAuth, tc.isRBACAPIAvailable, tc.nodeSelector, tc.imagePullPolicy, tc.imagePullSecrets)
+		hostFactory, err := fakeInitHostFactory(tc.apiserverServiceType, tc.federation, util.DefaultFederationSystemNamespace, tc.advertiseAddress, tc.lbIP, tc.dnsZoneName, tc.serverImage, tc.etcdImage, tc.dnsProvider, tc.dnsProviderConfig, tc.etcdPersistence, tc.etcdPVCapacity, tc.etcdPVStorageClass, tc.apiserverArgOverrides, tc.cmArgOverrides, tmpDirPath, tc.apiserverEnableHTTPBasicAuth, tc.apiserverEnableTokenAuth, tc.isRBACAPIAvailable, tc.nodeSelector, tc.imagePullPolicy, tc.imagePullSecrets, tc.kubeconfigForCredentials)
 		if err != nil {
 			t.Fatalf("[%d] unexpected error: %v", i, err)
 		}
@@ -274,6 +297,7 @@ func TestInitFederation(t *testing.T) {
 		cmd := NewCmdInit(buf, adminConfig, "serverImage", defaultEtcdImage)
 
 		cmd.Flags().Set("kubeconfig", tc.kubeconfigExplicit)
+		cmd.Flags().Set("use-credentials-kubeconfig", tc.kubeconfigForCredentials)
 		cmd.Flags().Set("host-cluster-context", "substrate")
 		cmd.Flags().Set("dns-zone-name", tc.dnsZoneName)
 		cmd.Flags().Set("image", tc.serverImage)
@@ -643,7 +667,7 @@ func TestCertsHTTPS(t *testing.T) {
 	}
 }
 
-func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, namespaceName, advertiseAddress, lbIp, dnsZoneName, serverImage, etcdImage, dnsProvider, dnsProviderConfig, etcdPersistence, etcdPVCapacity, etcdPVStorageClass, apiserverOverrideArg, cmOverrideArg, tmpDirPath string, apiserverEnableHTTPBasicAuth, apiserverEnableTokenAuth, isRBACAPIAvailable bool, nodeSelectorString string, imagePullPolicy, imagePullSecrets string) (cmdutil.Factory, error) {
+func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, namespaceName, advertiseAddress, lbIp, dnsZoneName, serverImage, etcdImage, dnsProvider, dnsProviderConfig, etcdPersistence, etcdPVCapacity, etcdPVStorageClass, apiserverOverrideArg, cmOverrideArg, tmpDirPath string, apiserverEnableHTTPBasicAuth, apiserverEnableTokenAuth, isRBACAPIAvailable bool, nodeSelectorString string, imagePullPolicy, imagePullSecrets, kubeconfigForCredentials string) (cmdutil.Factory, error) {
 	svcName := "apiserver"
 	svcUrlPrefix := "/api/v1/namespaces/federation-system/services"
 	credSecretName := "apiserver" + "-credentials"
@@ -1106,7 +1130,7 @@ func fakeInitHostFactory(apiserverServiceType v1.ServiceType, federationName, na
 			},
 		},
 	}
-	if isRBACAPIAvailable {
+	if isRBACAPIAvailable && (kubeconfigForCredentials == "") {
 		cm.Spec.Template.Spec.ServiceAccountName = "federation-controller-manager"
 		cm.Spec.Template.Spec.DeprecatedServiceAccount = "federation-controller-manager"
 	}
