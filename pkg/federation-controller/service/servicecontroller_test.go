@@ -191,6 +191,7 @@ func TestServiceController(t *testing.T) {
 
 	glog.Infof("Test federation service is updated when cluster1 endpoint for the service is deleted")
 	desiredIngressAnnotation = ingress.NewFederatedServiceIngress().
+		AddEndpoints("cluster1", []string{}).
 		AddEndpoints("cluster2", []string{lbIngress2}).
 		String()
 	desiredService = &v1.Service{ObjectMeta: metav1.ObjectMeta{Annotations: map[string]string{ingress.FederatedServiceIngressAnnotation: desiredIngressAnnotation}}}

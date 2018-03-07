@@ -1008,7 +1008,7 @@ func createControllerManager(clientset client.Interface, namespace, name, svcNam
 		dep = addDNSProviderConfig(dep, dnsProviderSecret.Name)
 		if dnsProvider == util.FedDNSProviderCoreDNS {
 			var err error
-			dep, err = addCoreDNSServerAnnotation(dep, dnsZoneName, dnsProviderConfig)
+			dep, err = addCoreDNSServerAnnotation(dep, strings.TrimRight(dnsZoneName, "."), dnsProviderConfig)
 			if err != nil {
 				return nil, err
 			}
