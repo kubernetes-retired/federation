@@ -738,7 +738,7 @@ func (ic *IngressController) reconcileIngress(ingress types.NamespacedName) {
 		}
 		desiredIngress := &extensionsv1beta1.Ingress{}
 		desiredIngress.ObjectMeta = *baseIngress.ObjectMeta.DeepCopy()
-		desiredIngress.Spec = *desiredIngress.Spec.DeepCopy()
+		desiredIngress.Spec = *baseIngress.Spec.DeepCopy()
 
 		glog.V(4).Infof("Desired Ingress: %v", desiredIngress)
 

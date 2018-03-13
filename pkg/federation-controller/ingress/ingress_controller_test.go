@@ -28,6 +28,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/apimachinery/pkg/util/wait"
 	kubeclientset "k8s.io/client-go/kubernetes"
 	fakekubeclientset "k8s.io/client-go/kubernetes/fake"
@@ -121,6 +122,12 @@ func TestIngressController(t *testing.T) {
 			SelfLink:  "/api/v1/namespaces/mynamespace/ingress/test-ingress",
 			Annotations: map[string]string{
 				firstClusterAnnotation: cluster1.Name,
+			},
+		},
+		Spec: extensionsv1beta1.IngressSpec{
+			Backend: &extensionsv1beta1.IngressBackend{
+				ServiceName: "hello-server",
+				ServicePort: intstr.FromString("8080"),
 			},
 		},
 		Status: extensionsv1beta1.IngressStatus{
