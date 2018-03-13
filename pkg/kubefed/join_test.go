@@ -69,17 +69,18 @@ func TestJoinFederation(t *testing.T) {
 	defer kubefedtesting.RemoveFakeKubeconfigFiles(fakeKubeFiles)
 
 	testCases := []struct {
-		cluster            string
-		clusterCtx         string
-		secret             string
-		server             string
-		token              string
-		kubeconfigGlobal   string
-		kubeconfigExplicit string
-		expectedServer     string
-		expectedErr        string
-		dnsProvider        string
-		isRBACAPIAvailable bool
+		cluster                  string
+		clusterCtx               string
+		secret                   string
+		server                   string
+		token                    string
+		kubeconfigGlobal         string
+		kubeconfigExplicit       string
+		kubeconfigForCredentials string
+		expectedServer           string
+		expectedErr              string
+		dnsProvider              string
+		isRBACAPIAvailable       bool
 	}{
 		{
 			cluster:            "syndicate",
@@ -92,6 +93,22 @@ func TestJoinFederation(t *testing.T) {
 			expectedErr:        "",
 			dnsProvider:        util.FedDNSProviderCoreDNS,
 			isRBACAPIAvailable: true,
+		},
+		// This test checks if join works ok when a RBAC usage is overridden
+		// using a credentials kubeconfig (even when RBAC API is available).
+		// The same (or default) kubeconfig can be used for both flags.
+		{
+			cluster:                  "syndicate",
+			clusterCtx:               "",
+			server:                   "https://10.20.30.40",
+			token:                    "badge",
+			kubeconfigGlobal:         fakeKubeFiles[0],
+			kubeconfigForCredentials: fakeKubeFiles[0],
+			kubeconfigExplicit:       "",
+			expectedServer:           "https://10.20.30.40",
+			expectedErr:              "",
+			dnsProvider:              util.FedDNSProviderCoreDNS,
+			isRBACAPIAvailable:       true,
 		},
 		{
 			cluster:            "syndicate",
@@ -164,6 +181,9 @@ func TestJoinFederation(t *testing.T) {
 
 	for i, tc := range testCases {
 		cmdErrMsg = ""
+		if tc.kubeconfigForCredentials != "" {
+			tc.isRBACAPIAvailable = false
+		}
 		f := testJoinFederationFactory(tc.cluster, tc.secret, tc.expectedServer, tc.isRBACAPIAvailable)
 		buf := bytes.NewBuffer([]byte{})
 

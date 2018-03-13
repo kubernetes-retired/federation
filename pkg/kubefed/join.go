@@ -34,6 +34,7 @@ import (
 	extensions "k8s.io/kubernetes/pkg/apis/extensions"
 	"k8s.io/kubernetes/pkg/apis/rbac"
 	"k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset"
+	client "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset"
 	"k8s.io/kubernetes/pkg/kubectl"
 	kubectlcmd "k8s.io/kubernetes/pkg/kubectl/cmd"
 	"k8s.io/kubernetes/pkg/kubectl/cmd/templates"
@@ -170,6 +171,9 @@ func (j *joinFederation) performPreflightChecks(config util.AdminConfig) error {
 
 // joiningClusterClientset returns a factory for the joining cluster.
 func (j *joinFederation) joningClusterFactory(config util.AdminConfig) cmdutil.Factory {
+	if j.commonOptions.CredentialsKubeconfig != "" {
+		return config.ClusterFactory(j.options.clusterContext, j.commonOptions.CredentialsKubeconfig)
+	}
 	return config.ClusterFactory(j.options.clusterContext, j.commonOptions.Kubeconfig)
 }
 
@@ -228,37 +232,45 @@ func (j *joinFederation) Run(f cmdutil.Factory, cmdOut io.Writer, config util.Ad
 	// a service account and use its credentials; otherwise, use the credentials
 	// from the local kubeconfig.
 	glog.V(2).Info("Creating cluster credentials secret")
-	rbacClientset, err := util.GetVersionedClientForRBACOrFail(joiningClusterFactory)
-	if err == nil {
+
+	useRBAC := false
+	var rbacClientset client.Interface
+	if j.commonOptions.CredentialsKubeconfig == "" {
+		rbacClientset, err = util.GetVersionedClientForRBACOrFail(joiningClusterFactory)
+		if err != nil {
+			if _, ok := err.(*util.NoRBACAPIError); !ok {
+				glog.V(2).Infof("Failed to get or verify absence of RBAC client: %v", err)
+				return err
+			}
+		} else {
+			useRBAC = true
+		}
+	}
+
+	if useRBAC {
 		if _, serviceAccountName, clusterRoleName, err = createRBACSecret(hostClientset, rbacClientset, federationNamespace, federationName, joiningClusterName, host, clusterContext, secretName, dryRun); err != nil {
 			glog.V(2).Infof("Could not create cluster credentials secret: %v", err)
 			return err
 		}
 	} else {
-		if _, ok := err.(*util.NoRBACAPIError); ok {
-
-			// We are not using the `kubectl create secret` machinery through
-			// `RunCreateSubcommand` as we do to the cluster resource below
-			// because we have a bunch of requirements that the machinery does
-			// not satisfy.
-			// 1. We want to create the secret in a specific namespace, which
-			//    is neither the "default" namespace nor the one specified
-			//    via the `--namespace` flag.
-			// 2. `SecretGeneratorV1` requires LiteralSources in a string-ified
-			//    form that it parses to generate the secret data key-value
-			//    pairs. We, however, have the key-value pairs ready without a
-			//    need for parsing.
-			// 3. The result printing mechanism needs to be mostly quiet. We
-			//    don't have to print the created secret in the default case.
-			// Having said that, secret generation machinery could be altered to
-			// suit our needs, but it is far less invasive and readable this way.
-			_, err = createSecret(hostClientset, clientConfig, federationNamespace, federationName, joiningClusterName, clusterContext, secretName, dryRun)
-			if err != nil {
-				glog.V(2).Infof("Failed creating the cluster credentials secret: %v", err)
-				return err
-			}
-		} else {
-			glog.V(2).Infof("Failed to get or verify absence of RBAC client: %v", err)
+		// We are not using the `kubectl create secret` machinery through
+		// `RunCreateSubcommand` as we do to the cluster resource below
+		// because we have a bunch of requirements that the machinery does
+		// not satisfy.
+		// 1. We want to create the secret in a specific namespace, which
+		//    is neither the "default" namespace nor the one specified
+		//    via the `--namespace` flag.
+		// 2. `SecretGeneratorV1` requires LiteralSources in a string-ified
+		//    form that it parses to generate the secret data key-value
+		//    pairs. We, however, have the key-value pairs ready without a
+		//    need for parsing.
+		// 3. The result printing mechanism needs to be mostly quiet. We
+		//    don't have to print the created secret in the default case.
+		// Having said that, secret generation machinery could be altered to
+		// suit our needs, but it is far less invasive and readable this way.
+		_, err = createSecret(hostClientset, clientConfig, federationNamespace, federationName, joiningClusterName, clusterContext, secretName, dryRun)
+		if err != nil {
+			glog.V(2).Infof("Failed creating the cluster credentials secret: %v", err)
 			return err
 		}
 	}
