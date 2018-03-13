@@ -124,19 +124,27 @@ func (u *unjoinFederation) Run(f cmdutil.Factory, cmdOut, cmdErr io.Writer, conf
 		return err
 	}
 
-	unjoiningClusterFactory := config.ClusterFactory(u.options.clusterContext, u.commonOptions.Kubeconfig)
-	unjoiningClusterClientset, err := util.GetVersionedClientForRBACOrFail(unjoiningClusterFactory)
-	// If the cluster does not support the RBAC facility get a simple internal clientset
-	if err != nil {
-		unjoiningClusterClientset, err = unjoiningClusterFactory.ClientSet()
+	useRBAC := true
+	var rbacErr error
+	var unjoiningClusterClientset internalclientset.Interface
+	var unjoiningClusterFactory cmdutil.Factory
+	if u.commonOptions.CredentialsKubeconfig == "" {
+		unjoiningClusterFactory = config.ClusterFactory(u.options.clusterContext, u.commonOptions.Kubeconfig)
+		unjoiningClusterClientset, rbacErr = util.GetVersionedClientForRBACOrFail(unjoiningClusterFactory)
+	} else {
+		unjoiningClusterFactory = config.ClusterFactory(u.options.clusterContext, u.commonOptions.CredentialsKubeconfig)
+		useRBAC = false
 	}
 
-	outerErr := err
-	if err != nil {
-		// Attempt to get a clientset using information from the cluster.
-		unjoiningClusterClientset, err = getClientsetFromCluster(secret, cluster)
+	if !useRBAC || rbacErr != nil {
+		unjoiningClusterClientset, err = unjoiningClusterFactory.ClientSet()
+		outerErr := err
 		if err != nil {
-			return fmt.Errorf("unable to get clientset from kubeconfig or cluster: %v, %v", outerErr, err)
+			// Attempt to get a clientset using information from the cluster.
+			unjoiningClusterClientset, err = getClientsetFromCluster(secret, cluster)
+			if err != nil {
+				return fmt.Errorf("unable to get clientset from kubeconfig or cluster: %v, %v", outerErr, err)
+			}
 		}
 	}
 
@@ -149,24 +157,28 @@ func (u *unjoinFederation) Run(f cmdutil.Factory, cmdOut, cmdErr io.Writer, conf
 	// We need to ensure updating the config map created in the deregistered cluster
 	// This configmap was created/updated when the cluster joined this federation to aid
 	// the kube-dns of that cluster to aid service discovery.
-	err = updateConfigMapFromCluster(hostClientset, unjoiningClusterClientset, u.commonOptions.FederationSystemNamespace)
+	err = updateConfigMapInCluster(hostClientset, unjoiningClusterClientset, u.commonOptions.FederationSystemNamespace)
 	if err != nil {
 		fmt.Fprintf(cmdErr, "WARNING: Encountered error in deleting kube-dns configmap: %v", err)
 		// We anyways continue to print success message but with above warning
 	}
 
-	// Delete the service account in the unjoining cluster.
-	err = deleteServiceAccountFromCluster(unjoiningClusterClientset, cluster, u.commonOptions.FederationSystemNamespace)
-	if err != nil {
-		fmt.Fprintf(cmdErr, "WARNING: Encountered error in deleting service account: %v", err)
-		return err
-	}
+	// Don't try to delete the SA and cluster role binding from unjoining cluster
+	// if user explicitly requested non RBAC use by providing --use-credentials-kubeconfig.
+	if useRBAC {
+		// Delete the service account in the unjoining cluster.
+		err = deleteServiceAccountFromCluster(unjoiningClusterClientset, cluster, u.commonOptions.FederationSystemNamespace)
+		if err != nil {
+			fmt.Fprintf(cmdErr, "WARNING: Encountered error in deleting service account: %v", err)
+			return err
+		}
 
-	// Delete the cluster role and role binding in the unjoining cluster.
-	err = deleteClusterRoleBindingFromCluster(unjoiningClusterClientset, cluster)
-	if err != nil {
-		fmt.Fprintf(cmdErr, "WARNING: Encountered error in deleting cluster role bindings: %v", err)
-		return err
+		// Delete the cluster role and role binding in the unjoining cluster.
+		err = deleteClusterRoleBindingFromCluster(unjoiningClusterClientset, cluster)
+		if err != nil {
+			fmt.Fprintf(cmdErr, "WARNING: Encountered error in deleting cluster role bindings: %v", err)
+			return err
+		}
 	}
 
 	_, err = fmt.Fprintf(cmdOut, "Successfully removed cluster %q from federation\n", u.commonOptions.Name)
@@ -223,7 +235,7 @@ func popCluster(f cmdutil.Factory, name string) (*federationapi.Cluster, error) 
 	return v1beta1Cluster, rh.Delete("", name)
 }
 
-func updateConfigMapFromCluster(hostClientset, unjoiningClusterClientset internalclientset.Interface, fedSystemNamespace string) error {
+func updateConfigMapInCluster(hostClientset, unjoiningClusterClientset internalclientset.Interface, fedSystemNamespace string) error {
 	cmDep, err := getCMDeployment(hostClientset, fedSystemNamespace)
 	if err != nil {
 		return err
