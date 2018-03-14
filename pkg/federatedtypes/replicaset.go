@@ -57,6 +57,7 @@ func NewReplicaSetAdapter(client federationclientset.Interface, config *restclie
 					FullyLabeledReplicas: typedStatus.Replicas,
 					ReadyReplicas:        typedStatus.ReadyReplicas,
 					AvailableReplicas:    typedStatus.AvailableReplicas,
+					ObservedGeneration:   typedStatus.ObservedGeneration,
 				}
 				_, err := client.Extensions().ReplicaSets(rs.Namespace).UpdateStatus(rs)
 				return err

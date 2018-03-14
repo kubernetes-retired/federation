@@ -56,6 +56,7 @@ type ReplicaStatus struct {
 	FullyLabeledReplicas int32
 	ReadyReplicas        int32
 	AvailableReplicas    int32
+	ObservedGeneration   int64
 }
 
 // ReplicaScheduleState is the result of adapter specific schedule() function,
@@ -228,8 +229,13 @@ func (a *replicaSchedulingAdapter) ScheduleObject(cluster *federationapi.Cluster
 			objStatusField := objStatusVal.FieldByName(schedulingStatusFieldName)
 			if objStatusField.IsValid() {
 				current := schedulingStatusField.Int()
-				additional := objStatusField.Int()
-				schedulingStatusField.SetInt(current + additional)
+				inThisCluster := objStatusField.Int()
+				if schedulingStatusFieldName == "ObservedGeneration" && inThisCluster > current {
+					// update ObservedGeneration to be the highest among federated clusters
+					schedulingStatusField.SetInt(inThisCluster)
+				} else {
+					schedulingStatusField.SetInt(current + inThisCluster)
+				}
 			}
 		}
 	}

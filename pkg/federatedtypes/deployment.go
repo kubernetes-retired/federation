@@ -53,10 +53,11 @@ func NewDeploymentAdapter(client federationclientset.Interface, config *restclie
 			if typedStatus.Replicas != deployment.Status.Replicas || typedStatus.UpdatedReplicas != deployment.Status.UpdatedReplicas ||
 				typedStatus.ReadyReplicas != deployment.Status.ReadyReplicas || typedStatus.AvailableReplicas != deployment.Status.AvailableReplicas {
 				deployment.Status = extensionsv1.DeploymentStatus{
-					Replicas:          typedStatus.Replicas,
-					UpdatedReplicas:   typedStatus.UpdatedReplicas,
-					ReadyReplicas:     typedStatus.ReadyReplicas,
-					AvailableReplicas: typedStatus.AvailableReplicas,
+					Replicas:           typedStatus.Replicas,
+					UpdatedReplicas:    typedStatus.UpdatedReplicas,
+					ReadyReplicas:      typedStatus.ReadyReplicas,
+					AvailableReplicas:  typedStatus.AvailableReplicas,
+					ObservedGeneration: typedStatus.ObservedGeneration,
 				}
 				_, err := client.Extensions().Deployments(deployment.Namespace).UpdateStatus(deployment)
 				return err
