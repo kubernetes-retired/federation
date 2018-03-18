@@ -14,6 +14,7 @@ filegroup(
         "//vendor/cloud.google.com/go/internal:all-srcs",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/compute:all-srcs",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/disk:all-srcs",
+        "//vendor/github.com/Azure/azure-sdk-for-go/arm/dns:all-srcs",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/network:all-srcs",
         "//vendor/github.com/Azure/azure-sdk-for-go/arm/storage:all-srcs",
         "//vendor/github.com/Azure/azure-sdk-for-go/storage:all-srcs",

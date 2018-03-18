@@ -39,6 +39,7 @@ filegroup(
     srcs = [
         ":package-srcs",
         "//pkg/dnsprovider/providers/aws/route53:all-srcs",
+        "//pkg/dnsprovider/providers/azure/azuredns:all-srcs",
         "//pkg/dnsprovider/providers/coredns:all-srcs",
         "//pkg/dnsprovider/providers/google/clouddns:all-srcs",
         "//pkg/dnsprovider/rrstype:all-srcs",

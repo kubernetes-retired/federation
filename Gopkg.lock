@@ -20,6 +20,7 @@
   packages = [
     "arm/compute",
     "arm/disk",
+    "arm/dns",
     "arm/network",
     "arm/storage",
     "storage"
@@ -2120,6 +2121,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ba3eef2b78311a4a592f1ccd56f5fb9b7f670ffea281d42905dc406628fe2884"
+  inputs-digest = "91557bd493a4f7de0889dd8200ef502eb7f90386de2149c20b93b4b06aae0599"
   solver-name = "gps-cdcl"
   solver-version = 1

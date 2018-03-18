@@ -18,6 +18,7 @@ go_library(
         "//client/clientset_generated/federation_clientset:go_default_library",
         "//cmd/federation-controller-manager/app/options:go_default_library",
         "//pkg/dnsprovider/providers/aws/route53:go_default_library",
+        "//pkg/dnsprovider/providers/azure/azuredns:go_default_library",
         "//pkg/dnsprovider/providers/coredns:go_default_library",
         "//pkg/dnsprovider/providers/google/clouddns:go_default_library",
         "//pkg/federatedtypes:go_default_library",
