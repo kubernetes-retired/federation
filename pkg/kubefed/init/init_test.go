@@ -297,7 +297,7 @@ func TestInitFederation(t *testing.T) {
 		cmd := NewCmdInit(buf, adminConfig, "serverImage", defaultEtcdImage)
 
 		cmd.Flags().Set("kubeconfig", tc.kubeconfigExplicit)
-		cmd.Flags().Set("use-credentials-kubeconfig", tc.kubeconfigForCredentials)
+		cmd.Flags().Set("credentials-kubeconfig", tc.kubeconfigForCredentials)
 		cmd.Flags().Set("host-cluster-context", "substrate")
 		cmd.Flags().Set("dns-zone-name", tc.dnsZoneName)
 		cmd.Flags().Set("image", tc.serverImage)
