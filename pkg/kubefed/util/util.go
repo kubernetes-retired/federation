@@ -141,12 +141,16 @@ type SubcommandOptions struct {
 	Host                      string
 	FederationSystemNamespace string
 	Kubeconfig                string
+	CredentialsKubeconfig     string
 }
 
 func (o *SubcommandOptions) Bind(flags *pflag.FlagSet) {
 	flags.StringVar(&o.Kubeconfig, "kubeconfig", "", "Path to the kubeconfig file to use for CLI requests.")
 	flags.StringVar(&o.Host, "host-cluster-context", "", "Host cluster context")
 	flags.StringVar(&o.FederationSystemNamespace, "federation-system-namespace", DefaultFederationSystemNamespace, "Namespace in the host cluster where the federation system components are installed")
+	flags.StringVar(&o.CredentialsKubeconfig, "credentials-kubeconfig", "", "Kubeconfig file path on local file system, which should be used to authenticate with host cluster or the joining cluster (instead of the default kubeconfig)."+
+		"This can be used to override the RBAC based authentication while initialising the federation control plane or joining a cluster to one, even when the cluster exposes the RBAC API.")
+
 }
 
 func (o *SubcommandOptions) SetName(cmd *cobra.Command, args []string) error {

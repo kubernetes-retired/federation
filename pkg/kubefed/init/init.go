@@ -284,21 +284,31 @@ func (i *initFederation) Complete(cmd *cobra.Command, args []string) error {
 // See the design doc in https://github.com/kubernetes/kubernetes/pull/34484
 // for details.
 func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
-	hostFactory := config.ClusterFactory(i.commonOptions.Host, i.commonOptions.Kubeconfig)
+	var hostFactory cmdutil.Factory
+	useRBAC := true
+	if i.commonOptions.CredentialsKubeconfig != "" {
+		hostFactory = config.ClusterFactory(i.commonOptions.Host, i.commonOptions.CredentialsKubeconfig)
+		useRBAC = false
+	} else {
+		hostFactory = config.ClusterFactory(i.commonOptions.Host, i.commonOptions.Kubeconfig)
+	}
+
 	hostClientset, err := hostFactory.ClientSet()
 	if err != nil {
 		return err
 	}
 
-	rbacAvailable := true
-	rbacVersionedClientset, err := util.GetVersionedClientForRBACOrFail(hostFactory)
-	if err != nil {
-		if _, ok := err.(*util.NoRBACAPIError); !ok {
-			return err
+	var rbacVersionedClientset client.Interface
+	if useRBAC {
+		rbacVersionedClientset, err = util.GetVersionedClientForRBACOrFail(hostFactory)
+		if err != nil {
+			if _, ok := err.(*util.NoRBACAPIError); !ok {
+				return err
+			}
+			// If the error is type NoRBACAPIError, We continue to create the rest of
+			// the resources, without the SA and roles (in the absence of RBAC support).
+			useRBAC = false
 		}
-		// If the error is type NoRBACAPIError, We continue to create the rest of
-		// the resources, without the SA and roles (in the absence of RBAC support).
-		rbacAvailable = false
 	}
 
 	serverName := APIServerNameSuffix
@@ -384,7 +394,7 @@ func (i *initFederation) Run(cmdOut io.Writer, config util.AdminConfig) error {
 	sa.Name = ""
 	// Create a service account and related RBAC roles if the host cluster has RBAC support.
 	// TODO: We must evaluate creating a separate service account even when RBAC support is missing
-	if rbacAvailable {
+	if useRBAC {
 		glog.V(4).Info("Creating service account for federation controller manager in the host cluster")
 		sa, err = createControllerManagerSA(rbacVersionedClientset, i.commonOptions.FederationSystemNamespace, i.commonOptions.Name, i.options.dryRun)
 		if err != nil {

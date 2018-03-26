@@ -55,13 +55,14 @@ func TestUnjoinFederation(t *testing.T) {
 	defer kubefedtesting.RemoveFakeKubeconfigFiles(fakeKubeFiles)
 
 	testCases := []struct {
-		cluster            string
-		wantCluster        string
-		wantSecret         string
-		kubeconfigGlobal   string
-		kubeconfigExplicit string
-		expectedServer     string
-		expectedErr        string
+		cluster                  string
+		wantCluster              string
+		wantSecret               string
+		kubeconfigGlobal         string
+		kubeconfigExplicit       string
+		kubeconfigForCredentials string
+		expectedServer           string
+		expectedErr              string
 	}{
 		// Tests that the contexts and credentials are read from the
 		// global, default kubeconfig and the correct cluster resource
@@ -74,6 +75,21 @@ func TestUnjoinFederation(t *testing.T) {
 			kubeconfigExplicit: "",
 			expectedServer:     "https://10.20.30.40",
 			expectedErr:        "",
+		},
+		// Tests that the contexts and credentials are read from the
+		// global, default kubeconfig and the correct cluster resource
+		// is deregisterd and configmap kube-dns is removed from that cluster.
+		// This test traverses the path where a different kubeconfig is
+		// provided to override use of RBAC related objects using --use-credentials-kubeconfig.
+		{
+			cluster:                  "syndicate",
+			wantCluster:              "syndicate",
+			wantSecret:               "",
+			kubeconfigGlobal:         fakeKubeFiles[0],
+			kubeconfigExplicit:       "",
+			kubeconfigForCredentials: fakeKubeFiles[0],
+			expectedServer:           "https://10.20.30.40",
+			expectedErr:              "",
 		},
 		// Tests that the contexts and credentials are read from the
 		// explicit kubeconfig file specified and the correct cluster
@@ -146,6 +162,7 @@ func TestUnjoinFederation(t *testing.T) {
 		cmd := NewCmdUnjoin(f, buf, errBuf, adminConfig)
 
 		cmd.Flags().Set("kubeconfig", tc.kubeconfigExplicit)
+		cmd.Flags().Set("use-credentials-kubeconfig", tc.kubeconfigForCredentials)
 		cmd.Flags().Set("host", "substrate")
 		cmd.Run(cmd, []string{tc.wantCluster})
 
