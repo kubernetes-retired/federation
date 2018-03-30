@@ -253,7 +253,7 @@ var _ = framework.KubeDescribe("Federated Services [Feature:Federation]", func()
 
 				})
 
-				PIt("should be able to discover a non-local federated service", func() {
+				It("should be able to discover a non-local federated service", func() {
 					fedframework.SkipUnlessFederated(f.ClientSet)
 
 					nsName := f.FederationNamespace.Name
