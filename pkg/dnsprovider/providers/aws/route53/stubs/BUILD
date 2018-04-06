@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["route53api.go"],
+    srcs = [
+        "route53api.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/aws/route53/stubs",
     deps = [
         "//vendor/github.com/aws/aws-sdk-go/aws:go_default_library",

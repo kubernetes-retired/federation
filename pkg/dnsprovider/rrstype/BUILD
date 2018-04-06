@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["rrstype.go"],
+    srcs = [
+        "rrstype.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/rrstype",
 )
 

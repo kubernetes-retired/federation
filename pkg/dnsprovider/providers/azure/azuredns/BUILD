@@ -38,8 +38,12 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["azuredns_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "azuredns_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     tags = ["automanaged"],
     deps = [
         "//pkg/dnsprovider:go_default_library",

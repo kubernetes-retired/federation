@@ -18,7 +18,9 @@ go_library(
     ],
     importpath = "github.com/pelletier/go-toml",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/pelletier/go-buffruneio:go_default_library"],
+    deps = [
+        "//vendor/github.com/pelletier/go-buffruneio:go_default_library",
+    ],
 )
 
 filegroup(

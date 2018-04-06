@@ -2,7 +2,9 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = ["testapi.go"],
+    srcs = [
+        "testapi.go",
+    ],
     importpath = "k8s.io/federation/test/testapi",
     visibility = ["//visibility:public"],
     deps = [

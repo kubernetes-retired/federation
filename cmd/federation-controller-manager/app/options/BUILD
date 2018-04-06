@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["options.go"],
+    srcs = [
+        "options.go",
+    ],
     importpath = "k8s.io/federation/cmd/federation-controller-manager/app/options",
     deps = [
         "//pkg/dnsprovider:go_default_library",

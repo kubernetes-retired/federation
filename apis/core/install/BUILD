@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["install.go"],
+    srcs = [
+        "install.go",
+    ],
     importpath = "k8s.io/federation/apis/core/install",
     deps = [
         "//apis/core:go_default_library",

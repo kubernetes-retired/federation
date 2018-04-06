@@ -8,8 +8,12 @@ load(
 
 go_test(
     name = "go_default_test",
-    srcs = ["dns_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "dns_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset/fake:go_default_library",
@@ -32,7 +36,9 @@ go_test(
 
 go_library(
     name = "go_default_library",
-    srcs = ["dns.go"],
+    srcs = [
+        "dns.go",
+    ],
     importpath = "k8s.io/federation/pkg/federation-controller/service/dns",
     deps = [
         "//client/clientset_generated/federation_clientset:go_default_library",

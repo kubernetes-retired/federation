@@ -34,8 +34,12 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["strategy_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "strategy_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation:go_default_library",
         "//test/testapi:go_default_library",

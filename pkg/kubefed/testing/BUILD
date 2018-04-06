@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["testing.go"],
+    srcs = [
+        "testing.go",
+    ],
     importpath = "k8s.io/federation/pkg/kubefed/testing",
     deps = [
         "//client/clientset_generated/federation_clientset:go_default_library",

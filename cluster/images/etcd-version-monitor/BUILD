@@ -8,12 +8,16 @@ load(
 
 go_binary(
     name = "etcd-version-monitor",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["etcd-version-monitor.go"],
+    srcs = [
+        "etcd-version-monitor.go",
+    ],
     importpath = "k8s.io/federation/cluster/images/etcd-version-monitor",
     deps = [
         "//vendor/github.com/golang/glog:go_default_library",

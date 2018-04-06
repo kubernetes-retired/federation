@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["corednsapi.go"],
+    srcs = [
+        "corednsapi.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/coredns/stubs",
     deps = [
         "//vendor/github.com/coreos/etcd/client:go_default_library",

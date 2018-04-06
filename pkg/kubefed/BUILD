@@ -53,7 +53,9 @@ go_test(
         "join_test.go",
         "unjoin_test.go",
     ],
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation:go_default_library",
         "//apis/federation/v1beta1:go_default_library",

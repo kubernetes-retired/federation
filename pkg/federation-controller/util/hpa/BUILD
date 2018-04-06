@@ -2,7 +2,9 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
-    srcs = ["hpa.go"],
+    srcs = [
+        "hpa.go",
+    ],
     importpath = "k8s.io/federation/pkg/federation-controller/util/hpa",
     visibility = ["//visibility:public"],
     deps = [
@@ -13,8 +15,12 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["hpa_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "hpa_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//vendor/github.com/stretchr/testify/require:go_default_library",
         "//vendor/k8s.io/api/autoscaling/v1:go_default_library",

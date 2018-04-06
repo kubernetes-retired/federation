@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["interfaces.go"],
+    srcs = [
+        "interfaces.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/google/clouddns/internal/interfaces",
     deps = [
         "//pkg/dnsprovider/rrstype:go_default_library",

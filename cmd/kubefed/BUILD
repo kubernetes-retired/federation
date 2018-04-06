@@ -10,15 +10,21 @@ load(
 
 go_binary(
     name = "kubefed",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
     x_defs = version_x_defs(),
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["kubefed.go"],
+    srcs = [
+        "kubefed.go",
+    ],
     importpath = "k8s.io/federation/cmd/kubefed",
-    deps = ["//cmd/kubefed/app:go_default_library"],
+    deps = [
+        "//cmd/kubefed/app:go_default_library",
+    ],
 )
 
 filegroup(

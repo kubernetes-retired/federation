@@ -9,20 +9,30 @@ load(
 
 go_binary(
     name = "teststale",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
 )
 
 go_test(
     name = "go_default_test",
-    srcs = ["teststale_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "teststale_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["teststale.go"],
+    srcs = [
+        "teststale.go",
+    ],
     importpath = "k8s.io/federation/hack/cmd/teststale",
-    deps = ["//vendor/github.com/golang/glog:go_default_library"],
+    deps = [
+        "//vendor/github.com/golang/glog:go_default_library",
+    ],
 )
 
 filegroup(

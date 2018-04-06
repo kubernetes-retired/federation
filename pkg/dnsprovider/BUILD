@@ -22,9 +22,15 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["dns_test.go"],
-    embed = [":go_default_library"],
-    deps = ["//pkg/dnsprovider/rrstype:go_default_library"],
+    srcs = [
+        "dns_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
+    deps = [
+        "//pkg/dnsprovider/rrstype:go_default_library",
+    ],
 )
 
 filegroup(

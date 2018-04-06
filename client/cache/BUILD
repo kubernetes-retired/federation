@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["cluster_cache.go"],
+    srcs = [
+        "cluster_cache.go",
+    ],
     importpath = "k8s.io/federation/client/cache",
     deps = [
         "//apis/federation/v1beta1:go_default_library",

@@ -8,8 +8,12 @@ load(
 
 go_test(
     name = "go_default_test",
-    srcs = ["clustercontroller_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "clustercontroller_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//client/clientset_generated/federation_clientset:go_default_library",

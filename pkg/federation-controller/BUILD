@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["doc.go"],
+    srcs = [
+        "doc.go",
+    ],
     importpath = "k8s.io/federation/pkg/federation-controller",
 )
 
