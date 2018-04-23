@@ -60,7 +60,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" > /etc/apt/
   && for platform in ${KUBE_DYNAMIC_CROSSPLATFORMS}; do apt-get install -y crossbuild-essential-${platform}; done \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# work around 64MB tmpfs size in Docker 1.6
+# Work around 64MB tmpfs size in Docker 1.6
 ENV TMPDIR /tmp.k8s
 RUN mkdir $TMPDIR \
   && chmod a+rwx $TMPDIR \
