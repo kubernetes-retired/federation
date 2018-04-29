@@ -735,7 +735,7 @@ func (a *HpaAdapter) distributeMinReplicas(toDistributeMin int32, lists hpaLists
 		if toDistributeMin == 0 {
 			break
 		}
-		// We have distriubted Max and thus scheduled might not be nil
+		// We have distributed Max and thus scheduled might not be nil
 		// but probably current (what we got originally) is nil(no hpa)
 		if replicas == nil || currentObjs[cluster] == nil {
 			continue
