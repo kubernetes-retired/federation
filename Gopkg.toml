@@ -12,6 +12,10 @@ required = [
   "k8s.io/code-generator/cmd/deepcopy-gen",
   "k8s.io/code-generator/cmd/defaulter-gen",
   "k8s.io/code-generator/cmd/openapi-gen",
+
+  # Needed for bazel build file auto-generation
+  "github.com/bazelbuild/bazel-gazelle/cmd/gazelle",
+  "github.com/kubernetes/repo-infra/kazel",
 ]
 
 [prune]
@@ -84,3 +88,11 @@ required = [
 [[constraint]]
   name = "gopkg.in/gcfg.v1"
   version = "1.2.0"
+
+[[constraint]]
+  name = "github.com/bazelbuild/bazel-gazelle"
+  version = "0.10.1"
+
+[[constraint]]
+  name = "github.com/kubernetes/repo-infra"
+  revision = "d9bb9fdc907665c61c228baa64fed9b91c7dc1b0"

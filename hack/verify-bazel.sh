@@ -43,7 +43,7 @@ cp -a "${KUBE_ROOT}" "${_tmp_kuberoot}/.."
 cd "${_tmp_kuberoot}"
 GOPATH="${_tmp_gopath}" ./hack/update-bazel.sh
 
-diff=$(diff -Naupr --no-dereference "${KUBE_ROOT}" "${_tmp_kuberoot}" || true)
+diff=$(diff -Naupr -x '_output' --no-dereference "${KUBE_ROOT}" "${_tmp_kuberoot}" || true)
 
 if [[ -n "${diff}" ]]; then
   echo "${diff}" >&2
