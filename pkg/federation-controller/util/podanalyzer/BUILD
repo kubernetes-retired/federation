@@ -8,15 +8,23 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["pod_helper.go"],
+    srcs = [
+        "pod_helper.go",
+    ],
     importpath = "k8s.io/federation/pkg/federation-controller/util/podanalyzer",
-    deps = ["//vendor/k8s.io/api/core/v1:go_default_library"],
+    deps = [
+        "//vendor/k8s.io/api/core/v1:go_default_library",
+    ],
 )
 
 go_test(
     name = "go_default_test",
-    srcs = ["pod_helper_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "pod_helper_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//vendor/github.com/stretchr/testify/assert:go_default_library",
         "//vendor/k8s.io/api/core/v1:go_default_library",

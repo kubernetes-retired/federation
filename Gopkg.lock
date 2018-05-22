@@ -111,6 +111,32 @@
   version = "v1.12.7"
 
 [[projects]]
+  name = "github.com/bazelbuild/bazel-gazelle"
+  packages = [
+    "cmd/gazelle",
+    "internal/config",
+    "internal/label",
+    "internal/merger",
+    "internal/packages",
+    "internal/pathtools",
+    "internal/repos",
+    "internal/resolve",
+    "internal/rules",
+    "internal/version",
+    "internal/wspace"
+  ]
+  revision = "ff4d67f395b3f4d1dc9810eeceb61585fea252cb"
+  version = "0.10.1"
+
+[[projects]]
+  name = "github.com/bazelbuild/buildtools"
+  packages = [
+    "build",
+    "tables"
+  ]
+  revision = "80c7f0d45d7e40fa1f7362852697d4a03df557b3"
+
+[[projects]]
   name = "github.com/beorn7/perks"
   packages = ["quantile"]
   revision = "3ac7bf7a47d159a033b107610db8a1b6575507a4"
@@ -420,9 +446,10 @@
   revision = "c0656edd0d9eab7c66d1eb0c568f9039345796f7"
 
 [[projects]]
+  branch = "master"
   name = "github.com/golang/glog"
   packages = ["."]
-  revision = "44145f04b68cf362d9c4df2182967c2275eaefed"
+  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
 
 [[projects]]
   name = "github.com/golang/groupcache"
@@ -609,6 +636,11 @@
   revision = "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
 
 [[projects]]
+  name = "github.com/kubernetes/repo-infra"
+  packages = ["kazel"]
+  revision = "d9bb9fdc907665c61c228baa64fed9b91c7dc1b0"
+
+[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "61b492c03cf472e0c6419be5899b8e0dc28b1b88"
@@ -717,15 +749,10 @@
   revision = "ca53cad383cad2479bbba7f7a1a05797ec1386e4"
 
 [[projects]]
-  name = "github.com/pelletier/go-buffruneio"
-  packages = ["."]
-  revision = "df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d"
-  version = "v0.1.0"
-
-[[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "0049ab3dc4c4c70a9eee23087437b69c0dde2130"
+  revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
+  version = "v1.1.0"
 
 [[projects]]
   branch = "master"
@@ -1004,6 +1031,7 @@
   packages = [
     "container/intsets",
     "go/ast/astutil",
+    "go/vcs",
     "imports"
   ]
   revision = "2382e3994d48b1d22acc2c86bcad0a2aff028e32"
@@ -2121,6 +2149,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "91557bd493a4f7de0889dd8200ef502eb7f90386de2149c20b93b4b06aae0599"
+  inputs-digest = "471c47dcdae4a520e6febef95b1de21b7fef9260db4eb458239a072c3d53dc7c"
   solver-name = "gps-cdcl"
   solver-version = 1

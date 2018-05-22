@@ -2,10 +2,14 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = ["wrapper.go"],
+    srcs = [
+        "wrapper.go",
+    ],
     importpath = "k8s.io/federation/test/k8s/e2e/framework/ginkgowrapper",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/onsi/ginkgo:go_default_library"],
+    deps = [
+        "//vendor/github.com/onsi/ginkgo:go_default_library",
+    ],
 )
 
 filegroup(

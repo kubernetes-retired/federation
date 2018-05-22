@@ -34,8 +34,12 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["coredns_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "coredns_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//pkg/dnsprovider:go_default_library",
         "//pkg/dnsprovider/providers/coredns/stubs:go_default_library",

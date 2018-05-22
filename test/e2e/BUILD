@@ -92,8 +92,14 @@ filegroup(
 
 go_test(
     name = "go_default_test",
-    srcs = ["e2e_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "e2e_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     tags = ["e2e"],
-    deps = ["//test/e2e/framework:go_default_library"],
+    deps = [
+        "//test/e2e/framework:go_default_library",
+    ],
 )

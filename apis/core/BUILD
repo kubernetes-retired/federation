@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["register.go"],
+    srcs = [
+        "register.go",
+    ],
     importpath = "k8s.io/federation/apis/core",
     deps = [
         "//vendor/k8s.io/apimachinery/pkg/apimachinery/announced:go_default_library",

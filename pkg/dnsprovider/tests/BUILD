@@ -7,7 +7,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["commontests.go"],
+    srcs = [
+        "commontests.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/tests",
     deps = [
         "//pkg/dnsprovider:go_default_library",

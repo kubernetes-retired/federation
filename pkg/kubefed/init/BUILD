@@ -8,7 +8,9 @@ load(
 
 go_library(
     name = "go_default_library",
-    srcs = ["init.go"],
+    srcs = [
+        "init.go",
+    ],
     importpath = "k8s.io/federation/pkg/kubefed/init",
     deps = [
         "//apis/federation:go_default_library",
@@ -40,8 +42,12 @@ go_library(
 
 go_test(
     name = "go_default_test",
-    srcs = ["init_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "init_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation:go_default_library",
         "//pkg/dnsprovider/providers/coredns:go_default_library",

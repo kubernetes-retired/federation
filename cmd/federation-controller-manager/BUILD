@@ -10,13 +10,17 @@ load(
 
 go_binary(
     name = "federation-controller-manager",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
     x_defs = version_x_defs(),
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["controller-manager.go"],
+    srcs = [
+        "controller-manager.go",
+    ],
     importpath = "k8s.io/federation/cmd/federation-controller-manager",
     deps = [
         "//cmd/federation-controller-manager/app:go_default_library",

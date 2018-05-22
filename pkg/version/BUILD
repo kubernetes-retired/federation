@@ -8,7 +8,9 @@ go_library(
     ],
     importpath = "k8s.io/federation/pkg/version",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/k8s.io/apimachinery/pkg/version:go_default_library"],
+    deps = [
+        "//vendor/k8s.io/apimachinery/pkg/version:go_default_library",
+    ],
 )
 
 filegroup(

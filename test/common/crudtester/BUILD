@@ -2,7 +2,9 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = ["crudtester.go"],
+    srcs = [
+        "crudtester.go",
+    ],
     importpath = "k8s.io/federation/test/common/crudtester",
     visibility = ["//visibility:public"],
     deps = [

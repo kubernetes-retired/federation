@@ -2,7 +2,9 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = ["azurednsapi.go"],
+    srcs = [
+        "azurednsapi.go",
+    ],
     importpath = "k8s.io/federation/pkg/dnsprovider/providers/azure/azuredns/stubs",
     visibility = ["//visibility:public"],
     deps = [

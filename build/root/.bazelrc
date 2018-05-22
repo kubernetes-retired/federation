@@ -14,3 +14,4 @@ build --sandbox_fake_username
 
 # Enable go race detection.
 test --features=race
+

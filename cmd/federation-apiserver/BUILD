@@ -10,13 +10,17 @@ load(
 
 go_binary(
     name = "federation-apiserver",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
     x_defs = version_x_defs(),
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["apiserver.go"],
+    srcs = [
+        "apiserver.go",
+    ],
     importpath = "k8s.io/federation/cmd/federation-apiserver",
     deps = [
         "//cmd/federation-apiserver/app:go_default_library",

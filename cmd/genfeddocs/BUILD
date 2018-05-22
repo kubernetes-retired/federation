@@ -8,12 +8,16 @@ load(
 
 go_binary(
     name = "genfeddocs",
-    embed = [":go_default_library"],
+    embed = [
+        ":go_default_library",
+    ],
 )
 
 go_library(
     name = "go_default_library",
-    srcs = ["gen_fed_docs.go"],
+    srcs = [
+        "gen_fed_docs.go",
+    ],
     importpath = "k8s.io/federation/cmd/genfeddocs",
     deps = [
         "//cmd/federation-apiserver/app:go_default_library",

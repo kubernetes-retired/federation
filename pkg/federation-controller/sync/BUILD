@@ -8,8 +8,12 @@ load(
 
 go_test(
     name = "go_default_test",
-    srcs = ["controller_test.go"],
-    embed = [":go_default_library"],
+    srcs = [
+        "controller_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
     deps = [
         "//apis/federation/v1beta1:go_default_library",
         "//pkg/federatedtypes:go_default_library",
@@ -24,7 +28,9 @@ go_test(
 
 go_library(
     name = "go_default_library",
-    srcs = ["controller.go"],
+    srcs = [
+        "controller.go",
+    ],
     importpath = "k8s.io/federation/pkg/federation-controller/sync",
     deps = [
         "//apis/federation/v1beta1:go_default_library",
