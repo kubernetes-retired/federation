@@ -5441,7 +5441,7 @@
      },
      "lastObservedTime": {
       "type": "string",
-      "description": "Time of the last occurence observed"
+      "description": "Time of the last occurrence observed"
      },
      "state": {
       "type": "string",
