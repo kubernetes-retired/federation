@@ -221,7 +221,7 @@ func createServiceWithNodePort(clientset *fedclientset.Clientset, namespace, nam
 	return clientset.CoreV1().Services(namespace).Create(service)
 }
 
-// checkServicesCreation checks if the service have been created successfuly in all the clusters.
+// checkServicesCreation checks if the service have been created successfully in all the clusters.
 // if the service is not present in at least one of the clusters, this function returns an error.
 func checkServicesCreation(namespace, serviceName string, clusters fedframework.ClusterSlice) error {
 	framework.Logf("check if service %q have been created in %d clusters", serviceName, len(clusters))
