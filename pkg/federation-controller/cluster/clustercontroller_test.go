@@ -66,7 +66,7 @@ func newClusterList(cluster *federationv1beta1.Cluster) *federationv1beta1.Clust
 }
 
 // init a fake http handler, simulate a federation apiserver, response the "DELETE" "PUT" "GET" "UPDATE"
-// when "canBeGotten" is false, means that user can not get the cluster cluster from apiserver
+// when "canBeGotten" is false, means that user can not get the cluster from apiserver
 func createHttptestFakeHandlerForFederation(clusterList *federationv1beta1.ClusterList, canBeGotten bool) *http.HandlerFunc {
 	fakeHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		clusterListString, _ := json.Marshal(*clusterList)
