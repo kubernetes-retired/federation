@@ -5,14 +5,14 @@ Kubernetes clusters.
 To know more details about the same please see the
 [user guide](https://kubernetes.io/docs/concepts/cluster-administration/federation/).
 
-# Deploying Kubernetes Cluster Federation
+## Deploying Kubernetes Cluster Federation
 
 The prescribed mechanism to deploy Kubernetes Cluster Federation is using
 [kubefed](https://kubernetes.io/docs/admin/kubefed/).
 A complete guide for the same is available at
 [setup cluster federation using kubefed](https://kubernetes.io/docs/tutorials/federation/set-up-cluster-federation-kubefed/).
 
-# Building Kubernetes Cluster Federation
+## Building Kubernetes Cluster Federation
 
 Building cluster federation binaries, which include fcp (short for federation
 control plane) and [kubefed](https://kubernetes.io/docs/admin/kubefed/) 
@@ -49,7 +49,7 @@ then bring up the new control plane:
 _output/dockerized/bin/linux/amd64/kubefed init myfed --host-cluster-context=HOST_CLUSTER_CONTEXT --image=REGISTRY/REPO/IMAGENAME[:TAG] --dns-provider="PROVIDER" --dns-zone-name="YOUR_ZONE" --dns-provider-config=/path/to/provider.conf
 ```
 
-# A note to the reader
+## A note to the reader
 Kubernetes federation code is in a state of flux. Since its incubation, it 
 lived in [core kubernetes repo](https://github.com/kubernetes/kubernetes).
 The same now is maturing into [its own placeholder](https://github.com/kubernetes/federation).
@@ -62,3 +62,15 @@ towards GA.
 Please raise an issue, in case you find problems and we welcome developers 
 to participate in this effort.
 
+## Community, discussion, contribution, and support
+
+Learn how to engage with the Kubernetes community on the [community page](http://kubernetes.io/community/).
+
+You can reach the maintainers of this project at:
+
+- [Slack channel](https://kubernetes.slack.com/messages/sig-multicluster)
+- [Mailing list](https://groups.google.com/forum/#!forum/kubernetes-sig-multicluster)
+
+### Code of conduct
+
+Participation in the Kubernetes community is governed by the [Kubernetes Code of Conduct](code-of-conduct.md).
